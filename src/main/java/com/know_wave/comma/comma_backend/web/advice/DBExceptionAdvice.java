@@ -1,5 +1,6 @@
 package com.know_wave.comma.comma_backend.web.advice;
 
+import com.know_wave.comma.comma_backend.web.exception.EmailNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,5 +14,10 @@ public class DBExceptionAdvice {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity pkOrUniqueDuplicateException(DataIntegrityViolationException ex) {
         return new ResponseEntity("잘못된 값에 의해 거절되었습니다", HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(EmailNotFoundException.class)
+    public ResponseEntity notSavedEntityException(EmailNotFoundException ex) {
+        return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }
