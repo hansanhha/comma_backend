@@ -7,7 +7,8 @@ import com.know_wave.comma.comma_backend.repository.account.AccountVerifyReposit
 import com.know_wave.comma.comma_backend.util.EmailSender;
 import com.know_wave.comma.comma_backend.util.RandomUtils;
 import com.know_wave.comma.comma_backend.web.dto.AccountCreateForm;
-import com.know_wave.comma.comma_backend.web.exception.EmailNotFoundException;
+import com.know_wave.comma.comma_backend.web.exception.entity.EmailNotFoundException;
+import com.know_wave.comma.comma_backend.web.exception.entity.EmailVerifiedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +30,7 @@ public class AccountService {
     }
 
     public String join(AccountCreateForm form) {
-        Account newAccount = new Account(form.getId(), form.getEmail(), form.getPassword(), form.getAcademicNumber(), form.getMajor(), form.getStatus());
+        Account newAccount = new Account(form.getAccountId(), form.getEmail(), form.getName(), form.getPassword(), form.getAcademicNumber(), form.getMajor(), form.getStatus());
         Account joinedAccount = accountRepository.save(newAccount);
         return joinedAccount.getId();
     }
@@ -52,6 +53,10 @@ public class AccountService {
             return;
         }
 
+        if (findAccount.isVerified()){
+            throw new EmailVerifiedException("이미 인증된 계정입니다");
+        }
+
         findAccount.setCode(code);
         findAccount.sendCode(emailSender);
     }
@@ -60,9 +65,16 @@ public class AccountService {
         Optional<AccountVerify> byId = accountVerifyRepository.findById(email);
         AccountVerify findAccount = byId.orElseThrow(()->new EmailNotFoundException("요청된 이메일이 아닙니다"));
 
-        boolean verify = findAccount.verifyCode(code);
+        if (findAccount.isVerified()){
+            throw new EmailVerifiedException("이미 인증된 계정입니다");
+        }
 
-        findAccount.setVerified(true);
-        return verify;
+        boolean result = findAccount.verifyCode(code);
+
+        if (result) {
+            findAccount.setVerified(true);
+        }
+
+        return result;
     }
 }

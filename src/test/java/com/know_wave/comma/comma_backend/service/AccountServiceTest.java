@@ -33,7 +33,7 @@ class AccountServiceTest {
 
     @Test
     public void join() {
-        AccountCreateForm accountCreateForm = new AccountCreateForm("test1", "testtest1234", "test123@m365.dongyang.ac.kr", "20151010", AcademicMajor.SoftwareEngineering, AcademicStatus.Enrolled);
+        AccountCreateForm accountCreateForm = new AccountCreateForm("test1", "testtest1234", "testName", "test123@m365.dongyang.ac.kr", "20151010", AcademicMajor.SoftwareEngineering, AcademicStatus.Enrolled);
         String id = accountService.join(accountCreateForm);
         em.flush();
         em.clear();

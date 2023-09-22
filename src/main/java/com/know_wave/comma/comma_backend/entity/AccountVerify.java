@@ -6,6 +6,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import org.springframework.data.domain.Persistable;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 @Entity
 public class AccountVerify extends BaseTimeEntity implements Persistable {
 
@@ -36,10 +39,6 @@ public class AccountVerify extends BaseTimeEntity implements Persistable {
         return getCreatedDate() == null;
     }
 
-    public Boolean getVerified() {
-        return verified;
-    }
-
     public void setCode(int code) {
         this.code = code;
     }
@@ -55,6 +54,18 @@ public class AccountVerify extends BaseTimeEntity implements Persistable {
     }
 
     public boolean verifyCode(int code) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime lastModifiedDate = getLastModifiedDate();
+        long expiration = ChronoUnit.MINUTES.between(lastModifiedDate, now);
+
+        if (expiration > 5) {
+            return false;
+        }
+
         return this.code == code;
+    }
+
+    public boolean isVerified() {
+        return verified;
     }
 }

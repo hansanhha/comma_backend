@@ -14,9 +14,10 @@ public class AccountCreateForm {
     public AccountCreateForm() {
     }
 
-    public AccountCreateForm(String id, String password, String email, String academicNumber, AcademicMajor major, AcademicStatus status) {
-        this.id = id;
+    public AccountCreateForm(String accountId, String password, String name, String email, String academicNumber, AcademicMajor major, AcademicStatus status) {
+        this.accountId = accountId;
         this.password = password;
+        this.name = name;
         this.email = email;
         this.academicNumber = academicNumber;
         this.major = major;
@@ -24,12 +25,16 @@ public class AccountCreateForm {
     }
 
     @NotEmpty(message = "아이디를 입력해주세요")
-    @Size(min = 4, max = 255, message = "아이디는 최소 4글자 이상이어야 합니다")
-    private String id;
+    @Length(min = 4, max = 255, message = "아이디는 최소 4글자 이상이어야 합니다")
+    private String accountId;
 
     @NotEmpty(message = "비밀번호를 입력해주세요")
-    @Size(min = 8, max = 255, message = "비밀번호는 최소 8자리 이상이어야 합니다")
+    @Length(min = 8, max = 255, message = "비밀번호는 최소 8자리 이상이어야 합니다")
     private String password;
+
+    @NotEmpty(message = "이름을 입력해주세요")
+    @Length(min = 2, max = 8, message = "허용되지 않는 이름입니다")
+    private String name;
 
     @NotEmpty(message = "이메일을 입력해주세요")
     @Email(regexp = "^[a-zA-Z0-9]{4,}+@m365\\.dongyang\\.ac\\.kr$",
@@ -48,12 +53,20 @@ public class AccountCreateForm {
     private AcademicStatus status;
 
 
-    public String getId() {
-        return id;
+    public String getAccountId() {
+        return accountId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPassword() {

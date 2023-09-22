@@ -34,9 +34,9 @@ public class AccountController {
 
     @PostMapping("/email/verify")
     public ResponseEntity emailAuthentication(@Valid @RequestBody EmailVerifyDto requestDto) {
-        boolean verify = accountService.verify(requestDto.getEmail(), requestDto.getCode());
-        if (verify) return new ResponseEntity<>("학교 이메일 인증 완료", HttpStatus.OK);
-        else return new ResponseEntity<>("학교 이메일 인증 실패", HttpStatus.BAD_REQUEST);
+        boolean result = accountService.verify(requestDto.getEmail(), requestDto.getCode());
+        if (result) return new ResponseEntity<>("이메일 인증 완료", HttpStatus.OK);
+        else return new ResponseEntity<>("이메일 인증 실패", HttpStatus.BAD_REQUEST);
     }
 
 }

@@ -10,9 +10,10 @@ public class Account extends BaseTimeEntity implements Persistable<String> {
 
     protected Account() {}
 
-    public Account(String id, String email, String password, String academicNumber, AcademicMajor major, AcademicStatus academicStatus) {
+    public Account(String id, String email, String name, String password, String academicNumber, AcademicMajor major, AcademicStatus academicStatus) {
         this.id = id;
         this.email = email;
+        this.name = name;
         this.password = password;
         this.academicNumber = academicNumber;
         this.major = major;
@@ -26,6 +27,9 @@ public class Account extends BaseTimeEntity implements Persistable<String> {
 
     @Column(unique = true, nullable = false)
     private String email;
+
+    @Column(nullable = false, length = 8)
+    private String name;
 
     @Column(nullable = false)
     private String password;

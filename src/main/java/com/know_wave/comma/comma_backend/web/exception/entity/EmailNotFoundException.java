@@ -1,4 +1,4 @@
-package com.know_wave.comma.comma_backend.web.exception;
+package com.know_wave.comma.comma_backend.web.exception.entity;
 
 import jakarta.persistence.EntityNotFoundException;
 
