@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +16,7 @@ import java.util.Optional;
 public class WebRequestExceptionAdvice {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity bindValidException(MethodArgumentNotValidException ex) {
+    public ResponseEntity<String> bindValidException(MethodArgumentNotValidException ex) {
         String message = Optional.ofNullable(ex.getFieldError())
                 .map(FieldError::getDefaultMessage)
                 .orElse("올바르지 않은 입력 값입니다");
@@ -23,8 +24,12 @@ public class WebRequestExceptionAdvice {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity bindNotReadableException(HttpMessageNotReadableException ex) {
+    public ResponseEntity<String> bindNotReadableException(HttpMessageNotReadableException ex) {
         return new ResponseEntity<>("올바르지 않은 값입니다", HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<String> notSupportMethodException(HttpRequestMethodNotSupportedException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }

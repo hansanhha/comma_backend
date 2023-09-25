@@ -25,6 +25,7 @@ spring:
           timeout: 5000
           starttls:
             enable: true
-#logging:
-#  level:
+logging:
+  level:
+    web: trace
 #    org.hibernate.sql: debug
