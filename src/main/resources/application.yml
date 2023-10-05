@@ -1,0 +1,31 @@
+spring:
+#  datasource:
+#    url: jdbc:h2:tcp://localhost/~/jpashop
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+#        show_sql: true
+        format_sql: true
+
+  mail:
+    host: ${SMTP_HOST}
+    port: ${SMTP_PORT}
+    username: ${MAIL_SENDER_NAME}
+    password: ${MAIL_SENDER_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
+logging:
+  level:
+    web: trace
+#    org.hibernate.sql: debug
