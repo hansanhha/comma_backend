@@ -1,20 +1,22 @@
 package com.know_wave.comma.comma_backend.account.dto;
 
+import com.know_wave.comma.comma_backend.util.StringStorage;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Range;
+
+import static com.know_wave.comma.comma_backend.util.StringStorage.emailRegex;
 
 public class EmailVerifyRequest {
 
-    @NotEmpty(message = "이메일을 입력해주세요")
-    @Email(regexp = "^[a-zA-Z0-9]{4,}+@m365\\.dongyang\\.ac\\.kr$",
-            message = "학교 이메일만 사용할 수 있습니다")
+    @NotEmpty(message = "{Required}")
+    @Email(regexp = emailRegex,
+            message = "{Email.email}")
     private String email;
 
-    @NotNull(message = "인증번호를 입력해주세요")
-    @Range(min = 111111, max = 999999, message = "올바르지 않은 인증번호입니다")
-    private int code;
+    @NotEmpty(message = "{Required}")
+    @Range(min = 111111, max = 999999, message = "{Range.code}")
+    private String code;
 
     public String getEmail() {
         return email;
@@ -24,11 +26,11 @@ public class EmailVerifyRequest {
         this.email = email;
     }
 
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(String code) {
         this.code = code;
     }
 }

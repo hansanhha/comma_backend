@@ -1,9 +1,11 @@
 package com.know_wave.comma.comma_backend.account.dto;
 
 import com.know_wave.comma.comma_backend.account.entity.auth.Role;
+import jakarta.validation.constraints.NotEmpty;
 
 public class RoleRequest {
 
+    @NotEmpty(message = "{Required}")
     private String role;
 
     public String getRole() {

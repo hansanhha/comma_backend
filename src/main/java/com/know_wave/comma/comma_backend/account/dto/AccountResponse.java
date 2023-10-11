@@ -1,24 +1,38 @@
 package com.know_wave.comma.comma_backend.account.dto;
 
+import com.know_wave.comma.comma_backend.account.entity.Account;
+
 public class AccountResponse {
 
-    private String name;
-    private String email;
-    private String academicNumber;
-    private String academicStatus;
-    private String academicMajor;
-    private String role;
-
-    public AccountResponse() {
+    public static AccountResponse of(Account account) {
+        return new AccountResponse(
+                account.getName(),
+                account.getEmail(),
+                account.getAcademicNumber(),
+                account.getAcademicStatus(),
+                account.getAcademicMajor(),
+                account.getRole().getGrade()
+        );
     }
-
-    public AccountResponse(String name, String email, String academicNumber, String academicStatus, String academicMajor, String role) {
+    private AccountResponse(String name, String email, String academicNumber, String academicStatus, String academicMajor, String permission) {
         this.name = name;
         this.email = email;
         this.academicNumber = academicNumber;
         this.academicStatus = academicStatus;
         this.academicMajor = academicMajor;
-        this.role = role;
+        this.permission = permission;
+    }
+
+    private String name;
+    private String email;
+    private String academicNumber;
+    private String academicStatus;
+
+    private String academicMajor;
+
+    private String permission;
+
+    public AccountResponse() {
     }
 
     public String getAcademicStatus() {
@@ -61,11 +75,11 @@ public class AccountResponse {
         this.academicMajor = academicMajor;
     }
 
-    public String getRole() {
-        return role;
+    public String getPermission() {
+        return permission;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setPermission(String permission) {
+        this.permission = permission;
     }
 }

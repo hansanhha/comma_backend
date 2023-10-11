@@ -25,12 +25,12 @@ public enum Role {
                     MEMBER_CREATE,
                     MEMBER_UPDATE,
                     MEMBER_DELETE
-            ), "회원"
+            ), "회원(실습재료 신청 권한 없음)"
     ),
     MEMBER_NoEquipmentApplyAndCUD(
             Set.of(
                     MEMBER_READ
-            ), "회원"
+            ), "회원(실습재료 신청, 작성 권한 없음)"
     ),
     MANAGER(
         Set.of(
