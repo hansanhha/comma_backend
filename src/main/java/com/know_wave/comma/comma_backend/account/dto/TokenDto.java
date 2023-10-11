@@ -7,9 +7,9 @@ public class TokenDto {
         this.refreshToken = refreshToken;
     }
 
-    private String accessToken;
+    private final String accessToken;
 
-    private String refreshToken;
+    private final String refreshToken;
 
     public String getAccessToken() {
         return accessToken;

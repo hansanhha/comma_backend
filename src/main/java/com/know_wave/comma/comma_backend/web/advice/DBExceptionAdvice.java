@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class DBExceptionAdvice {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity pkOrUniqueDuplicateException(DataIntegrityViolationException ex) {
-        return new ResponseEntity("잘못된 값에 의해 거절되었습니다", HttpStatus.BAD_REQUEST);
+    public ResponseEntity<String> pkOrUniqueDuplicateException(DataIntegrityViolationException ex) {
+        return new ResponseEntity<>("잘못된 값에 의해 거절되었습니다", HttpStatus.BAD_REQUEST);
     }
 
 }

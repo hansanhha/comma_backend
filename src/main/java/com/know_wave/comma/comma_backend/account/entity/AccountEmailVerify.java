@@ -1,7 +1,6 @@
 package com.know_wave.comma.comma_backend.account.entity;
 
 import com.know_wave.comma.comma_backend.util.entity.BaseTimeEntity;
-import com.know_wave.comma.comma_backend.util.EmailSenderService;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -49,10 +48,6 @@ public class AccountEmailVerify extends BaseTimeEntity implements Persistable {
     }
 
     private static final String subject = "COMMA 메일 요청";
-
-    public void sendCode(EmailSenderService emailSenderService) {
-        emailSenderService.send(email, subject, String.valueOf(code));
-    }
 
     public boolean verifyCode(int code) {
         LocalDateTime now = LocalDateTime.now();

@@ -1,32 +1,27 @@
 package com.know_wave.comma.comma_backend.security.config;
 
-import com.know_wave.comma.comma_backend.account.service.LogoutService;
+import com.know_wave.comma.comma_backend.account.service.auth.LogoutService;
 import com.know_wave.comma.comma_backend.security.filter.JwtAuthenticationFilter;
-import com.know_wave.comma.comma_backend.security.service.AccountAuthenticationProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Stream;
 
 import static com.know_wave.comma.comma_backend.account.entity.auth.Role.ADMIN;
 import static com.know_wave.comma.comma_backend.account.entity.auth.Role.MANAGER;
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 public class SecurityConfig {
@@ -35,23 +30,46 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
     private final LogoutService logoutService;
     private final AccessDeniedHandler accessDeniedHandler;
-    private final String[] accountPermitRequest = {"/account/signin", "/account/signup", "/account/email/r", "/account/email/verify"};
-    private final String[] adminPermitRequest = {"/admin/signup"};
+    private final HandlerMappingIntrospector handlerIntroceptor;
+    private RequestMatcher[] userPermitRequestMatchers;
+    private RequestMatcher[] adminPermitRequestMatchers;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, AuthenticationProvider authenticationProvider, LogoutService logoutService, AccessDeniedHandler accessDeniedHandler) {
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, AuthenticationProvider authenticationProvider, LogoutService logoutService, AccessDeniedHandler accessDeniedHandler, HandlerMappingIntrospector handlerIntroceptor) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.authenticationProvider = authenticationProvider;
         this.logoutService = logoutService;
         this.accessDeniedHandler = accessDeniedHandler;
-        initJwtAuthenticationFilter();
+        this.handlerIntroceptor = handlerIntroceptor;
+        initPermitRequests();
     }
 
-    private void initJwtAuthenticationFilter() {
+    private void initPermitRequests() {
+
+        MvcRequestMatcher getArduino = new MvcRequestMatcher(handlerIntroceptor, "/arduino/*");
+        getArduino.setMethod(HttpMethod.GET);
+        MvcRequestMatcher getArduinoList = new MvcRequestMatcher(handlerIntroceptor, "/arduinos/**");
+        getArduinoList.setMethod(HttpMethod.GET);
+
+        userPermitRequestMatchers = new MvcRequestMatcher[]{
+                new MvcRequestMatcher(handlerIntroceptor, "/account/signin"),
+                new MvcRequestMatcher(handlerIntroceptor, "/account/signup"),
+                new MvcRequestMatcher(handlerIntroceptor, "/account/email/r"),
+                new MvcRequestMatcher(handlerIntroceptor, "/account/email/verify"),
+                getArduino,
+                getArduinoList,
+        };
+
+        adminPermitRequestMatchers = new MvcRequestMatcher[]{
+                new MvcRequestMatcher(handlerIntroceptor, "/admin/account/signup")
+        };
+
+
+        // custom filter permit requests configuration
         jwtAuthenticationFilter.requestMatchers(
                 Stream.concat(
-                        Arrays.stream(accountPermitRequest),
-                        Arrays.stream(adminPermitRequest))
-                        .toArray(String[]::new)
+                        Arrays.stream(userPermitRequestMatchers),
+                        Arrays.stream(adminPermitRequestMatchers)
+                ).toList()
         );
     }
 
@@ -61,10 +79,10 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(authorizeHttpRequest ->
                 authorizeHttpRequest
-                        .requestMatchers("/admin/signup").permitAll()
-                        .requestMatchers("/admin/manager").hasRole(ADMIN.name())
+                        .requestMatchers(adminPermitRequestMatchers).permitAll()
+                        .requestMatchers("/admin/account/*").hasRole(ADMIN.name())
                         .requestMatchers("/admin/**").hasAnyRole(MANAGER.name(), ADMIN.name())
-                        .requestMatchers(accountPermitRequest).permitAll()
+                        .requestMatchers(userPermitRequestMatchers).permitAll()
                         .requestMatchers("/**").authenticated()
             )
             .sessionManagement(sessionManagement ->

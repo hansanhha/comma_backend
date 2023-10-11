@@ -13,6 +13,11 @@ spring:
 #        show_sql: true
         format_sql: true
 
+  data:
+    web:
+      pageable:
+        default-page-size: 20
+
   mail:
     host: ${SMTP_HOST}
     port: ${SMTP_PORT}
@@ -28,4 +33,4 @@ spring:
 logging:
   level:
     web: trace
-#    org.hibernate.sql: debug
+    org.hibernate.sql: debug

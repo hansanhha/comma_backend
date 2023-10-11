@@ -9,13 +9,15 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
+import static com.know_wave.comma.comma_backend.util.message.ExceptionMessageSource.PERMISSION_DENIED;
+
 @Service
 public class AccessDeniedHandlerService implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        response.getWriter().write("Permission denied");
+        response.getWriter().write(PERMISSION_DENIED);
         response.getWriter().flush();
     }
 }

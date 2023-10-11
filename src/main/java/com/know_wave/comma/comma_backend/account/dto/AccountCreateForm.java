@@ -3,12 +3,15 @@ package com.know_wave.comma.comma_backend.account.dto;
 import com.know_wave.comma.comma_backend.account.entity.AcademicMajor;
 import com.know_wave.comma.comma_backend.account.entity.AcademicStatus;
 import com.know_wave.comma.comma_backend.account.entity.Account;
+import com.know_wave.comma.comma_backend.util.StringStorage;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import static com.know_wave.comma.comma_backend.util.StringStorage.emailRegex;
 
 public class AccountCreateForm {
 
@@ -25,32 +28,31 @@ public class AccountCreateForm {
         this.status = status;
     }
 
-    @NotEmpty(message = "아이디를 입력해주세요")
-    @Length(min = 4, max = 255, message = "아이디는 최소 4글자 이상이어야 합니다")
+    @NotEmpty(message = "{Required}")
+    @Length(min = 4, max = 255, message = "{Length}")
     private String accountId;
 
-    @NotEmpty(message = "비밀번호를 입력해주세요")
-    @Length(min = 8, max = 255, message = "비밀번호는 최소 8자리 이상이어야 합니다")
+    @NotEmpty(message = "{Required}")
+    @Length(min = 8, max = 255, message = "{Length}")
     private String password;
 
-    @NotEmpty(message = "이름을 입력해주세요")
-    @Length(min = 2, max = 8, message = "허용되지 않는 이름입니다")
+    @NotEmpty(message = "{Required}")
+    @Length(min = 2, max = 8, message = "{Length.minMax}")
     private String name;
 
-    @NotEmpty(message = "이메일을 입력해주세요")
-    @Email(regexp = "^[a-zA-Z0-9]{4,}+@m365\\.dongyang\\.ac\\.kr$",
-            message = "학교 이메일만 사용할 수 있습니다")
+    @NotEmpty(message = "{Required}")
+    @Email(regexp = emailRegex,
+            message = "{Email.email}")
     private String email;
 
-    @NotEmpty(message = "학번을 입력해주세요")
-    @Length(min = 8, max = 8, message = "올바르지 않은 학번입니다")
-    @Range(min = 20000000, max = 20300000, message = "올바르지 않은 학번입니다")
+    @NotEmpty(message = "{Required}")
+    @Range(min = 20000000, max = 20300000, message = "{Range.academicNumber}")
     private String academicNumber;
 
-    @NotNull(message = "전공을 입력해주세요")
+    @NotNull(message = "{Required}")
     private AcademicMajor major;
 
-    @NotNull(message = "학적 상태를 입력해주세요")
+    @NotNull(message = "{Required}")
     private AcademicStatus status;
 
     public String getAccountId() {

@@ -1,4 +1,4 @@
-package com.know_wave.comma.comma_backend.account.service;
+package com.know_wave.comma.comma_backend.account.service.auth;
 
 import com.know_wave.comma.comma_backend.account.dto.TokenDto;
 import com.know_wave.comma.comma_backend.account.entity.Account;
@@ -6,7 +6,6 @@ import com.know_wave.comma.comma_backend.account.entity.token.Token;
 import com.know_wave.comma.comma_backend.account.repository.TokenRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.lang.Assert;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,17 +26,12 @@ public class TokenService {
     private String key;
     private final KeyPair keyPair;
     @Value("${ACCESS_TOKEN_EXPIRATION}")
-    private int accessTokenExpiration;
+    private long accessTokenExpiration;
     @Value("${REFRESH_TOKEN_EXPIRATION}")
-    private int refreshTokenExpiration;
+    private long refreshTokenExpiration;
 
     public static final String REFRESH_TOKEN_NAME = "refresh_token";
     public static final String ACCESS_TOKEN_NAME = "access_token";
-    public static final String REFRESH_TOKEN_NOT_FOUND_MESSAGE = "NotFound refresh token";
-    public static final String ACCESS_TOKEN_NOT_FOUND_MESSAGE = "NotFound access token";
-    public static final String REFRESH_TOKEN_EXPIRED_MESSAGE = "Expired refresh token. login is required";
-    public static final String REFRESH_TOKEN_INVALID_MESSAGE = "Invalid refresh token";
-    public static final String ACCESS_TOKEN_EXPIRED_MESSAGE = "Expired access token. re-issuance is required";
 
     private final TokenRepository tokenRepository;
 
@@ -89,27 +83,13 @@ public class TokenService {
         tokenRepository.save(token);
     }
 
-    public boolean isValidToken(Token token) {
-
-        if (Objects.nonNull(token)) {
-            Date tokenExpiration = token.getExpiration();
-            return new Date().before(tokenExpiration) && !token.isExpired() && !token.isRevoked();
-        }
-        return false;
-    }
-
-    public boolean isSameUser(String accessToken, Token refreshToken) {
-        Jws<Claims> accessClaimsJws = parseClaims(accessToken);
-        Claims accessClaims = accessClaimsJws.getBody();
-
-        String accessUserId = accessClaims.getSubject();
-        String refreshUserId = refreshToken.getAccount().getId();
-
-        return accessUserId.equals(refreshUserId);
-    }
-
     public Optional<TokenDto> mapToTokenDto(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
+
+        if (cookies == null) {
+            return Optional.empty();
+        }
+
         HashMap<String, String> tokenMap = new HashMap<>();
 
         Arrays.stream(cookies)
@@ -153,18 +133,38 @@ public class TokenService {
                 .parseClaimsJws(token);
     }
 
-    public boolean isExpired(String token) {
-        try {
-            Jws<Claims> claimsJws = parseClaims(token);
-        } catch (ExpiredJwtException e) {
-            return true;
+    public boolean isValidToken(Token token) {
+
+        if (Objects.nonNull(token)) {
+            Date tokenExpiration = token.getExpiration();
+            return new Date().before(tokenExpiration) && !token.isExpired() && !token.isRevoked();
         }
         return false;
     }
 
-    public boolean isEmptyToken(String token) {
+    public boolean isTempered(String accessToken, Token refreshToken) {
+        Jws<Claims> accessClaimsJws = parseClaims(accessToken);
+        Claims accessClaims = accessClaimsJws.getBody();
+
+        String accessUserId = accessClaims.getSubject();
+        String refreshUserId = refreshToken.getAccount().getId();
+
+        return !accessUserId.equals(refreshUserId);
+    }
+
+    public boolean isExpired(String token) {
+        try {
+            Jws<Claims> claimsJws = parseClaims(token);
+            Date expiration = claimsJws.getBody().getExpiration();
+            return new Date().after(expiration);
+        } catch (ExpiredJwtException e) {
+            return true;
+        }
+    }
+
+    public boolean isEmpty(String token) {
         Jws<Claims> claimsJws = parseClaims(token);
-        return claimsJws.getBody().isEmpty();
+        return claimsJws.getBody().isEmpty() && claimsJws.getBody().getSubject().isEmpty();
     }
 
     private Key getSignKey() {
