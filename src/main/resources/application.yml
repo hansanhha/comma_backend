@@ -1,16 +1,20 @@
 spring:
-#  datasource:
-#    url: jdbc:h2:tcp://localhost/~/jpashop
-#    username: sa
-#    password:
-#    driver-class-name: org.h2.Driver
+
+  profiles:
+    active: local
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: ${DB_DRIVER}
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
-#        show_sql: true
+        #        show_sql: true
         format_sql: true
 
   data:
@@ -30,7 +34,10 @@ spring:
           timeout: 5000
           starttls:
             enable: true
+
 logging:
   level:
+    root: info
     web: trace
     org.hibernate.sql: debug
+  config: classpath:logback-spring.xml
