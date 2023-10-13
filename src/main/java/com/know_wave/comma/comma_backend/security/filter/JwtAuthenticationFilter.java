@@ -3,6 +3,7 @@ package com.know_wave.comma.comma_backend.security.filter;
 import com.know_wave.comma.comma_backend.account.dto.TokenDto;
 import com.know_wave.comma.comma_backend.account.entity.token.Token;
 import com.know_wave.comma.comma_backend.account.service.auth.TokenService;
+import com.know_wave.comma.comma_backend.security.service.PermitRequestMatcherService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,31 +12,23 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 import static com.know_wave.comma.comma_backend.util.message.ExceptionMessageSource.*;
 
 @Component
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
     private final TokenService tokenService;
-    private final HandlerMappingIntrospector introspector;
-    private List<RequestMatcher> matchers;
+    private final PermitRequestMatcherService permitRequestMatcherService;
 
-    public JwtAuthenticationFilter(TokenService tokenService, HandlerMappingIntrospector introspector) {
+    public JwtAuthenticationFilter(TokenService tokenService, PermitRequestMatcherService permitRequestMatcherService) {
         this.tokenService = tokenService;
-        this.introspector = introspector;
-    }
-
-    public void requestMatchers(List<RequestMatcher> matchers) {
-        this.matchers = matchers;
+        this.permitRequestMatcherService = permitRequestMatcherService;
     }
 
     @Override
@@ -88,6 +81,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return matchers.stream().anyMatch(matcher -> matcher.matches(request));
+        return permitRequestMatcherService.isPermitRequest(request);
     }
 }
