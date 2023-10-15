@@ -39,3 +39,7 @@ out/
 ### application config file ###
 /src/main/resources/application.yml
 /src/main/resources/application.properties
+/src/main/**/*.p12
+
+LOCAL_LOG*
+LOG*

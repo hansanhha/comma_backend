@@ -16,6 +16,7 @@ spring:
       hibernate:
         #        show_sql: true
         format_sql: true
+#        dialect: org.hibernate.dialect.MySQL8Dialect
 
   data:
     web:
@@ -41,3 +42,25 @@ logging:
     web: trace
     org.hibernate.sql: debug
   config: classpath:logback-spring.xml
+
+kakao:
+  api:
+    key: ${KAKAO_API_KEY}
+    customer:
+      id: ${KAKAO_CUSTOMER_ID}
+
+payment:
+  amount : 3000
+  tax-free-amount: 3000
+  product-name: 컴마 실습재료 신청 보증금
+
+server:
+  http2:
+    enabled: false
+  port: 443
+
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-type: PKCS12
+    key-store-password: ${KEY_STORE_PASSWORD}
+    enabled: true
