@@ -30,4 +30,5 @@ public class ExceptionMessageSource {
     public static final String ALREADY_IN_BASKET = "Already in basket";
     public static final String NOT_ACCEPTABLE_REQUEST = "Not acceptable request";
     public static final String INVALID_VALUE = "Invalid value";
+    public static final String NOT_SUPPORTED_PAYMENT_TYPE = "Not supported payment type";
 }

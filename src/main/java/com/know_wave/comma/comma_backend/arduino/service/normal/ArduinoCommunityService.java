@@ -135,7 +135,7 @@ public class ArduinoCommunityService {
     public Comment getComment(Long commentId) {
         Optional<Comment> commentOptional = commentRepository.findById(commentId);
 
-        ValidateUtils.throwIfOptionalEmpty(commentOptional);
+        ValidateUtils.throwIfEmpty(commentOptional);
 
         return commentOptional.get();
     }

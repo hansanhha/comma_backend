@@ -1,0 +1,3 @@
+[2023-10-15 12:45:46:431] INFO  4895 --- [           main] c.k.c.c.CommaBackendApplication          : Starting CommaBackendApplication using Java 17.0.7 with PID 4895 (/Users/hansanhha/Workspace/project/comma_backend/build/classes/java/main started by hansanhha in /Users/hansanhha/Workspace/project/comma_backend)
+[2023-10-15 12:45:46:431] INFO  4895 --- [           main] c.k.c.c.CommaBackendApplication          : The following 1 profile is active: "local"
+[2023-10-15 12:45:52:6266] INFO  4895 --- [           main] c.k.c.c.CommaBackendApplication          : Started CommaBackendApplication in 6.178 seconds (process running for 6.756)

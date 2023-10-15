@@ -78,7 +78,7 @@ public class ArduinoService {
     public Arduino getArduino(Long id) {
         Optional<Arduino> arduinoOptional = arduinoRepository.findFetchCategoriesById(id);
 
-        ValidateUtils.throwIfOptionalEmpty(arduinoOptional);
+        ValidateUtils.throwIfEmpty(arduinoOptional);
 
         return arduinoOptional.get();
     }
