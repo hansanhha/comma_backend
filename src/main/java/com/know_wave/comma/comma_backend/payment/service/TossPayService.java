@@ -9,6 +9,11 @@ import org.springframework.stereotype.Service;
 public class TossPayService implements PaymentService<TossPaymentReady, TossPaymentApprove> {
 
     @Override
+    public TossPaymentReady ready(TossPaymentReady request) {
+        return null;
+    }
+
+    @Override
     public TossPaymentApprove pay(TossPaymentReady request) {
         return null;
     }

@@ -6,6 +6,8 @@ import com.know_wave.comma.comma_backend.payment.entity.PaymentType;
 
 public interface PaymentService<T extends PaymentReady, R extends PaymentApprove> {
 
+    T ready(T request);
+
     R pay(T request);
 
     R refund(T request);

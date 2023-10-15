@@ -12,6 +12,7 @@ public abstract class PaymentReady extends BaseTimeEntity {
 
     @Id
     @GeneratedValue
+    @Column(name = "payment_request_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -25,5 +26,13 @@ public abstract class PaymentReady extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private PaymentReadyStatus paymentReadyStatus;
 
+    private String successUrl;
+
+    private String cancelUrl;
+
+    private String failUrl;
+
     private int totalAmount;
+
+    private String itemName = "컴마 실습재료 보증금";
 }

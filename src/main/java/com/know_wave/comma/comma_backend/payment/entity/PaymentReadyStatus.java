@@ -5,7 +5,8 @@ public enum PaymentReadyStatus {
     READY("결제 준비"),
     REQUEST("결제 요청"),
     CANCEL("결제 취소"),
-    FAIL("결제 요청 유효 시간 지남");
+    TIME_OUT("결제 요청 유효 시간 지남"),
+    FAIL("결제 요청 실패");
 
     private final String value;
 
