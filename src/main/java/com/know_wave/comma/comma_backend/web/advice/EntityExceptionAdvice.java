@@ -1,14 +1,12 @@
 package com.know_wave.comma.comma_backend.web.advice;
 
-import com.know_wave.comma.comma_backend.exception.NotFoundEmailException;
-import com.know_wave.comma.comma_backend.exception.EmailVerifiedException;
-import com.know_wave.comma.comma_backend.util.message.ConstraintValueMessageInterpolator;
+import com.know_wave.comma.comma_backend.util.exception.NotFoundEmailException;
+import com.know_wave.comma.comma_backend.util.exception.EmailVerifiedException;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceException;
 import jakarta.validation.ConstraintViolationException;
-import org.hibernate.validator.internal.engine.MessageInterpolatorContext;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

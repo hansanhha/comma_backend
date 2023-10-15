@@ -1,4 +1,4 @@
-package com.know_wave.comma.comma_backend.exception;
+package com.know_wave.comma.comma_backend.util.exception;
 
 public class TokenNotFound extends RuntimeException{
 

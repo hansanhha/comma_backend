@@ -3,7 +3,7 @@ package com.know_wave.comma.comma_backend.account.service.auth;
 import com.know_wave.comma.comma_backend.account.dto.TokenDto;
 import com.know_wave.comma.comma_backend.account.entity.Account;
 import com.know_wave.comma.comma_backend.account.entity.token.Token;
-import com.know_wave.comma.comma_backend.exception.TokenNotFound;
+import com.know_wave.comma.comma_backend.util.exception.TokenNotFound;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

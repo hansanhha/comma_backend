@@ -7,7 +7,7 @@ import com.know_wave.comma.comma_backend.arduino.entity.Arduino;
 import com.know_wave.comma.comma_backend.arduino.entity.ArduinoCategory;
 import com.know_wave.comma.comma_backend.arduino.entity.Category;
 import com.know_wave.comma.comma_backend.arduino.repository.*;
-import com.know_wave.comma.comma_backend.exception.EntityAlreadyExistException;
+import com.know_wave.comma.comma_backend.util.exception.EntityAlreadyExistException;
 import com.know_wave.comma.comma_backend.util.annotation.PermissionProtection;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
