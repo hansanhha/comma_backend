@@ -1,16 +1,18 @@
 package com.know_wave.comma.comma_backend.payment.entity;
 
-public enum PaymentApproveStatus {
+public enum PaymentStatus {
 
-    READY("결제 승인 요청"),
+    READY("결제 준비"),
+    REQUEST("결제 요청"),
     APPROVE("결제 승인"),
     CANCEL("결제 취소"),
-    TIME_OUT("결제 승인 유효 시간 지남"),
-    FAIL("결제 승인 실패");
+    TIME_OUT("결제 요청 유효 시간 지남"),
+    AUTH_FAIL("결제 인증 실패"),
+    INSUFFICIENT_BALANCE("잔액 부족");
 
     private final String value;
 
-    PaymentApproveStatus(String value) {
+    PaymentStatus(String value) {
         this.value = value;
     }
 

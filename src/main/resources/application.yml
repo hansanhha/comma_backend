@@ -42,3 +42,9 @@ logging:
     web: trace
     org.hibernate.sql: debug
   config: classpath:logback-spring.xml
+
+kakao:
+  api:
+    key: ${KAKAO_API_KEY}
+    customer:
+      id: ${KAKAO_CUSTOMER_ID}

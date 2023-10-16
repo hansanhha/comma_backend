@@ -1,10 +1,10 @@
 package com.know_wave.comma.comma_backend.payment.dto;
 
-import com.know_wave.comma.comma_backend.payment.entity.PaymentReady;
+import com.know_wave.comma.comma_backend.payment.entity.Payment;
 
 public class PaymentRequest {
 
-    public PaymentReady of() {
+    public Payment of() {
         return null;
     }
 }

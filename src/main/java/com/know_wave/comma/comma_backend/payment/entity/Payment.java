@@ -4,11 +4,11 @@ import com.know_wave.comma.comma_backend.account.entity.Account;
 import com.know_wave.comma.comma_backend.arduino.entity.OrderInfo;
 import com.know_wave.comma.comma_backend.util.entity.BaseTimeEntity;
 import jakarta.persistence.*;
+import lombok.Getter;
 
+@Getter
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "payment_type")
-public abstract class PaymentReady extends BaseTimeEntity {
+public abstract class Payment extends BaseTimeEntity {
 
     @Id
     @GeneratedValue
@@ -24,15 +24,19 @@ public abstract class PaymentReady extends BaseTimeEntity {
     private OrderInfo orderInfo;
 
     @Enumerated(EnumType.STRING)
-    private PaymentReadyStatus paymentReadyStatus;
+    private PaymentStatus paymentReadyStatus;
 
-    private String successUrl;
+    @Enumerated(EnumType.STRING)
+    private PaymentType paymentType;
 
-    private String cancelUrl;
-
-    private String failUrl;
+    @Enumerated(EnumType.STRING)
+    private PaymentMethodType paymentMethodType;
 
     private int totalAmount;
 
     private String itemName = "컴마 실습재료 보증금";
+
+    private boolean paymentTermsAgreement;
+
+    private boolean personalInfoTermsAgreement;
 }
