@@ -10,12 +10,12 @@ public class KakaoPayService implements PaymentService<KakaoPaymentReady, KakaoP
 
     @Override
     public KakaoPaymentReady ready(KakaoPaymentReady request) {
-
+        return null;
     }
 
     @Override
     public KakaoPaymentApprove pay(KakaoPaymentReady request) {
-        ready(request);
+        return null;
     }
 
     @Override
