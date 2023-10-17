@@ -1,18 +1,18 @@
 package com.know_wave.comma.comma_backend.payment.service;
 
+import com.know_wave.comma.comma_backend.payment.dto.PaymentRequest;
+import com.know_wave.comma.comma_backend.payment.dto.PaymentWebResult;
 import com.know_wave.comma.comma_backend.payment.entity.PaymentType;
 
-import java.util.Map;
+public interface PaymentService {
 
-public interface PaymentService<T, R> {
+    PaymentWebResult ready(PaymentRequest t);
 
-    R ready(T t);
+    void pay(PaymentRequest t);
 
-    R pay(T t);
+    void refund(PaymentRequest t);
 
-    R refund(T t);
-
-    R cancel(T t);
+    void cancel(PaymentRequest t);
 
     boolean supports(PaymentType type);
 }

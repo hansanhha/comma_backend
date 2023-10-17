@@ -2,7 +2,7 @@ package com.know_wave.comma.comma_backend.payment.entity;
 
 public enum DepositStatus {
 
-    EMPTY("보증금 제출 안함"),
+    NONE("보증금 제출 안함"),
     SUBMIT("보증금 제출"),
     REFUND("보증금 반환"),
     DONATE("보증금 기부");

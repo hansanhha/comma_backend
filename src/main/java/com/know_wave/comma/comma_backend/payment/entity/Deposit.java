@@ -8,11 +8,11 @@ import lombok.Getter;
 
 @Getter
 @Entity
-public abstract class Payment extends BaseTimeEntity {
+public class Deposit extends BaseTimeEntity {
 
     @Id
     @GeneratedValue
-    @Column(name = "payment_request_id")
+    @Column(name = "deposit_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -24,7 +24,10 @@ public abstract class Payment extends BaseTimeEntity {
     private OrderInfo orderInfo;
 
     @Enumerated(EnumType.STRING)
-    private PaymentStatus paymentReadyStatus;
+    private DepositStatus depositStatus;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;
 
     @Enumerated(EnumType.STRING)
     private PaymentType paymentType;
@@ -34,7 +37,7 @@ public abstract class Payment extends BaseTimeEntity {
 
     private int totalAmount;
 
-    private String itemName = "컴마 실습재료 보증금";
+    private String itemName;
 
     private boolean paymentTermsAgreement;
 

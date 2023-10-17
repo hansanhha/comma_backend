@@ -1,53 +1,47 @@
 package com.know_wave.comma.comma_backend.payment.service;
 
-import com.know_wave.comma.comma_backend.payment.dto.PaymentReadyResponse;
 import com.know_wave.comma.comma_backend.payment.dto.PaymentRequest;
-import com.know_wave.comma.comma_backend.payment.entity.*;
-import com.know_wave.comma.comma_backend.payment.repository.PaymentReadyRepository;
+import com.know_wave.comma.comma_backend.payment.dto.PaymentWebResult;
+import com.know_wave.comma.comma_backend.payment.entity.PaymentType;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class PaymentGateway {
 
-    private final PaymentProvider<Payment, PaymentApprove> paymentProvider;
-    private final PaymentReadyRepository paymentReadyRepository;
+    private final PaymentManager paymentManager;
+
     public static final String successUrl = "http://localhost:8080/api/v1/payment/success";
     public static final String failUrl = "http://localhost:8080/api/v1/payment/fail";
     public static final String cancelUrl = "http://localhost:8080/api/v1/payment/cancel";
 
-    public PaymentGateway(PaymentProvider<Payment, PaymentApprove> paymentProvider, PaymentReadyRepository paymentReadyRepository) {
-        this.paymentProvider = paymentProvider;
-        this.paymentReadyRepository = paymentReadyRepository;
-    }
+    public PaymentWebResult ready(PaymentRequest request, PaymentType type) {
+        var paymentService = paymentManager.getPaymentService(type);
 
-    public PaymentReadyResponse ready(PaymentRequest request, PaymentType type) {
-        var paymentService = paymentProvider.getPaymentService(type);
+        PaymentWebResult result = paymentService.ready(request);
 
-        paymentProvider.getPaymentRequest(request, type);
-
-        Payment ready = paymentService.ready(request.of());
-
-        return PaymentReadyResponse.of(ready);
+        return result;
     }
 
     public void pay(PaymentRequest request, PaymentType type) {
-        var paymentService = paymentProvider.getPaymentService(type);
+        var paymentService = paymentManager.getPaymentService(type);
 
-        paymentService.pay(request.of());
+        paymentService.pay(request);
     }
 
     public void refund(PaymentRequest request, PaymentType type) {
-        var paymentService = paymentProvider.getPaymentService(type);
+        var paymentService = paymentManager.getPaymentService(type);
 
-        paymentService.refund(request.of());
+        paymentService.refund(request);
     }
 
     public void cancel(PaymentRequest request, PaymentType type) {
-        var paymentService = paymentProvider.getPaymentService(type);
+        var paymentService = paymentManager.getPaymentService(type);
 
-        paymentService.cancel(request.of());
+        paymentService.cancel(request);
     }
 
 }
