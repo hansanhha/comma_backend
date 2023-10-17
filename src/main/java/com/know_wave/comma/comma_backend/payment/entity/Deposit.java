@@ -4,11 +4,28 @@ import com.know_wave.comma.comma_backend.account.entity.Account;
 import com.know_wave.comma.comma_backend.arduino.entity.OrderInfo;
 import com.know_wave.comma.comma_backend.util.entity.BaseTimeEntity;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Deposit extends BaseTimeEntity {
+
+    public Deposit(Account account, OrderInfo orderInfo, String paymentTransactionId, DepositStatus depositStatus, PaymentStatus paymentStatus, PaymentType paymentType, PaymentMethodType paymentMethodType, int totalAmount, String itemName, boolean paymentTermsAgreement, boolean personalInfoTermsAgreement) {
+        this.account = account;
+        this.orderInfo = orderInfo;
+        this.paymentTransactionId = paymentTransactionId;
+        this.depositStatus = depositStatus;
+        this.paymentStatus = paymentStatus;
+        this.paymentType = paymentType;
+        this.paymentMethodType = paymentMethodType;
+        this.totalAmount = totalAmount;
+        this.itemName = itemName;
+        this.paymentTermsAgreement = paymentTermsAgreement;
+        this.personalInfoTermsAgreement = personalInfoTermsAgreement;
+    }
 
     @Id
     @GeneratedValue
@@ -22,6 +39,8 @@ public class Deposit extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "payment_id")
     private OrderInfo orderInfo;
+
+    private String paymentTransactionId;
 
     @Enumerated(EnumType.STRING)
     private DepositStatus depositStatus;
@@ -42,4 +61,12 @@ public class Deposit extends BaseTimeEntity {
     private boolean paymentTermsAgreement;
 
     private boolean personalInfoTermsAgreement;
+
+    public void setDepositStatus(DepositStatus depositStatus) {
+        this.depositStatus = depositStatus;
+    }
+
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
 }

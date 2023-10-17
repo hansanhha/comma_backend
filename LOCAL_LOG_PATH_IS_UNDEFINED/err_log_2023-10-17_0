@@ -1,0 +1,72 @@
+[2023-10-17 19:17:46:845997] ERROR 15381 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Server error occurred
+[2023-10-17 19:17:46:845998] ERROR 15381 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : - location : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(PaymentAuthRequest)
+[2023-10-17 19:17:46:845998] ERROR 15381 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : - exception : com.know_wave.comma.comma_backend.util.exception.NotFoundException: Not supported payment type
+[2023-10-17 19:17:46:845998] ERROR 15381 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : - Client request payload : empty
+[2023-10-17 19:26:06:177760] ERROR 15557 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : Server error occurred
+[2023-10-17 19:26:06:177760] ERROR 15557 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : - location : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(PaymentRequest)
+[2023-10-17 19:26:06:177761] ERROR 15557 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : - exception : com.know_wave.comma.comma_backend.util.exception.NotFoundException: Not supported payment type
+[2023-10-17 19:26:06:177761] ERROR 15557 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : - Client request payload : empty
+[2023-10-17 19:30:19:113328] ERROR 15589 --- [nio-8080-exec-1] c.k.c.c.s.i.LoggingInterceptor           : Server error occurred
+[2023-10-17 19:30:19:113329] ERROR 15589 --- [nio-8080-exec-1] c.k.c.c.s.i.LoggingInterceptor           : - location : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(PaymentRequest)
+[2023-10-17 19:30:19:113329] ERROR 15589 --- [nio-8080-exec-1] c.k.c.c.s.i.LoggingInterceptor           : - exception : org.springframework.web.client.HttpClientErrorException$BadRequest: 400 Bad Request: "{"msg":"cid can't be null.","code":-2}"
+[2023-10-17 19:30:19:113329] ERROR 15589 --- [nio-8080-exec-1] c.k.c.c.s.i.LoggingInterceptor           : - Client request payload : {
+    "accountId": "testid1234",
+    "arduinoOrderId": "7ce1862310171929",
+    "paymentType": "KAKAO"
+}
+[2023-10-17 19:38:14:152921] ERROR 15643 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : Server error occurred
+[2023-10-17 19:38:14:152921] ERROR 15643 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : - location : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(PaymentRequest)
+[2023-10-17 19:38:14:152922] ERROR 15643 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : - exception : org.springframework.web.client.HttpClientErrorException$BadRequest: 400 Bad Request: "{"msg":"cid can't be null.","code":-2}"
+[2023-10-17 19:38:14:152922] ERROR 15643 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : - Client request payload : {
+    "accountId": "testid1234",
+    "arduinoOrderId": "5f43d62310171936",
+    "paymentType": "KAKAO"
+}
+[2023-10-17 19:42:00:379041] ERROR 15643 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Server error occurred
+[2023-10-17 19:42:00:379042] ERROR 15643 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : - location : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(PaymentRequest)
+[2023-10-17 19:42:00:379042] ERROR 15643 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : - exception : org.springframework.web.client.HttpClientErrorException$BadRequest: 400 Bad Request: "{"msg":"cid can't be null.","code":-2}"
+[2023-10-17 19:42:00:379042] ERROR 15643 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : - Client request payload : {
+    "accountId": "testid1234",
+    "arduinoOrderId": "5f43d62310171936",
+    "paymentType": "KAKAO"
+}
+[2023-10-17 19:42:58:437418] ERROR 15643 --- [nio-8080-exec-4] c.k.c.c.s.i.LoggingInterceptor           : Server error occurred
+[2023-10-17 19:42:58:437422] ERROR 15643 --- [nio-8080-exec-4] c.k.c.c.s.i.LoggingInterceptor           : - location : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(PaymentRequest)
+[2023-10-17 19:42:58:437422] ERROR 15643 --- [nio-8080-exec-4] c.k.c.c.s.i.LoggingInterceptor           : - exception : org.springframework.web.client.HttpClientErrorException$BadRequest: 400 Bad Request: "{"msg":"cid can't be null.","code":-2}"
+[2023-10-17 19:42:58:437422] ERROR 15643 --- [nio-8080-exec-4] c.k.c.c.s.i.LoggingInterceptor           : - Client request payload : {
+    "accountId": "testid1234",
+    "arduinoOrderId": "5f43d62310171936",
+    "paymentType": "KAKAO"
+}
+[2023-10-17 19:59:45:1444490] ERROR 15643 --- [nio-8080-exec-7] c.k.c.c.s.i.LoggingInterceptor           : Server error occurred
+[2023-10-17 19:59:45:1444491] ERROR 15643 --- [nio-8080-exec-7] c.k.c.c.s.i.LoggingInterceptor           : - location : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(PaymentRequest)
+[2023-10-17 19:59:45:1444491] ERROR 15643 --- [nio-8080-exec-7] c.k.c.c.s.i.LoggingInterceptor           : - exception : org.springframework.web.client.HttpClientErrorException$BadRequest: 400 Bad Request: "{"msg":"cid can't be null.","code":-2}"
+[2023-10-17 19:59:45:1444491] ERROR 15643 --- [nio-8080-exec-7] c.k.c.c.s.i.LoggingInterceptor           : - Client request payload : {
+    "accountId": "testid1234",
+    "arduinoOrderId": "5f43d62310171936",
+    "paymentType": "KAKAO"
+}
+[2023-10-17 20:06:16:88248] ERROR 16093 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Server error occurred
+[2023-10-17 20:06:16:88249] ERROR 16093 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : - location : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(PaymentRequest)
+[2023-10-17 20:06:16:88249] ERROR 16093 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : - exception : org.springframework.web.client.HttpClientErrorException$BadRequest: 400 Bad Request: "{"msg":"cid can't be null.","code":-2}"
+[2023-10-17 20:06:16:88249] ERROR 16093 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : - Client request payload : {
+    "accountId": "testid1234",
+    "arduinoOrderId": "e490de2310172005",
+    "paymentType": "KAKAO"
+}
+[2023-10-17 20:08:36:227746] ERROR 16093 --- [nio-8080-exec-6] c.k.c.c.s.i.LoggingInterceptor           : Server error occurred
+[2023-10-17 20:08:36:227746] ERROR 16093 --- [nio-8080-exec-6] c.k.c.c.s.i.LoggingInterceptor           : - location : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(PaymentRequest)
+[2023-10-17 20:08:36:227746] ERROR 16093 --- [nio-8080-exec-6] c.k.c.c.s.i.LoggingInterceptor           : - exception : org.springframework.web.client.HttpClientErrorException$BadRequest: 400 Bad Request: "{"msg":"cid can't be null.","code":-2}"
+[2023-10-17 20:08:36:227746] ERROR 16093 --- [nio-8080-exec-6] c.k.c.c.s.i.LoggingInterceptor           : - Client request payload : {
+    "accountId": "testid1234",
+    "arduinoOrderId": "e490de2310172005",
+    "paymentType": "KAKAO"
+}
+[2023-10-17 20:17:46:131758] ERROR 16196 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Server error occurred
+[2023-10-17 20:17:46:131758] ERROR 16196 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : - location : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(PaymentRequest)
+[2023-10-17 20:17:46:131758] ERROR 16196 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : - exception : org.springframework.web.client.HttpClientErrorException$BadRequest: 400 Bad Request: "{"msg":"cid can't be null.","code":-2}"
+[2023-10-17 20:17:46:131758] ERROR 16196 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : - Client request payload : {
+    "accountId": "testid1234",
+    "arduinoOrderId": "77c6662310172017",
+    "paymentType": "KAKAO"
+}

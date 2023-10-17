@@ -19,7 +19,7 @@ public class ApiClientConfig {
         RestTemplate restTemplate = new RestTemplate();
 
         ClientHttpRequestInterceptor httpRequestInterceptor = (request, body, execution) -> {
-            request.getHeaders().add("Authorization", kakaoPayApiKey);
+            request.getHeaders().add("Authorization", "KakaoAK " + kakaoPayApiKey);
             request.getHeaders().add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
             return execution.execute(request, body);
         };

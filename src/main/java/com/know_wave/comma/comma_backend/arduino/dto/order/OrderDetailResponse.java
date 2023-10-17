@@ -12,7 +12,7 @@ public class OrderDetailResponse {
 
     public static OrderDetailResponse of(OrderInfo orderInfo, Map<Arduino, List<ArduinoCategory>> categoryMap) {
         return new OrderDetailResponse(
-                orderInfo.getId(),
+                orderInfo.getAccount().getId(),
                 orderInfo.getDescription(),
                 orderInfo.getCreatedDate(),
                 orderInfo.getStatus().getValue(),

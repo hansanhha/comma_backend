@@ -2,8 +2,7 @@ package com.know_wave.comma.comma_backend.payment.entity;
 
 public enum PaymentType {
 
-    KAKAO_PAY("카카오페이"),
-    TOSS_PAY("토스페이");
+    KAKAO("카카오페이");
 
     private final String paymentName;
 
@@ -15,4 +14,5 @@ public enum PaymentType {
     public String toString() {
         return paymentName;
     }
+
 }

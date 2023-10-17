@@ -9,9 +9,11 @@ import com.know_wave.comma.comma_backend.arduino.entity.*;
 import com.know_wave.comma.comma_backend.arduino.repository.OrderInfoRepository;
 import com.know_wave.comma.comma_backend.arduino.service.normal.ArduinoService;
 import com.know_wave.comma.comma_backend.arduino.service.normal.OrderEmailService;
+import com.know_wave.comma.comma_backend.arduino.service.normal.OrderQueryService;
 import com.know_wave.comma.comma_backend.arduino.service.normal.OrderService;
 import com.know_wave.comma.comma_backend.util.ValidateUtils;
 import com.know_wave.comma.comma_backend.util.annotation.PermissionProtection;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,7 @@ import static java.util.stream.Collectors.toUnmodifiableSet;
 @Service
 @Transactional
 @PermissionProtection
+@RequiredArgsConstructor
 public class OrderAdminService {
 
     private final OrderEmailService orderEmailService;
@@ -33,14 +36,7 @@ public class OrderAdminService {
     private final ArduinoService arduinoService;
     private final AccountQueryService accountQueryService;
     private final OrderInfoRepository orderInfoRepository;
-
-    public OrderAdminService(OrderEmailService orderEmailService, OrderService orderService, ArduinoService arduinoService, AccountQueryService accountQueryService, OrderInfoRepository orderInfoRepository) {
-        this.orderEmailService = orderEmailService;
-        this.orderService = orderService;
-        this.arduinoService = arduinoService;
-        this.accountQueryService = accountQueryService;
-        this.orderInfoRepository = orderInfoRepository;
-    }
+    private final OrderQueryService orderQueryService;
 
     public List<OrderResponse> getOrders(Pageable pageable) {
         List<OrderInfo> orderInfos = orderInfoRepository.findAllOrderByCreateDate(pageable);
@@ -78,7 +74,7 @@ public class OrderAdminService {
     }
 
     public OrderDetailResponse getOrderDetailByOrderNumber(String orderNumber) {
-        OrderInfo orderInfo = orderService.getOrderInfoById(orderNumber);
+        OrderInfo orderInfo = orderQueryService.getOrderInfoById(orderNumber);
 
         List<ArduinoCategory> arduinoCategories = arduinoService.getArduinoCategoreisByArduinos(
                 orderInfo.getOrders().stream().map(Order::getArduino).toList());
@@ -90,7 +86,7 @@ public class OrderAdminService {
 
     public List<OrderResponse> getOrdersByAccountId(String accountId) {
         Account account = accountQueryService.findAccount(accountId);
-        List<OrderInfo> userOrderInfos = orderService.getOrderInfosByAccount(account);
+        List<OrderInfo> userOrderInfos = orderQueryService.getOrderInfosByAccount(account);
 
         return OrderResponse.ofList(userOrderInfos);
     }
@@ -104,7 +100,7 @@ public class OrderAdminService {
     }
 
     public void changeOrderStatus(String orderNumber, OrderStatus changedStatus) {
-        OrderInfo orderInfo = orderService.getOrderInfoById(orderNumber);
+        OrderInfo orderInfo = orderQueryService.getOrderInfoById(orderNumber);
 
         if (orderInfo.getStatus().changeableTo(changedStatus)) {
             orderInfo.setStatus(changedStatus);

@@ -3,20 +3,20 @@ spring:
   profiles:
     active: local
 
-  datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-    driver-class-name: ${DB_DRIVER}
+#  datasource:
+#    url: ${DB_URL}
+#    username: ${DB_USERNAME}
+#    password: ${DB_PASSWORD}
+#    driver-class-name: ${DB_DRIVER}
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         #        show_sql: true
         format_sql: true
-        dialect: org.hibernate.dialect.MySQL8Dialect
+#        dialect: org.hibernate.dialect.MySQL8Dialect
 
   data:
     web:
@@ -48,3 +48,8 @@ kakao:
     key: ${KAKAO_API_KEY}
     customer:
       id: ${KAKAO_CUSTOMER_ID}
+
+payment:
+  amount : 3000
+  tax-free-amount: 3000
+  product-name: 컴마 실습재료 신청 보증금

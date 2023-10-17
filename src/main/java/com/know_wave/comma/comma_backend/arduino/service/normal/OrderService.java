@@ -10,6 +10,7 @@ import com.know_wave.comma.comma_backend.arduino.repository.OrderInfoRepository;
 import com.know_wave.comma.comma_backend.util.GenerateUtils;
 import com.know_wave.comma.comma_backend.util.ValidateUtils;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
@@ -23,23 +24,17 @@ import static com.know_wave.comma.comma_backend.util.message.ExceptionMessageSou
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class OrderService {
 
     private final AccountQueryService accountQueryService;
+    private final OrderQueryService orderQueryService;
     private final OrderEmailService orderEmailService;
     private final ArduinoService arduinoService;
     private final BasketService basketService;
     private final BasketRepository basketRepository;
     private final OrderInfoRepository orderInfoRepository;
 
-    public OrderService(AccountQueryService accountQueryService, OrderEmailService orderEmailService, ArduinoService arduinoService, BasketService basketService, BasketRepository basketRepository, OrderInfoRepository orderInfoRepository) {
-        this.accountQueryService = accountQueryService;
-        this.orderEmailService = orderEmailService;
-        this.arduinoService = arduinoService;
-        this.basketService = basketService;
-        this.basketRepository = basketRepository;
-        this.orderInfoRepository = orderInfoRepository;
-    }
 
     public void order(OrderRequest request) {
 
@@ -70,7 +65,7 @@ public class OrderService {
 
         Account account = accountQueryService.findAccount(getAuthenticatedId());
 
-        OrderInfo orderInfo = getOrderInfoById(orderNumber);
+        OrderInfo orderInfo = orderQueryService.getOrderInfoById(orderNumber);
 
         Arduino arduino = arduinoService.getArduino(request.getArduinoId());
 
@@ -98,7 +93,7 @@ public class OrderService {
 
         final String accountId = getAuthenticatedId();
         Account account = accountQueryService.findAccount(accountId);
-        List<OrderInfo> orderInfos = getOrderInfosByAccount(account);
+        List<OrderInfo> orderInfos = orderQueryService.getOrderInfosByAccount(account);
 
         return OrderResponse.ofList(orderInfos);
     }
@@ -106,7 +101,7 @@ public class OrderService {
     public OrderDetailResponse getOrderDetail(String orderNumber) {
 
         Account account = accountQueryService.findAccount(getAuthenticatedId());
-        OrderInfo orderInfo = getOrderInfoById(orderNumber);
+        OrderInfo orderInfo = orderQueryService.getOrderInfoById(orderNumber);
 
         if (orderInfo.isNotOrderer(account)) {
             throw new BadCredentialsException(BAD_CREDENTIALS);
@@ -145,16 +140,6 @@ public class OrderService {
         );
     }
 
-    public OrderInfo getOrderInfoById(String orderNumber) {
-        return orderInfoRepository.findFetchById(orderNumber)
-                .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_VALUE));
-    }
 
-    public List<OrderInfo> getOrderInfosByAccount(Account account) {
-        List<OrderInfo> orderInfos = orderInfoRepository.findAllByAccount(account);
-
-        ValidateUtils.throwIfEmpty(orderInfos);
-        return orderInfos;
-    }
 
 }
