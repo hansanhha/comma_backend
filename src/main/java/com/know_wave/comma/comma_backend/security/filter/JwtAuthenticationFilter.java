@@ -3,7 +3,7 @@ package com.know_wave.comma.comma_backend.security.filter;
 import com.know_wave.comma.comma_backend.account.dto.TokenDto;
 import com.know_wave.comma.comma_backend.account.entity.token.Token;
 import com.know_wave.comma.comma_backend.account.service.auth.TokenService;
-import com.know_wave.comma.comma_backend.security.service.PermitRequestMatcherService;
+import com.know_wave.comma.comma_backend.security.config.PermitRequestMatcherConfig;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,11 +24,11 @@ import static com.know_wave.comma.comma_backend.util.message.ExceptionMessageSou
 public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
     private final TokenService tokenService;
-    private final PermitRequestMatcherService permitRequestMatcherService;
+    private final PermitRequestMatcherConfig permitRequestMatcherConfig;
 
-    public JwtAuthenticationFilter(TokenService tokenService, PermitRequestMatcherService permitRequestMatcherService) {
+    public JwtAuthenticationFilter(TokenService tokenService, PermitRequestMatcherConfig permitRequestMatcherConfig) {
         this.tokenService = tokenService;
-        this.permitRequestMatcherService = permitRequestMatcherService;
+        this.permitRequestMatcherConfig = permitRequestMatcherConfig;
     }
 
     @Override
@@ -81,6 +81,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return permitRequestMatcherService.isPermitRequest(request);
+        return permitRequestMatcherConfig.isPermitRequest(request);
     }
 }

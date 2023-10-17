@@ -3,6 +3,7 @@ package com.know_wave.comma.comma_backend.payment.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,7 +21,6 @@ public class ApiClientConfig {
 
         ClientHttpRequestInterceptor httpRequestInterceptor = (request, body, execution) -> {
             request.getHeaders().add("Authorization", "KakaoAK " + kakaoPayApiKey);
-            request.getHeaders().add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
             return execution.execute(request, body);
         };
 

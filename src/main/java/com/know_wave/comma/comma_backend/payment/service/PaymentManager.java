@@ -9,6 +9,7 @@ import com.know_wave.comma.comma_backend.payment.entity.Deposit;
 import com.know_wave.comma.comma_backend.payment.entity.DepositStatus;
 import com.know_wave.comma.comma_backend.payment.entity.PaymentStatus;
 import com.know_wave.comma.comma_backend.payment.entity.PaymentType;
+import com.know_wave.comma.comma_backend.util.GenerateUtils;
 import com.know_wave.comma.comma_backend.util.exception.NotFoundException;
 import com.know_wave.comma.comma_backend.util.message.ExceptionMessageSource;
 import lombok.RequiredArgsConstructor;
@@ -33,16 +34,17 @@ public class PaymentManager {
                         new NotFoundException(ExceptionMessageSource.NOT_SUPPORTED_PAYMENT_TYPE));
     }
 
-    public Deposit createEntity(PaymentType paymentType, PaymentAuthRequest request, String transactionId) {
+    public Deposit createEntity(PaymentAuthRequest request, String paymentRequestId, String transactionId) {
         Account account = accountQueryService.findAccount(request.accountId());
         OrderInfo orderInfo = orderQueryService.getOrderInfoById(request.arduinoOrderId());
 
         return new Deposit(account,
                 orderInfo,
+                paymentRequestId,
                 transactionId,
                 DepositStatus.NONE,
                 PaymentStatus.REQUEST,
-                paymentType,
+                request.paymentType(),
                 null,
                 policy.getAmount(),
                 policy.getProductName(),

@@ -10,7 +10,8 @@ public interface DepositRepository extends JpaRepository<Deposit, Long> {
 
     @Query("select d " +
             "from Deposit d " +
-            "where d.account = (select a from Account a where a.id = :accountId) " +
-            "and d.orderInfo = (select o from OrderInfo o where o.orderNumber = :orderId )")
-    Optional<Deposit> findByAccountIdAndOrderId(String accountId, String orderId);
+            "join fetch d.account " +
+            "join fetch d.orderInfo " +
+            "where d.paymentRequestId = :paymentRequestId")
+    Optional<Deposit> findByPaymentRequestId(String paymentRequestId);
 }

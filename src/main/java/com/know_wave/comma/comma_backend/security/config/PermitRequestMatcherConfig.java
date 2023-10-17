@@ -1,8 +1,8 @@
-package com.know_wave.comma.comma_backend.security.service;
+package com.know_wave.comma.comma_backend.security.config;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -13,24 +13,26 @@ import java.util.List;
 import java.util.stream.Stream;
 
 
-@Service
-public class PermitRequestMatcherService {
+@Configuration
+public class PermitRequestMatcherConfig {
 
     private List<RequestMatcher> userPermitRequestMatchers;
     private List<RequestMatcher> adminPermitRequestMatchers;
     private List<RequestMatcher> allPermitRequestMatchers;
     private final HandlerMappingIntrospector handlerIntroceptor;
 
-    public PermitRequestMatcherService(HandlerMappingIntrospector handlerIntroceptor) {
+    public PermitRequestMatcherConfig(HandlerMappingIntrospector handlerIntroceptor) {
         this.handlerIntroceptor = handlerIntroceptor;
     }
 
     @PostConstruct
     private void init() {
         MvcRequestMatcher getArduino = new MvcRequestMatcher(handlerIntroceptor, "/arduino/*");
-        getArduino.setMethod(HttpMethod.GET);
         MvcRequestMatcher getArduinoList = new MvcRequestMatcher(handlerIntroceptor, "/arduinos/**");
+        MvcRequestMatcher getPaymentRedirect = new MvcRequestMatcher(handlerIntroceptor, "/api/v1/payment/**");
+        getArduino.setMethod(HttpMethod.GET);
         getArduinoList.setMethod(HttpMethod.GET);
+        getPaymentRedirect.setMethod(HttpMethod.GET);
 
         userPermitRequestMatchers = List.of(
                 new MvcRequestMatcher(handlerIntroceptor, "/account/signin"),
@@ -38,7 +40,8 @@ public class PermitRequestMatcherService {
                 new MvcRequestMatcher(handlerIntroceptor, "/account/email/r"),
                 new MvcRequestMatcher(handlerIntroceptor, "/account/email/verify"),
                 getArduino,
-                getArduinoList
+                getArduinoList,
+                getPaymentRedirect
         );
 
         adminPermitRequestMatchers = List.of(

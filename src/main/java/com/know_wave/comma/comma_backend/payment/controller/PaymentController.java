@@ -19,14 +19,13 @@ public class PaymentController {
         return paymentGateway.ready(PaymentAuthRequest.of(request));
     }
 
-    @PostMapping("/api/v1/payment/{paymentType}/success/orders/{orderId}/account/{accountId}")
+    @GetMapping("/api/v1/payment/{paymentType}/success/{paymentRequestId}")
     public String approvePayment(
             @PathVariable("paymentType") String paymentType,
-            @PathVariable("orderId") String orderId,
-            @PathVariable("accountId") String accountId,
+            @PathVariable("paymentRequestId") String paymentRequestId,
             @RequestParam("pg_token") String paymentToken) {
 
-        paymentGateway.pay(paymentType, orderId, accountId, paymentToken);
+        paymentGateway.pay(paymentType, paymentRequestId, paymentToken);
 
         return "Paid deposit";
     }

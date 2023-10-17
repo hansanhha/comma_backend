@@ -1,14 +1,19 @@
 package com.know_wave.comma.comma_backend.payment.service;
 
-import com.know_wave.comma.comma_backend.payment.dto.*;
+import com.know_wave.comma.comma_backend.payment.dto.PaymentAuthRequest;
+import com.know_wave.comma.comma_backend.payment.dto.PaymentAuthResult;
 import com.know_wave.comma.comma_backend.payment.dto.kakao.KakaoPayApproveRequest;
 import com.know_wave.comma.comma_backend.payment.dto.kakao.KakaoPayApproveResponse;
 import com.know_wave.comma.comma_backend.payment.dto.kakao.KakaoPayReadyRequest;
 import com.know_wave.comma.comma_backend.payment.dto.kakao.KakaoPayReadyResponse;
 import com.know_wave.comma.comma_backend.payment.entity.Deposit;
 import com.know_wave.comma.comma_backend.payment.entity.PaymentType;
+import com.know_wave.comma.comma_backend.util.GenerateUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -24,8 +29,8 @@ public class KakaoPayService implements PaymentService {
     @Value("${kakao.api.customer.id}")
     private String cid;
 
-    private static final String paymentReadyUri = "https://kapi.kakao.com/v1/payment/ready";
-    private static final String paymentApproveUri = "https://kapi.kakao.com/v1/payment/approve";
+    private static final String paymentReadyUrl = "https://kapi.kakao.com/v1/payment/ready";
+    private static final String paymentApproveUrl = "https://kapi.kakao.com/v1/payment/approve";
 
     public KakaoPayService(@Qualifier("kakaoPayApiClient") RestTemplate kakaoPayApiClient, CommaArduinoDepositPolicy depositPolicy) {
         this.kakaoPayApiClient = kakaoPayApiClient;
@@ -34,25 +39,32 @@ public class KakaoPayService implements PaymentService {
 
     @Override
     public PaymentAuthResult ready(PaymentAuthRequest request) {
-        var kakaoPayReadyRequest = KakaoPayReadyRequest.of(request, cid, depositPolicy);
+        String paymentRequestId = GenerateUtils.generatedCodeWithDate();
 
-        var response = kakaoPayApiClient.postForEntity(
-                paymentReadyUri,
-                kakaoPayReadyRequest.getValue(),
+        var readyRequest = KakaoPayReadyRequest.of(paymentRequestId, request, cid, depositPolicy);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        var kakaoPayReadyResponse = kakaoPayApiClient.postForObject(
+                paymentReadyUrl,
+                new HttpEntity<>(readyRequest.getValue(), httpHeaders),
                 KakaoPayReadyResponse.class);
 
-        return PaymentAuthResult.of(Objects.requireNonNull(response.getBody()));
+        return PaymentAuthResult.of(Objects.requireNonNull(kakaoPayReadyResponse), paymentRequestId);
     }
 
     @Override
     public void pay(Deposit deposit, String paymentToken) {
-        var kakaoPayApproveRequest = KakaoPayApproveRequest.of(cid, deposit, paymentToken);
+        var approveRequest = KakaoPayApproveRequest.of(cid, deposit, paymentToken);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         var response = kakaoPayApiClient.postForEntity(
-                paymentApproveUri,
-                null,
-                KakaoPayApproveResponse.class,
-                kakaoPayApproveRequest.getValue());
+                paymentApproveUrl,
+                new HttpEntity<>(approveRequest.getValue(), httpHeaders),
+                KakaoPayApproveResponse.class);
     }
 
     @Override

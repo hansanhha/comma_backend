@@ -3,7 +3,6 @@ package com.know_wave.comma.comma_backend.security.config;
 import com.know_wave.comma.comma_backend.account.service.auth.LogoutService;
 import com.know_wave.comma.comma_backend.security.filter.JwtAuthenticationFilter;
 import com.know_wave.comma.comma_backend.security.filter.LoggingFilter;
-import com.know_wave.comma.comma_backend.security.service.PermitRequestMatcherService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -27,15 +26,15 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
     private final LogoutService logoutService;
     private final AccessDeniedHandler accessDeniedHandler;
-    private final PermitRequestMatcherService permitRequestMatcherService;
+    private final PermitRequestMatcherConfig permitRequestMatcherConfig;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, LoggingFilter loggingFilter, AuthenticationProvider authenticationProvider, LogoutService logoutService, AccessDeniedHandler accessDeniedHandler, PermitRequestMatcherService permitRequestMatcherService) {
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, LoggingFilter loggingFilter, AuthenticationProvider authenticationProvider, LogoutService logoutService, AccessDeniedHandler accessDeniedHandler, PermitRequestMatcherConfig permitRequestMatcherConfig) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.loggingFilter = loggingFilter;
         this.authenticationProvider = authenticationProvider;
         this.logoutService = logoutService;
         this.accessDeniedHandler = accessDeniedHandler;
-        this.permitRequestMatcherService = permitRequestMatcherService;
+        this.permitRequestMatcherConfig = permitRequestMatcherConfig;
     }
 
     @Bean
@@ -44,10 +43,10 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeHttpRequest ->
                         authorizeHttpRequest
-                                .requestMatchers(permitRequestMatcherService.getAdminPermitRequestMatchers().toArray(new RequestMatcher[0])).permitAll()
+                                .requestMatchers(permitRequestMatcherConfig.getAdminPermitRequestMatchers().toArray(new RequestMatcher[0])).permitAll()
                                 .requestMatchers("/admin/account/*").hasRole(ADMIN.name())
                                 .requestMatchers("/admin/**").hasAnyRole(MANAGER.name(), ADMIN.name())
-                                .requestMatchers(permitRequestMatcherService.getUserPermitRequestMatchers().toArray(new RequestMatcher[0])).permitAll()
+                                .requestMatchers(permitRequestMatcherConfig.getUserPermitRequestMatchers().toArray(new RequestMatcher[0])).permitAll()
                                 .requestMatchers("/**").authenticated()
                 )
                 .sessionManagement(sessionManagement ->
