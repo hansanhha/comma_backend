@@ -11,9 +11,6 @@ import com.know_wave.comma.comma_backend.payment.entity.PaymentType;
 import com.know_wave.comma.comma_backend.util.GenerateUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -38,17 +35,15 @@ public class KakaoPayService implements PaymentService {
     }
 
     @Override
-    public PaymentAuthResult ready(PaymentAuthRequest request) {
+    public PaymentAuthResult ready(String idempotencyKey, PaymentAuthRequest request) {
         String paymentRequestId = GenerateUtils.generatedCodeWithDate();
 
-        var readyRequest = KakaoPayReadyRequest.of(paymentRequestId, request, cid, depositPolicy);
-
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        var readyRequest = KakaoPayReadyRequest.of(idempotencyKey, paymentRequestId, request, cid, depositPolicy);
+        var httpEntity = KakaoPayReadyRequest.toHttpEntity(readyRequest);
 
         var kakaoPayReadyResponse = kakaoPayApiClient.postForObject(
                 paymentReadyUrl,
-                new HttpEntity<>(readyRequest.getValue(), httpHeaders),
+                httpEntity,
                 KakaoPayReadyResponse.class);
 
         return PaymentAuthResult.of(Objects.requireNonNull(kakaoPayReadyResponse), paymentRequestId);
@@ -58,12 +53,11 @@ public class KakaoPayService implements PaymentService {
     public void pay(Deposit deposit, String paymentToken) {
         var approveRequest = KakaoPayApproveRequest.of(cid, deposit, paymentToken);
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        var httpEntity = KakaoPayReadyRequest.toHttpEntity(approveRequest);
 
         var response = kakaoPayApiClient.postForEntity(
                 paymentApproveUrl,
-                new HttpEntity<>(approveRequest.getValue(), httpHeaders),
+                httpEntity,
                 KakaoPayApproveResponse.class);
     }
 

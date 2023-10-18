@@ -20,8 +20,13 @@ public class OrderQueryService {
 
     private final OrderInfoRepository orderInfoRepository;
 
-    public OrderInfo getOrderInfoById(String orderNumber) {
-        return orderInfoRepository.findFetchById(orderNumber)
+    public OrderInfo fetchOrdersArduinoAccount(String orderNumber) {
+        return orderInfoRepository.findFetchOrdersArduinoAccountById(orderNumber)
+                .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_VALUE));
+    }
+
+    public OrderInfo fetchAccount(String orderNumber) {
+        return orderInfoRepository.findFetchAccountById(orderNumber)
                 .orElseThrow(() -> new EntityNotFoundException(NOT_FOUND_VALUE));
     }
 

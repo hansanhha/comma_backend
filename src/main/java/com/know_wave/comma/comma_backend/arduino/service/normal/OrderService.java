@@ -8,7 +8,6 @@ import com.know_wave.comma.comma_backend.arduino.entity.*;
 import com.know_wave.comma.comma_backend.arduino.repository.BasketRepository;
 import com.know_wave.comma.comma_backend.arduino.repository.OrderInfoRepository;
 import com.know_wave.comma.comma_backend.util.GenerateUtils;
-import com.know_wave.comma.comma_backend.util.ValidateUtils;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
@@ -65,7 +64,7 @@ public class OrderService {
 
         Account account = accountQueryService.findAccount(getAuthenticatedId());
 
-        OrderInfo orderInfo = orderQueryService.getOrderInfoById(orderNumber);
+        OrderInfo orderInfo = orderQueryService.fetchOrdersArduinoAccount(orderNumber);
 
         Arduino arduino = arduinoService.getArduino(request.getArduinoId());
 
@@ -101,7 +100,7 @@ public class OrderService {
     public OrderDetailResponse getOrderDetail(String orderNumber) {
 
         Account account = accountQueryService.findAccount(getAuthenticatedId());
-        OrderInfo orderInfo = orderQueryService.getOrderInfoById(orderNumber);
+        OrderInfo orderInfo = orderQueryService.fetchOrdersArduinoAccount(orderNumber);
 
         if (orderInfo.isNotOrderer(account)) {
             throw new BadCredentialsException(BAD_CREDENTIALS);

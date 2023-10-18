@@ -5,8 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public record IdempotentDto(String key, String httpMethod, String apiPath, String payload) {
-
+public record IdempotentDto(String idempotentKey, String httpMethod, String apiPath, String payload) {
 
     public static Idempotent of(IdempotentDto idempotentDto, int responseStatus, Object responseMessage) {
         ObjectMapper mapper = new ObjectMapper();
@@ -18,6 +17,6 @@ public record IdempotentDto(String key, String httpMethod, String apiPath, Strin
             log.error("IdempotentDto error: can't convert responseMessage to json");
         }
 
-        return new Idempotent(idempotentDto.key, idempotentDto.httpMethod, idempotentDto.apiPath, responseStatus, response, idempotentDto.payload);
+        return new Idempotent(idempotentDto.idempotentKey, idempotentDto.httpMethod, idempotentDto.apiPath, responseStatus, response, idempotentDto.payload);
     }
 }

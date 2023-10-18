@@ -16,7 +16,7 @@ public class DepositQueryService {
 
     private final DepositRepository depositRepository;
 
-    public Deposit findByPaymentRequestId(String paymentRequestId) {
+    public Deposit getDeposit(String paymentRequestId) {
         Optional<Deposit> depositOptional = depositRepository.findByPaymentRequestId(paymentRequestId);
 
         ValidateUtils.throwIfEmpty(depositOptional);

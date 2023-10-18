@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.know_wave.comma.comma_backend.util.entity.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import org.springframework.data.domain.Persistable;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Idempotent extends BaseTimeEntity implements Persistable<String> {
+public class Idempotent extends BaseTimeEntity {
 
     public Idempotent(String idempotentKey, String httpMethod, String apiPath, int responseStatus, String responseMessage, String payload) {
         this.idempotentKey = idempotentKey;
@@ -24,9 +25,11 @@ public class Idempotent extends BaseTimeEntity implements Persistable<String> {
         this.responseMessage = responseMessage;
         this.payload = payload;
     }
-
     @Id
-    @Column(name = "idempotentKey_id")
+    @GeneratedValue
+    @Column(name = "idempotent_id")
+    private Long id;
+
     private String idempotentKey;
 
     private String httpMethod;
@@ -41,14 +44,4 @@ public class Idempotent extends BaseTimeEntity implements Persistable<String> {
     @Column(columnDefinition = "TEXT")
     private String payload;
 
-
-    @Override
-    public String getId() {
-        return idempotentKey;
-    }
-
-    @Override
-    public boolean isNew() {
-        return getCreatedDate() == null;
-    }
 }

@@ -23,13 +23,53 @@ public class PaymentController {
         return paymentGateway.ready(idempotentKeyDto, PaymentAuthRequest.of(request));
     }
 
-    @GetMapping("/api/v1/payment/{paymentType}/success/{paymentRequestId}")
+    @GetMapping("/api/v1/payment/{paymentType}/success/{paymentRequestId}/{idempotencyKey}")
     public String approvePayment(
             @PathVariable("paymentType") String paymentType,
             @PathVariable("paymentRequestId") String paymentRequestId,
+            @PathVariable("idempotencyKey") String idempotencyKey,
             @RequestParam("pg_token") String paymentToken) {
 
-        paymentGateway.pay(paymentType, paymentRequestId, paymentToken);
+        var idempotentKeyDto = new IdempotentDto(idempotencyKey,
+                HttpMethod.GET.name(),
+                "/api/v1/payment/{paymentType}/success/{paymentRequestId}/{idempotencyKey}",
+                paymentType + paymentRequestId + idempotencyKey + paymentToken);
+
+        paymentGateway.pay(idempotentKeyDto, paymentType, paymentRequestId, paymentToken);
+
+        return "Paid deposit";
+    }
+
+    @GetMapping("/api/v1/payment/{paymentType}/fail/{paymentRequestId}/{idempotencyKey}")
+    public String failPayment(
+            @PathVariable("paymentType") String paymentType,
+            @PathVariable("paymentRequestId") String paymentRequestId,
+            @PathVariable("idempotencyKey") String idempotencyKey,
+            @RequestParam("pg_token") String paymentToken) {
+
+        var idempotentKeyDto = new IdempotentDto(idempotencyKey,
+                HttpMethod.GET.name(),
+                "/api/v1/payment/{paymentType}/success/{paymentRequestId}/{idempotencyKey}",
+                paymentType + paymentRequestId + idempotencyKey + paymentToken);
+
+        paymentGateway.pay(idempotentKeyDto, paymentType, paymentRequestId, paymentToken);
+
+        return "Paid deposit";
+    }
+
+    @GetMapping("/api/v1/payment/{paymentType}/cancel/{paymentRequestId}/{idempotencyKey}")
+    public String cancelPayment(
+            @PathVariable("paymentType") String paymentType,
+            @PathVariable("paymentRequestId") String paymentRequestId,
+            @PathVariable("idempotencyKey") String idempotencyKey,
+            @RequestParam("pg_token") String paymentToken) {
+
+        var idempotentKeyDto = new IdempotentDto(idempotencyKey,
+                HttpMethod.GET.name(),
+                "/api/v1/payment/{paymentType}/success/{paymentRequestId}/{idempotencyKey}",
+                paymentType + paymentRequestId + idempotencyKey + paymentToken);
+
+        paymentGateway.pay(idempotentKeyDto, paymentType, paymentRequestId, paymentToken);
 
         return "Paid deposit";
     }

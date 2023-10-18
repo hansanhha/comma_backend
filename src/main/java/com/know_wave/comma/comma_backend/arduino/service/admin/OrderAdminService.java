@@ -74,7 +74,7 @@ public class OrderAdminService {
     }
 
     public OrderDetailResponse getOrderDetailByOrderNumber(String orderNumber) {
-        OrderInfo orderInfo = orderQueryService.getOrderInfoById(orderNumber);
+        OrderInfo orderInfo = orderQueryService.fetchOrdersArduinoAccount(orderNumber);
 
         List<ArduinoCategory> arduinoCategories = arduinoService.getArduinoCategoreisByArduinos(
                 orderInfo.getOrders().stream().map(Order::getArduino).toList());
@@ -100,7 +100,7 @@ public class OrderAdminService {
     }
 
     public void changeOrderStatus(String orderNumber, OrderStatus changedStatus) {
-        OrderInfo orderInfo = orderQueryService.getOrderInfoById(orderNumber);
+        OrderInfo orderInfo = orderQueryService.fetchOrdersArduinoAccount(orderNumber);
 
         if (orderInfo.getStatus().changeableTo(changedStatus)) {
             orderInfo.setStatus(changedStatus);

@@ -27,15 +27,17 @@ public class PaymentGateway {
     private final DepositRepository depositRepository;
     private final IdempotentKeyRepository idempotentKeyRepository;
 
-    public static final String successUrl = "http://localhost:8080/api/v1/payment/%s/success/%s";
-    public static final String failUrl = "http://localhost:8080/api/v1/payment/%s/fail/orders/%s";
-    public static final String cancelUrl = "http://localhost:8080/api/v1/payment/%s/cancel/%s";
+    // api/v1/payment/*/*/paymentRequestId/idempotencyKey
+    // paymentRequestId : PG, 간편결제에서 결제 요청(결제 준비) 후 redirect 됐을 때 DB 로우 식별 용도
+    // idempotencyKey : 멱등성 유지를 위한 키 값
+    public static final String successUrl = "http://localhost:8080/api/v1/payment/%s/success/%s/%s";
+    public static final String failUrl = "http://localhost:8080/api/v1/payment/%s/fail/%s/%s";
+    public static final String cancelUrl = "http://localhost:8080/api/v1/payment/%s/cancel/%s/%s";
 
-    @Idempotency
     public PaymentAuthResponse ready(IdempotentDto idempotentDto, PaymentAuthRequest request) {
         var paymentService = paymentManager.getPaymentService(request.paymentType());
 
-        var paymentAuthResult = paymentService.ready(request);
+        var paymentAuthResult = paymentService.ready(idempotentDto.idempotentKey(), request);
 
         var result = new PaymentAuthResponse(paymentAuthResult.redirectMobileWebUrl(), paymentAuthResult.redirectPcWebUrl());
 
@@ -48,14 +50,17 @@ public class PaymentGateway {
         return result;
     }
 
-    public void pay(String type, String paymentRequestId, String paymentToken) {
+    public void pay(IdempotentDto idempotentDto, String type, String paymentRequestId, String paymentToken) {
         PaymentType paymentType = PaymentType.valueOf(type.toUpperCase());
 
         var paymentService = paymentManager.getPaymentService(paymentType);
 
-        Deposit deposit = depositQueryService.findByPaymentRequestId(paymentRequestId);
+        Deposit deposit = depositQueryService.getDeposit(paymentRequestId);
+        Idempotent idempotent = IdempotentDto.of(idempotentDto, HttpStatus.OK.value(), "already paid deposit");
 
         paymentService.pay(deposit, paymentToken);
+
+        idempotentKeyRepository.save(idempotent);
 
         deposit.setPaymentStatus(PaymentStatus.APPROVE);
         deposit.setDepositStatus(DepositStatus.PAID);

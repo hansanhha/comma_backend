@@ -35,7 +35,13 @@ public interface OrderInfoRepository extends JpaRepository<OrderInfo, String> {
             "join fetch oi.account " +
             "join fetch oo.arduino " +
             "where oi.orderNumber = :orderNumber")
-    Optional<OrderInfo> findFetchById(String orderNumber);
+    Optional<OrderInfo> findFetchOrdersArduinoAccountById(String orderNumber);
+
+    @Query("select oi " +
+            "from OrderInfo oi " +
+            "join fetch oi.account " +
+            "where oi.orderNumber = :orderNumber")
+    Optional<OrderInfo> findFetchAccountById(String orderNumber);
 
     @Query("select oi " +
             "from OrderInfo oi " +

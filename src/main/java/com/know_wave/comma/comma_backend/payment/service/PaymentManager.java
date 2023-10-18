@@ -34,10 +34,9 @@ public class PaymentManager {
     }
 
     public Deposit createEntity(PaymentAuthRequest request, String paymentRequestId, String transactionId) {
-        Account account = accountQueryService.findAccount(request.accountId());
-        OrderInfo orderInfo = orderQueryService.getOrderInfoById(request.arduinoOrderId());
+        OrderInfo orderInfo = orderQueryService.fetchAccount(request.arduinoOrderId());
 
-        return new Deposit(account,
+        return new Deposit(orderInfo.getAccount(),
                 orderInfo,
                 paymentRequestId,
                 transactionId,

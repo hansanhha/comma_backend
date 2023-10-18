@@ -7,13 +7,13 @@ import com.know_wave.comma.comma_backend.payment.entity.PaymentType;
 
 public interface PaymentService {
 
-    PaymentAuthResult ready(PaymentAuthRequest t);
+    PaymentAuthResult ready(String idempotencyKey, PaymentAuthRequest request);
 
     void pay(Deposit deposit, String paymentToken);
 
-    void refund(PaymentAuthRequest t);
+    void refund(PaymentAuthRequest request);
 
-    void cancel(PaymentAuthRequest t);
+    void cancel(PaymentAuthRequest request);
 
     boolean supports(PaymentType type);
 }
