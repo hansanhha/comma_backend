@@ -1,4 +1,4 @@
-package com.know_wave.comma.comma_backend.util.exception;
+package com.know_wave.comma.comma_backend.common.exception;
 
 public class EmailVerifiedException extends RuntimeException{
 

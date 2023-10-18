@@ -1,11 +1,12 @@
 package com.know_wave.comma.comma_backend.web.advice;
 
-import com.know_wave.comma.comma_backend.util.exception.NotFoundEmailException;
-import com.know_wave.comma.comma_backend.util.exception.EmailVerifiedException;
+import com.know_wave.comma.comma_backend.common.exception.EmailVerifiedException;
+import com.know_wave.comma.comma_backend.common.exception.NotFoundEmailException;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceException;
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -62,7 +63,7 @@ public class EntityExceptionAdvice {
 
         List<String> messageTemplateList = ex.getConstraintViolations()
                 .stream()
-                .map(constraintViolation -> constraintViolation.getMessageTemplate())
+                .map(ConstraintViolation::getMessageTemplate)
                 .toList();
 
         String message = messageTemplateList

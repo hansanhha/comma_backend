@@ -12,7 +12,7 @@ import com.know_wave.comma.comma_backend.arduino.service.normal.OrderEmailServic
 import com.know_wave.comma.comma_backend.arduino.service.normal.OrderQueryService;
 import com.know_wave.comma.comma_backend.arduino.service.normal.OrderService;
 import com.know_wave.comma.comma_backend.util.ValidateUtils;
-import com.know_wave.comma.comma_backend.util.annotation.PermissionProtection;
+import com.know_wave.comma.comma_backend.security.annotation.PermissionProtection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

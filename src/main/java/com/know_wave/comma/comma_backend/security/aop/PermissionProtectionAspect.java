@@ -1,4 +1,4 @@
-package com.know_wave.comma.comma_backend.util.aop;
+package com.know_wave.comma.comma_backend.security.aop;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -14,7 +14,7 @@ import static com.know_wave.comma.comma_backend.util.message.ExceptionMessageSou
 @Component
 public class PermissionProtectionAspect {
 
-    @Before("@annotation(com.know_wave.comma.comma_backend.util.annotation.PermissionProtection)")
+    @Before("@annotation(com.know_wave.comma.comma_backend.security.annotation.PermissionProtection)")
     public void checkPermission() throws AccessDeniedException {
         if (!requestHasPermission()) {
             throw new AccessDeniedException(PERMISSION_DENIED);
