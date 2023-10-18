@@ -31,4 +31,6 @@ public class ExceptionMessageSource {
     public static final String NOT_ACCEPTABLE_REQUEST = "Not acceptable request";
     public static final String INVALID_VALUE = "Invalid value";
     public static final String NOT_SUPPORTED_PAYMENT_TYPE = "Not supported payment type";
+    public static final String ALREADY_PAID = "Already paid";
+    public static final String ALREADY_REFUNDED = "Already refunded";
 }

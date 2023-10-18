@@ -6,6 +6,8 @@ import com.know_wave.comma.comma_backend.common.idempotency.IdempotentDto;
 import com.know_wave.comma.comma_backend.common.idempotency.IdempotentKeyRepository;
 import com.know_wave.comma.comma_backend.payment.dto.PaymentAuthRequest;
 import com.know_wave.comma.comma_backend.payment.dto.PaymentAuthResponse;
+import com.know_wave.comma.comma_backend.payment.dto.PaymentRefundRequest;
+import com.know_wave.comma.comma_backend.payment.dto.PaymentRefundResult;
 import com.know_wave.comma.comma_backend.payment.entity.Deposit;
 import com.know_wave.comma.comma_backend.payment.entity.DepositStatus;
 import com.know_wave.comma.comma_backend.payment.entity.PaymentStatus;
@@ -35,6 +37,8 @@ public class PaymentGateway {
     public static final String cancelUrl = "http://localhost:8080/api/v1/payment/%s/cancel/%s/%s";
 
     public PaymentAuthResponse ready(IdempotentDto idempotentDto, PaymentAuthRequest request) {
+        paymentManager.checkAlreadyPaid(request.arduinoOrderId());
+
         var paymentService = paymentManager.getPaymentService(request.paymentType());
 
         var paymentAuthResult = paymentService.ready(idempotentDto.idempotentKey(), request);
@@ -55,7 +59,7 @@ public class PaymentGateway {
 
         var paymentService = paymentManager.getPaymentService(paymentType);
 
-        Deposit deposit = depositQueryService.getDeposit(paymentRequestId);
+        Deposit deposit = depositQueryService.getDepositByRequestId(paymentRequestId);
         Idempotent idempotent = IdempotentDto.of(idempotentDto, HttpStatus.OK.value(), "already paid deposit");
 
         paymentService.pay(deposit, paymentToken);
@@ -66,16 +70,40 @@ public class PaymentGateway {
         deposit.setDepositStatus(DepositStatus.PAID);
     }
 
-    public void refund(PaymentAuthRequest request, PaymentType type) {
-        var paymentService = paymentManager.getPaymentService(type);
+    public void refund(IdempotentDto idempotentDto, PaymentRefundRequest request) {
+        var paymentService = paymentManager.getPaymentService(request.getPaymentType());
 
-        paymentService.refund(request);
+        Deposit deposit = depositQueryService.getDepositById(request.getPaymentId());
+        Idempotent idempotent = IdempotentDto.of(idempotentDto, HttpStatus.OK.value(), "already refund deposit");
+
+        paymentManager.checkAlreadyRefund(deposit);
+        PaymentRefundResult refund = paymentService.refund(deposit);
+
+        idempotentKeyRepository.save(idempotent);
+        deposit.setDepositStatus(DepositStatus.REFUND);
+        deposit.setRefundedDate(refund.refundedDate());
     }
 
     public void cancel(PaymentAuthRequest request, PaymentType type) {
         var paymentService = paymentManager.getPaymentService(type);
 
-        paymentService.cancel(request);
+//        paymentService.cancel(request);
+    }
+
+    public void cancelProcess(IdempotentDto idempotentDto, String type, String paymentRequestId) {
+        Deposit deposit = depositQueryService.getDepositByRequestId(paymentRequestId);
+        Idempotent idempotent = IdempotentDto.of(idempotentDto, HttpStatus.OK.value(), "already canceled payment process");
+
+        deposit.setPaymentStatus(PaymentStatus.CANCEL_PROCESS);
+        idempotentKeyRepository.save(idempotent);
+    }
+
+    public void failProcess(IdempotentDto idempotentDto, String type, String paymentRequestId) {
+        Deposit deposit = depositQueryService.getDepositByRequestId(paymentRequestId);
+        Idempotent idempotent = IdempotentDto.of(idempotentDto, HttpStatus.OK.value(), "already failed payment process");
+
+        deposit.setPaymentStatus(PaymentStatus.FAIL_PROCESS);
+        idempotentKeyRepository.save(idempotent);
     }
 
 }

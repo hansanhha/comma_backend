@@ -38,7 +38,7 @@ public class Deposit extends BaseTimeEntity {
     private Account account;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "payment_id")
+    @JoinColumn(name = "order_info_id")
     private OrderInfo orderInfo;
 
     private String paymentRequestId;
@@ -60,6 +60,8 @@ public class Deposit extends BaseTimeEntity {
 
     private String itemName;
 
+    private LocalDateTime refundedDate;
+
     private boolean paymentTermsAgreement;
 
     private boolean personalInfoTermsAgreement;
@@ -70,5 +72,9 @@ public class Deposit extends BaseTimeEntity {
 
     public void setPaymentStatus(PaymentStatus paymentStatus) {
         this.paymentStatus = paymentStatus;
+    }
+
+    public void setRefundedDate(LocalDateTime refundedDate) {
+        this.refundedDate = refundedDate;
     }
 }

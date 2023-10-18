@@ -18,20 +18,6 @@ public class KakaoPayReadyRequest {
 
     private final MultiValueMap<String, Object> value = new LinkedMultiValueMap<>();
 
-    public static HttpEntity<MultiValueMap<String, Object>> toHttpEntity(KakaoPayReadyRequest request) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-        return new HttpEntity<>(request.getValue(), httpHeaders);
-    }
-
-    public static HttpEntity<MultiValueMap<String, Object>> toHttpEntity(KakaoPayApproveRequest request) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
-        return new HttpEntity<>(request.getValue(), httpHeaders);
-    }
-
     public static KakaoPayReadyRequest of(String idempotencyKey, String paymentRequestId, PaymentAuthRequest request, String cid, CommaArduinoDepositPolicy depositPolicy) {
         return new KakaoPayReadyRequest(
                 idempotencyKey,

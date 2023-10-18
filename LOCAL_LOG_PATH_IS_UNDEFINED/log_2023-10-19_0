@@ -1,0 +1,1456 @@
+[2023-10-19 00:05:27:1081] INFO  20389 --- [           main] c.k.c.c.CommaBackendApplication          : Starting CommaBackendApplication using Java 17.0.7 with PID 20389 (/Users/hansanhha/Workspace/project/comma_backend/build/classes/java/main started by hansanhha in /Users/hansanhha/Workspace/project/comma_backend)
+[2023-10-19 00:05:27:1082] INFO  20389 --- [           main] c.k.c.c.CommaBackendApplication          : The following 1 profile is active: "local"
+[2023-10-19 00:05:34:7852] INFO  20389 --- [           main] c.k.c.c.CommaBackendApplication          : Started CommaBackendApplication in 7.488 seconds (process running for 8.254)
+[2023-10-19 00:07:19:112191] INFO  20389 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 00:07:19:112192] INFO  20389 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /account/signin content-type : application/json
+[2023-10-19 00:07:19:112878] INFO  20389 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
+    "accountId": "testid1234",
+    "password": "testtest1234"
+}
+[2023-10-19 00:07:19:112880] INFO  20389 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: Completed authentication
+[2023-10-19 00:07:24:117870] INFO  20389 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 00:07:24:117871] INFO  20389 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /account/signin content-type : application/json
+[2023-10-19 00:07:24:118178] INFO  20389 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
+    "accountId": "admintest",
+    "password": "admintestpassword"
+}
+[2023-10-19 00:07:24:118178] INFO  20389 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: Completed authentication
+[2023-10-19 00:07:34:127675] INFO  20389 --- [nio-8080-exec-4] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 00:07:34:127676] INFO  20389 --- [nio-8080-exec-4] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /admin/arduinos/category content-type : application/json
+[2023-10-19 00:07:34:127974] INFO  20389 --- [nio-8080-exec-4] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : admintest
+[2023-10-19 00:07:34:127975] INFO  20389 --- [nio-8080-exec-4] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.arduino.controller.admin.ArduinoAdminController#addCategory(CategoryNameDto)
+[2023-10-19 00:07:34:128090] INFO  20389 --- [nio-8080-exec-4] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
+    "categoryName" : "모듈"
+}
+[2023-10-19 00:07:34:128091] INFO  20389 --- [nio-8080-exec-4] c.k.c.c.s.filter.LoggingFilter           : Server response : 201 payload: Created category
+[2023-10-19 00:07:37:130623] INFO  20389 --- [nio-8080-exec-5] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 00:07:37:130623] INFO  20389 --- [nio-8080-exec-5] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /admin/arduinos/category content-type : application/json
+[2023-10-19 00:07:37:131015] INFO  20389 --- [nio-8080-exec-5] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : admintest
+[2023-10-19 00:07:37:131015] INFO  20389 --- [nio-8080-exec-5] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.arduino.controller.admin.ArduinoAdminController#addCategory(CategoryNameDto)
+[2023-10-19 00:07:37:131175] INFO  20389 --- [nio-8080-exec-5] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
+    "categoryName" : "센서"
+}
+[2023-10-19 00:07:37:131176] INFO  20389 --- [nio-8080-exec-5] c.k.c.c.s.filter.LoggingFilter           : Server response : 201 payload: Created category
+[2023-10-19 00:07:39:132620] INFO  20389 --- [nio-8080-exec-6] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 00:07:39:132621] INFO  20389 --- [nio-8080-exec-6] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /admin/arduinos/category content-type : application/json
+[2023-10-19 00:07:39:132888] INFO  20389 --- [nio-8080-exec-6] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : admintest
+[2023-10-19 00:07:39:132888] INFO  20389 --- [nio-8080-exec-6] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.arduino.controller.admin.ArduinoAdminController#addCategory(CategoryNameDto)
+[2023-10-19 00:07:39:132949] INFO  20389 --- [nio-8080-exec-6] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
+    "categoryName" : "조명"
+}
+[2023-10-19 00:07:39:132950] INFO  20389 --- [nio-8080-exec-6] c.k.c.c.s.filter.LoggingFilter           : Server response : 201 payload: Created category
+[2023-10-19 00:07:44:137606] INFO  20389 --- [nio-8080-exec-7] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 00:07:44:137606] INFO  20389 --- [nio-8080-exec-7] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /admin/arduinos content-type : application/json
+[2023-10-19 00:07:44:137879] INFO  20389 --- [nio-8080-exec-7] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : admintest
+[2023-10-19 00:07:44:137880] INFO  20389 --- [nio-8080-exec-7] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.arduino.controller.admin.ArduinoAdminController#addArduinoList(ArduinoCreateFormList)
+[2023-10-19 00:07:52:145195] INFO  20389 --- [nio-8080-exec-7] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
+	"arduinoCreateForms": [
+		{
+			"arduinoName": "test arduino1",
+			"count": 100,
+			"description": "test arudino1 description",
+			"categories": [
+				{
+					"categoryId": 3
+				},
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino2",
+			"count": 200,
+			"description": "test arudino2 description",
+			"categories": [
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino3",
+			"count": 300,
+			"description": "test arudino3 description",
+			"categories": [
+				{
+					"categoryId": 3
+				},
+				{
+					"categoryId": 1
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino4",
+			"count": 400,
+			"description": "test arudino4 description",
+			"categories": [
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino5",
+			"count": 500,
+			"description": "test arudino5 description",
+			"categories": [
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino6",
+			"count": 600,
+			"description": "test arudino6 description",
+			"categories": [
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino7",
+			"count": 700,
+			"description": "test arudino7 description",
+			"categories": [
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino8",
+			"count": 800,
+			"description": "test arudino8 description",
+			"categories": [
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino9",
+			"count": 900,
+			"description": "test arudino9 description",
+			"categories": [
+				{
+					"categoryId": 1
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino10",
+			"count": 100,
+			"description": "test arudino10 description",
+			"categories": [
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 1
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino11",
+			"count": 110,
+			"description": "test arudino11 description",
+			"categories": [
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino12",
+			"count": 120,
+			"description": "test arudino12 description",
+			"categories": [
+				{
+					"categoryId": 3
+				},
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino13",
+			"count": 130,
+			"description": "test arudino13 description",
+			"categories": [
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino14",
+			"count": 140,
+			"description": "test arudino14 description",
+			"categories": [
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino15",
+			"count": 150,
+			"description": "test arudino15 description",
+			"categories": [
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino16",
+			"count": 160,
+			"description": "test arudino16 description",
+			"categories": [
+				{
+					"categoryId": 1
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino17",
+			"count": 170,
+			"description": "test arudino17 description",
+			"categories": [
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino18",
+			"count": 180,
+			"description": "test arudino18 description",
+			"categories": [
+				{
+					"categoryId": 3
+				},
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino19",
+			"count": 190,
+			"description": "test arudino19 description",
+			"categories": [
+				{
+					"categoryId": 3
+				},
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino20",
+			"count": 200,
+			"description": "test arudino20 description",
+			"categories": [
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino21",
+			"count": 210,
+			"description": "test arudino21 description",
+			"categories": [
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino22",
+			"count": 220,
+			"description": "test arudino22 description",
+			"categories": [
+				{
+					"categoryId": 3
+				},
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino23",
+			"count": 230,
+			"description": "test arudino23 description",
+			"categories": [
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino24",
+			"count": 240,
+			"description": "test arudino24 description",
+			"categories": [
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 3
+				},
+				{
+					"categoryId": 1
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino25",
+			"count": 250,
+			"description": "test arudino25 description",
+			"categories": [
+				{
+					"categoryId": 1
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino26",
+			"count": 260,
+			"description": "test arudino26 description",
+			"categories": [
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 1
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino27",
+			"count": 270,
+			"description": "test arudino27 description",
+			"categories": [
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino28",
+			"count": 280,
+			"description": "test arudino28 description",
+			"categories": [
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino29",
+			"count": 290,
+			"description": "test arudino29 description",
+			"categories": [
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino30",
+			"count": 300,
+			"description": "test arudino30 description",
+			"categories": [
+				{
+					"categoryId": 3
+				},
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 1
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino31",
+			"count": 310,
+			"description": "test arudino31 description",
+			"categories": [
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino32",
+			"count": 320,
+			"description": "test arudino32 description",
+			"categories": [
+				{
+					"categoryId": 3
+				},
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino33",
+			"count": 330,
+			"description": "test arudino33 description",
+			"categories": [
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino34",
+			"count": 340,
+			"description": "test arudino34 description",
+			"categories": [
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino35",
+			"count": 350,
+			"description": "test arudino35 description",
+			"categories": [
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino36",
+			"count": 360,
+			"description": "test arudino36 description",
+			"categories": [
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino37",
+			"count": 370,
+			"description": "test arudino37 description",
+			"categories": [
+				{
+					"categoryId": 3
+				},
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino38",
+			"count": 380,
+			"description": "test arudino38 description",
+			"categories": [
+				{
+					"categoryId": 1
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino39",
+			"count": 390,
+			"description": "test arudino39 description",
+			"categories": [
+				{
+					"categoryId": 3
+				},
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 1
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino40",
+			"count": 400,
+			"description": "test arudino40 description",
+			"categories": [
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 1
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino41",
+			"count": 410,
+			"description": "test arudino41 description",
+			"categories": [
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino42",
+			"count": 420,
+			"description": "test arudino42 description",
+			"categories": [
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino43",
+			"count": 430,
+			"description": "test arudino43 description",
+			"categories": [
+				{
+					"categoryId": 3
+				},
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino44",
+			"count": 440,
+			"description": "test arudino44 description",
+			"categories": [
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino45",
+			"count": 450,
+			"description": "test arudino45 description",
+			"categories": [
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino46",
+			"count": 460,
+			"description": "test arudino46 description",
+			"categories": [
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino47",
+			"count": 470,
+			"description": "test arudino47 description",
+			"categories": [
+				{
+					"categoryId": 1
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino48",
+			"count": 480,
+			"description": "test arudino48 description",
+			"categories": [
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 1
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino49",
+			"count": 490,
+			"description": "test arudino49 description",
+			"categories": [
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino50",
+			"count": 500,
+			"description": "test arudino50 description",
+			"categories": [
+				{
+					"categoryId": 3
+				},
+				{
+					"categoryId": 1
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino51",
+			"count": 510,
+			"description": "test arudino51 description",
+			"categories": [
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino52",
+			"count": 520,
+			"description": "test arudino52 description",
+			"categories": [
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 1
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino53",
+			"count": 530,
+			"description": "test arudino53 description",
+			"categories": [
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino54",
+			"count": 540,
+			"description": "test arudino54 description",
+			"categories": [
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 1
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino55",
+			"count": 550,
+			"description": "test arudino55 description",
+			"categories": [
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino56",
+			"count": 560,
+			"description": "test arudino56 description",
+			"categories": [
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino57",
+			"count": 570,
+			"description": "test arudino57 description",
+			"categories": [
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino58",
+			"count": 580,
+			"description": "test arudino58 description",
+			"categories": [
+				{
+					"categoryId": 3
+				},
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 1
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino59",
+			"count": 590,
+			"description": "test arudino59 description",
+			"categories": [
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 1
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino60",
+			"count": 600,
+			"description": "test arudino60 description",
+			"categories": [
+				{
+					"categoryId": 3
+				},
+				{
+					"categoryId": 3
+				},
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino61",
+			"count": 610,
+			"description": "test arudino61 description",
+			"categories": [
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino62",
+			"count": 620,
+			"description": "test arudino62 description",
+			"categories": [
+				{
+					"categoryId": 1
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino63",
+			"count": 630,
+			"description": "test arudino63 description",
+			"categories": [
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino64",
+			"count": 640,
+			"description": "test arudino64 description",
+			"categories": [
+				{
+					"categoryId": 3
+				},
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino65",
+			"count": 650,
+			"description": "test arudino65 description",
+			"categories": [
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino66",
+			"count": 660,
+			"description": "test arudino66 description",
+			"categories": [
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino67",
+			"count": 670,
+			"description": "test arudino67 description",
+			"categories": [
+				{
+					"categoryId": 3
+				},
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino68",
+			"count": 680,
+			"description": "test arudino68 description",
+			"categories": [
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 1
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino69",
+			"count": 690,
+			"description": "test arudino69 description",
+			"categories": [
+				{
+					"categoryId": 1
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino70",
+			"count": 700,
+			"description": "test arudino70 description",
+			"categories": [
+				{
+					"categoryId": 1
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino71",
+			"count": 710,
+			"description": "test arudino71 description",
+			"categories": [
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino72",
+			"count": 720,
+			"description": "test arudino72 description",
+			"categories": [
+				{
+					"categoryId": 3
+				},
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino73",
+			"count": 730,
+			"description": "test arudino73 description",
+			"categories": [
+				{
+					"categoryId": 3
+				},
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino74",
+			"count": 740,
+			"description": "test arudino74 description",
+			"categories": [
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino75",
+			"count": 750,
+			"description": "test arudino75 description",
+			"categories": [
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 3
+				},
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino76",
+			"count": 760,
+			"description": "test arudino76 description",
+			"categories": [
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino77",
+			"count": 770,
+			"description": "test arudino77 description",
+			"categories": [
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino78",
+			"count": 780,
+			"description": "test arudino78 description",
+			"categories": [
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino79",
+			"count": 790,
+			"description": "test arudino79 description",
+			"categories": [
+				{
+					"categoryId": 3
+				},
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino80",
+			"count": 800,
+			"description": "test arudino80 description",
+			"categories": [
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino81",
+			"count": 810,
+			"description": "test arudino81 description",
+			"categories": [
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 1
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino82",
+			"count": 820,
+			"description": "test arudino82 description",
+			"categories": [
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino83",
+			"count": 830,
+			"description": "test arudino83 description",
+			"categories": [
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino84",
+			"count": 840,
+			"description": "test arudino84 description",
+			"categories": [
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino85",
+			"count": 850,
+			"description": "test arudino85 description",
+			"categories": [
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino86",
+			"count": 860,
+			"description": "test arudino86 description",
+			"categories": [
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino87",
+			"count": 870,
+			"description": "test arudino87 description",
+			"categories": [
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino88",
+			"count": 880,
+			"description": "test arudino88 description",
+			"categories": [
+				{
+					"categoryId": 3
+				},
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino89",
+			"count": 890,
+			"description": "test arudino89 description",
+			"categories": [
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino90",
+			"count": 900,
+			"description": "test arudino90 description",
+			"categories": [
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino91",
+			"count": 910,
+			"description": "test arudino91 description",
+			"categories": [
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 1
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino92",
+			"count": 920,
+			"description": "test arudino92 description",
+			"categories": [
+				{
+					"categoryId": 3
+				},
+				{
+					"categoryId": 1
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino93",
+			"count": 930,
+			"description": "test arudino93 description",
+			"categories": [
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 1
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino94",
+			"count": 940,
+			"description": "test arudino94 description",
+			"categories": [
+				{
+					"categoryId": 3
+				},
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino95",
+			"count": 950,
+			"description": "test arudino95 description",
+			"categories": [
+				{
+					"categoryId": 3
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino96",
+			"count": 960,
+			"description": "test arudino96 description",
+			"categories": [
+				{
+					"categoryId": 1
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino97",
+			"count": 970,
+			"description": "test arudino97 description",
+			"categories": [
+				{
+					"categoryId": 3
+				},
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 1
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino98",
+			"count": 980,
+			"description": "test arudino98 description",
+			"categories": [
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 1
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino99",
+			"count": 990,
+			"description": "test arudino99 description",
+			"categories": [
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 2
+				},
+				{
+					"categoryId": 2
+				}
+			]
+		},
+		{
+			"arduinoName": "test arduino100",
+			"count": 100,
+			"description": "test arudino100 description",
+			"categories": [
+				{
+					"categoryId": 3
+				},
+				{
+					"categoryId": 1
+				},
+				{
+					"categoryId": 2
+				}
+			]
+		}
+	]
+}
+[2023-10-19 00:07:52:145197] INFO  20389 --- [nio-8080-exec-7] c.k.c.c.s.filter.LoggingFilter           : Server response : 201 payload: Created arduino list
+[2023-10-19 00:08:23:176767] INFO  20389 --- [nio-8080-exec-8] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 00:08:23:176768] INFO  20389 --- [nio-8080-exec-8] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /basket/arduino content-type : application/json
+[2023-10-19 00:08:23:177085] INFO  20389 --- [nio-8080-exec-8] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
+[2023-10-19 00:08:23:177086] INFO  20389 --- [nio-8080-exec-8] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.arduino.controller.normal.BasketController#addArduinoToBasket(BasketRequest)
+[2023-10-19 00:08:24:177280] INFO  20389 --- [nio-8080-exec-8] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
+    "arduinoId": 4,
+    "containedCount" : 5
+}
+[2023-10-19 00:08:24:177280] INFO  20389 --- [nio-8080-exec-8] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: Added arduino to basket
+[2023-10-19 00:08:26:179195] INFO  20389 --- [nio-8080-exec-9] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 00:08:26:179195] INFO  20389 --- [nio-8080-exec-9] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /basket/arduino content-type : application/json
+[2023-10-19 00:08:26:179466] INFO  20389 --- [nio-8080-exec-9] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
+[2023-10-19 00:08:26:179466] INFO  20389 --- [nio-8080-exec-9] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.arduino.controller.normal.BasketController#addArduinoToBasket(BasketRequest)
+[2023-10-19 00:08:26:179607] INFO  20389 --- [nio-8080-exec-9] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
+    "arduinoId": 1,
+    "containedCount" : 5
+}
+[2023-10-19 00:08:26:179608] INFO  20389 --- [nio-8080-exec-9] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: Added arduino to basket
+[2023-10-19 00:08:31:184408] INFO  20389 --- [io-8080-exec-10] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 00:08:31:184408] INFO  20389 --- [io-8080-exec-10] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /order/arduino content-type : application/json
+[2023-10-19 00:08:31:184657] INFO  20389 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
+[2023-10-19 00:08:31:184657] INFO  20389 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.arduino.controller.normal.OrderController#order(OrderRequest)
+[2023-10-19 00:08:36:189824] INFO  20389 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
+    "subject" : "SENIER_PROJECT",
+    "description" : "테스트 주문 2"
+}
+[2023-10-19 00:08:36:189825] INFO  20389 --- [io-8080-exec-10] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: Ordered
+[2023-10-19 00:08:46:200148] INFO  20389 --- [nio-8080-exec-1] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 00:08:46:200149] INFO  20389 --- [nio-8080-exec-1] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /api/v1/payment/ready content-type : application/json
+[2023-10-19 00:08:47:200407] INFO  20389 --- [nio-8080-exec-1] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
+[2023-10-19 00:08:47:200408] INFO  20389 --- [nio-8080-exec-1] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(String, PaymentRequest)
+[2023-10-19 00:08:47:200800] INFO  20389 --- [nio-8080-exec-1] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
+    "accountId": "testid1234",
+    "arduinoOrderId": "56900b2310182238",
+    "paymentType": "KAKAO"
+}
+[2023-10-19 00:08:47:200801] INFO  20389 --- [nio-8080-exec-1] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: {"redirectMobileWebUrl":"https://online-pay.kakao.com/mockup/v1/78fe057e1c1b24bc8dd32076c5a392466f12a06a69b64bc8cb2b365af318cb81/mInfo","redirectPcWebUrl":"https://online-pay.kakao.com/mockup/v1/78fe057e1c1b24bc8dd32076c5a392466f12a06a69b64bc8cb2b365af318cb81/info"}
+[2023-10-19 00:09:19:232313] INFO  20389 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 00:09:19:232313] INFO  20389 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] /api/v1/payment/kakao/success/8da9612310190008/a12sdfkjhafsdhjkre1qwui321iy3213udc321xab321cnsdfah3421626438fqghjfdsaa323d321fad?pg_token=e80c6394c0b8694e3bcd content-type : null
+[2023-10-19 00:09:19:232679] INFO  20389 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Client payload = empty
+[2023-10-19 00:09:19:232679] INFO  20389 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: Paid deposit
+[2023-10-19 00:09:19:232731] INFO  20389 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 00:09:19:232731] INFO  20389 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] /favicon.ico content-type : null
+[2023-10-19 00:09:19:232768] INFO  20389 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Server response : 401 payload: Invalid token
+[2023-10-19 00:10:54:327532] INFO  20389 --- [nio-8080-exec-7] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 00:10:54:327534] INFO  20389 --- [nio-8080-exec-7] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /api/v1/payment/%08refund content-type : application/json
+[2023-10-19 00:10:54:327815] INFO  20389 --- [nio-8080-exec-7] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
+[2023-10-19 00:10:54:327815] INFO  20389 --- [nio-8080-exec-7] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : ResourceHttpRequestHandler [classpath [META-INF/resources/], classpath [resources/], classpath [static/], classpath [public/], ServletContext [/]]
+[2023-10-19 00:10:54:327819] INFO  20389 --- [nio-8080-exec-7] c.k.c.c.s.i.LoggingInterceptor           : Client payload = empty
+[2023-10-19 00:10:54:327820] INFO  20389 --- [nio-8080-exec-7] c.k.c.c.s.filter.LoggingFilter           : Server response : 404 payload: empty
+[2023-10-19 00:12:37:430566] INFO  20389 --- [nio-8080-exec-1] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 00:12:37:430567] INFO  20389 --- [nio-8080-exec-1] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /api/v1/payment/refund content-type : application/json
+[2023-10-19 00:12:37:430836] INFO  20389 --- [nio-8080-exec-1] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
+[2023-10-19 00:12:37:430836] INFO  20389 --- [nio-8080-exec-1] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.payment.controller.PaymentController#refundPayment(String, PaymentRefundRequest)
+[2023-10-19 00:12:37:431055] INFO  20389 --- [nio-8080-exec-1] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
+    "paymentId" : 1,
+    "paymentType" : "KAKAO"
+}
+[2023-10-19 00:12:37:431056] INFO  20389 --- [nio-8080-exec-1] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: Refunded deposit
+[2023-10-19 00:12:57:450578] INFO  20389 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 00:12:57:450578] INFO  20389 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /api/v1/payment/refund content-type : application/json
+[2023-10-19 00:12:57:450828] INFO  20389 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
+[2023-10-19 00:12:57:450828] INFO  20389 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.payment.controller.PaymentController#refundPayment(String, PaymentRefundRequest)
+[2023-10-19 00:12:57:450851] INFO  20389 --- [nio-8080-exec-2] c.k.c.c.c.i.IdempotencyAspect            : IdempotenceAspect error: Idempotency unprocessable entity
+[2023-10-19 00:12:57:450880] INFO  20389 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Server response : 422 payload: Payload is not matched
+[2023-10-19 00:13:06:459718] INFO  20389 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 00:13:06:459719] INFO  20389 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /api/v1/payment/refund content-type : application/json
+[2023-10-19 00:13:06:459979] INFO  20389 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
+[2023-10-19 00:13:06:459979] INFO  20389 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.payment.controller.PaymentController#refundPayment(String, PaymentRefundRequest)
+[2023-10-19 00:13:06:460000] INFO  20389 --- [nio-8080-exec-3] c.k.c.c.c.i.IdempotencyAspect            : IdempotenceAspect error: Idempotency unprocessable entity
+[2023-10-19 00:13:06:460017] INFO  20389 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Server response : 422 payload: Payload is not matched
+[2023-10-19 00:14:03:421] INFO  20455 --- [           main] c.k.c.c.CommaBackendApplication          : Starting CommaBackendApplication using Java 17.0.7 with PID 20455 (/Users/hansanhha/Workspace/project/comma_backend/build/classes/java/main started by hansanhha in /Users/hansanhha/Workspace/project/comma_backend)
+[2023-10-19 00:14:03:422] INFO  20455 --- [           main] c.k.c.c.CommaBackendApplication          : The following 1 profile is active: "local"
+[2023-10-19 00:14:10:7825] INFO  20455 --- [           main] c.k.c.c.CommaBackendApplication          : Started CommaBackendApplication in 7.732 seconds (process running for 8.365)
+[2023-10-19 00:14:55:52563] INFO  20455 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 00:14:55:52564] INFO  20455 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /api/v1/payment/ready content-type : application/json
+[2023-10-19 00:14:56:52995] INFO  20455 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
+[2023-10-19 00:14:56:52995] INFO  20455 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(String, PaymentRequest)
+[2023-10-19 00:14:56:53507] INFO  20455 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
+    "accountId": "testid1234",
+    "arduinoOrderId": "56900b2310182238",
+    "paymentType": "KAKAO"
+}
+[2023-10-19 00:14:56:53508] INFO  20455 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: {"redirectMobileWebUrl":"https://online-pay.kakao.com/mockup/v1/773801e4c2bb0deb0a6477af9759277998a7d67769d2662bfbea34d0e44b289c/mInfo","redirectPcWebUrl":"https://online-pay.kakao.com/mockup/v1/773801e4c2bb0deb0a6477af9759277998a7d67769d2662bfbea34d0e44b289c/info"}
+[2023-10-19 00:15:25:82407] INFO  20455 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 00:15:25:82407] INFO  20455 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] /api/v1/payment/kakao/success/d4afa82310190014/a12sdfkjhafsdhjkre1qwui321iy3213udc321xab321cnsdfah3421626438fqgh3123jfdsaa323d321fad?pg_token=14c1c0ba35e88879e25e content-type : null
+[2023-10-19 00:15:25:82657] INFO  20455 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Client payload = empty
+[2023-10-19 00:15:25:82657] INFO  20455 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: Paid deposit
+[2023-10-19 00:15:25:82701] INFO  20455 --- [nio-8080-exec-4] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 00:15:25:82701] INFO  20455 --- [nio-8080-exec-4] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] /favicon.ico content-type : null
+[2023-10-19 00:15:25:82736] INFO  20455 --- [nio-8080-exec-4] c.k.c.c.s.filter.LoggingFilter           : Server response : 401 payload: Invalid token
+[2023-10-19 00:16:03:120542] INFO  20455 --- [nio-8080-exec-9] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 00:16:03:120543] INFO  20455 --- [nio-8080-exec-9] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /api/v1/payment/refund content-type : application/json
+[2023-10-19 00:16:03:120841] INFO  20455 --- [nio-8080-exec-9] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
+[2023-10-19 00:16:03:120841] INFO  20455 --- [nio-8080-exec-9] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.payment.controller.PaymentController#refundPayment(String, PaymentRefundRequest)
+[2023-10-19 00:16:04:121069] INFO  20455 --- [nio-8080-exec-9] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
+    "paymentId" : 2,
+    "paymentType" : "KAKAO"
+}
+[2023-10-19 00:16:04:121070] INFO  20455 --- [nio-8080-exec-9] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: Refunded deposit
+[2023-10-19 00:16:06:123164] INFO  20455 --- [io-8080-exec-10] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 00:16:06:123164] INFO  20455 --- [io-8080-exec-10] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /api/v1/payment/refund content-type : application/json
+[2023-10-19 00:16:06:123436] INFO  20455 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
+[2023-10-19 00:16:06:123437] INFO  20455 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.payment.controller.PaymentController#refundPayment(String, PaymentRefundRequest)
+[2023-10-19 00:16:06:123456] INFO  20455 --- [io-8080-exec-10] c.k.c.c.c.i.IdempotencyAspect            : Idempotency response
+[2023-10-19 00:16:06:123477] INFO  20455 --- [io-8080-exec-10] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: "already refund deposit"
+[2023-10-19 00:16:22:139378] INFO  20455 --- [nio-8080-exec-1] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 00:16:22:139378] INFO  20455 --- [nio-8080-exec-1] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /api/v1/payment/refund content-type : application/json
+[2023-10-19 00:16:22:139643] INFO  20455 --- [nio-8080-exec-1] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
+[2023-10-19 00:16:22:139643] INFO  20455 --- [nio-8080-exec-1] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.payment.controller.PaymentController#refundPayment(String, PaymentRefundRequest)
+[2023-10-19 00:16:22:139672] INFO  20455 --- [nio-8080-exec-1] c.k.c.c.c.i.IdempotencyAspect            : Idempotency response
+[2023-10-19 00:16:22:139690] INFO  20455 --- [nio-8080-exec-1] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: "already refund deposit"
+[2023-10-19 00:16:23:140527] INFO  20455 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 00:16:23:140527] INFO  20455 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /api/v1/payment/refund content-type : application/json
+[2023-10-19 00:16:23:140862] INFO  20455 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
+[2023-10-19 00:16:23:140862] INFO  20455 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.payment.controller.PaymentController#refundPayment(String, PaymentRefundRequest)
+[2023-10-19 00:16:23:140890] INFO  20455 --- [nio-8080-exec-2] c.k.c.c.c.i.IdempotencyAspect            : Idempotency response
+[2023-10-19 00:16:23:140919] INFO  20455 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: "already refund deposit"

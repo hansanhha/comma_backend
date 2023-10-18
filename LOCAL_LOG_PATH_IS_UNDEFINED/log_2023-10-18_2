@@ -37,3 +37,52 @@
 [2023-10-18 23:00:13:124794] INFO  19057 --- [nio-8080-exec-4] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(String, PaymentRequest)
 [2023-10-18 23:00:13:124848] INFO  19057 --- [nio-8080-exec-4] c.k.c.c.c.i.IdempotencyAspect            : Idempotency response
 [2023-10-18 23:00:13:124882] INFO  19057 --- [nio-8080-exec-4] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: {"redirectMobileWebUrl":"https://online-pay.kakao.com/mockup/v1/359a83c9511aa461a26b450e20262705283bb41ec3ca0ffa45dd8a68e70a7e09/mInfo","redirectPcWebUrl":"https://online-pay.kakao.com/mockup/v1/359a83c9511aa461a26b450e20262705283bb41ec3ca0ffa45dd8a68e70a7e09/info"}
+[2023-10-18 23:22:57:1672] INFO  19742 --- [           main] c.k.c.c.CommaBackendApplication          : Starting CommaBackendApplication using Java 17.0.7 with PID 19742 (/Users/hansanhha/Workspace/project/comma_backend/build/classes/java/main started by hansanhha in /Users/hansanhha/Workspace/project/comma_backend)
+[2023-10-18 23:22:57:1673] INFO  19742 --- [           main] c.k.c.c.CommaBackendApplication          : The following 1 profile is active: "local"
+[2023-10-18 23:23:03:7759] INFO  19742 --- [           main] c.k.c.c.CommaBackendApplication          : Started CommaBackendApplication in 7.426 seconds (process running for 8.964)
+[2023-10-18 23:23:04:9388] INFO  19742 --- [nio-8080-exec-1] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-18 23:23:04:9388] INFO  19742 --- [nio-8080-exec-1] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /api/v1/payment/ready content-type : application/json
+[2023-10-18 23:23:05:9815] INFO  19742 --- [nio-8080-exec-1] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
+[2023-10-18 23:23:05:9815] INFO  19742 --- [nio-8080-exec-1] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(String, PaymentRequest)
+[2023-10-18 23:23:05:9911] INFO  19742 --- [nio-8080-exec-1] c.k.c.c.c.i.IdempotencyAspect            : Idempotency response
+[2023-10-18 23:23:05:9936] INFO  19742 --- [nio-8080-exec-1] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: {"redirectMobileWebUrl":"https://online-pay.kakao.com/mockup/v1/359a83c9511aa461a26b450e20262705283bb41ec3ca0ffa45dd8a68e70a7e09/mInfo","redirectPcWebUrl":"https://online-pay.kakao.com/mockup/v1/359a83c9511aa461a26b450e20262705283bb41ec3ca0ffa45dd8a68e70a7e09/info"}
+[2023-10-18 23:23:09:14403] INFO  19742 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-18 23:23:09:14403] INFO  19742 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /api/v1/payment/ready content-type : application/json
+[2023-10-18 23:23:10:14669] INFO  19742 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
+[2023-10-18 23:23:10:14669] INFO  19742 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(String, PaymentRequest)
+[2023-10-18 23:23:10:15093] INFO  19742 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
+    "accountId": "testid1234",
+    "arduinoOrderId": "56900b2310182238",
+    "paymentType": "KAKAO"
+}
+[2023-10-18 23:23:10:15093] INFO  19742 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: {"redirectMobileWebUrl":"https://online-pay.kakao.com/mockup/v1/3b0ea92f4f44c76423cf27ee775fb59f8ec699c559c4f101dda0c88ca0a21564/mInfo","redirectPcWebUrl":"https://online-pay.kakao.com/mockup/v1/3b0ea92f4f44c76423cf27ee775fb59f8ec699c559c4f101dda0c88ca0a21564/info"}
+[2023-10-18 23:23:35:39788] INFO  19742 --- [nio-8080-exec-4] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-18 23:23:35:39788] INFO  19742 --- [nio-8080-exec-4] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] /api/v1/payment/kakao/success/d684ea2310182323/asdfkjhafsdhjkreqwui321iy3213udc321xab321cnsdfah3421626438fqghjfdsaa323d321fad?pg_token=2017cce7de716bb70644 content-type : null
+[2023-10-18 23:23:35:40036] INFO  19742 --- [nio-8080-exec-4] c.k.c.c.s.i.LoggingInterceptor           : Client payload = empty
+[2023-10-18 23:23:35:40037] INFO  19742 --- [nio-8080-exec-4] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: Paid deposit
+[2023-10-18 23:23:35:40085] INFO  19742 --- [nio-8080-exec-5] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-18 23:23:35:40085] INFO  19742 --- [nio-8080-exec-5] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] /favicon.ico content-type : null
+[2023-10-18 23:23:35:40123] INFO  19742 --- [nio-8080-exec-5] c.k.c.c.s.filter.LoggingFilter           : Server response : 401 payload: Invalid token
+[2023-10-18 23:23:54:59422] INFO  19742 --- [nio-8080-exec-8] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-18 23:23:54:59423] INFO  19742 --- [nio-8080-exec-8] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /api/v1/payment/ready content-type : application/json
+[2023-10-18 23:23:55:59676] INFO  19742 --- [nio-8080-exec-8] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
+[2023-10-18 23:23:55:59676] INFO  19742 --- [nio-8080-exec-8] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(String, PaymentRequest)
+[2023-10-18 23:23:55:59864] INFO  19742 --- [nio-8080-exec-8] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
+    "accountId": "testid1234",
+    "arduinoOrderId": "56900b2310182238",
+    "paymentType": "KAKAO"
+}
+[2023-10-18 23:23:55:59865] INFO  19742 --- [nio-8080-exec-8] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: {"redirectMobileWebUrl":"https://online-pay.kakao.com/mockup/v1/5c18e79771a4ef8d57d5c4aded359b7e4979f688fa6fd368c8edaacaaa02a361/mInfo","redirectPcWebUrl":"https://online-pay.kakao.com/mockup/v1/5c18e79771a4ef8d57d5c4aded359b7e4979f688fa6fd368c8edaacaaa02a361/info"}
+[2023-10-18 23:24:37:102248] INFO  19742 --- [nio-8080-exec-9] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-18 23:24:37:102249] INFO  19742 --- [nio-8080-exec-9] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] /api/v1/payment/kakao/cancel/d120972310182323/asdfkjhafsdhjkre1qwui321iy3213udc321xab321cnsdfah3421626438fqghjfdsaa323d321fad content-type : null
+[2023-10-18 23:24:37:102349] INFO  19742 --- [nio-8080-exec-9] c.k.c.c.s.i.LoggingInterceptor           : Client payload = empty
+[2023-10-18 23:24:37:102349] INFO  19742 --- [nio-8080-exec-9] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: Canceled payment process
+[2023-10-18 23:24:37:102385] INFO  19742 --- [io-8080-exec-10] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-18 23:24:37:102385] INFO  19742 --- [io-8080-exec-10] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] /favicon.ico content-type : null
+[2023-10-18 23:24:37:102414] INFO  19742 --- [io-8080-exec-10] c.k.c.c.s.filter.LoggingFilter           : Server response : 401 payload: Invalid token
+[2023-10-18 23:53:15:560] INFO  20078 --- [           main] c.k.c.c.CommaBackendApplication          : Starting CommaBackendApplication using Java 17.0.7 with PID 20078 (/Users/hansanhha/Workspace/project/comma_backend/build/classes/java/main started by hansanhha in /Users/hansanhha/Workspace/project/comma_backend)
+[2023-10-18 23:53:15:564] INFO  20078 --- [           main] c.k.c.c.CommaBackendApplication          : The following 1 profile is active: "local"
+[2023-10-18 23:53:23:7970] INFO  20078 --- [           main] c.k.c.c.CommaBackendApplication          : Started CommaBackendApplication in 7.855 seconds (process running for 8.518)
+[2023-10-18 23:53:45:768] INFO  20103 --- [           main] c.k.c.c.CommaBackendApplication          : Starting CommaBackendApplication using Java 17.0.7 with PID 20103 (/Users/hansanhha/Workspace/project/comma_backend/build/classes/java/main started by hansanhha in /Users/hansanhha/Workspace/project/comma_backend)
+[2023-10-18 23:53:45:770] INFO  20103 --- [           main] c.k.c.c.CommaBackendApplication          : The following 1 profile is active: "local"
+[2023-10-18 23:53:55:9982] INFO  20103 --- [           main] c.k.c.c.CommaBackendApplication          : Started CommaBackendApplication in 9.671 seconds (process running for 10.427)
