@@ -1,7 +1,7 @@
 package com.know_wave.comma.comma_backend.account.entity;
 
 import com.know_wave.comma.comma_backend.account.entity.auth.Authority;
-import com.know_wave.comma.comma_backend.arduino.entity.OrderInfo;
+import com.know_wave.comma.comma_backend.order.entity.OrderInfo;
 import com.know_wave.comma.comma_backend.util.entity.BaseTimeEntity;
 import com.know_wave.comma.comma_backend.account.entity.auth.Role;
 import com.know_wave.comma.comma_backend.account.entity.token.Token;

@@ -1,6 +1,5 @@
 package com.know_wave.comma.comma_backend.util.message;
 
-import com.know_wave.comma.comma_backend.arduino.entity.OrderStatus;
 import org.springframework.stereotype.Component;
 
 @Component

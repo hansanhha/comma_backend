@@ -1,7 +1,7 @@
 package com.know_wave.comma.comma_backend.web.advice;
 
-import com.know_wave.comma.comma_backend.common.exception.EmailVerifiedException;
-import com.know_wave.comma.comma_backend.common.exception.NotFoundEmailException;
+import com.know_wave.comma.comma_backend.util.mail.exception.EmailVerifiedException;
+import com.know_wave.comma.comma_backend.util.mail.exception.NotFoundEmailException;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;

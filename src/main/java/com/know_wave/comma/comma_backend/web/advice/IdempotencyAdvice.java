@@ -1,7 +1,7 @@
 package com.know_wave.comma.comma_backend.web.advice;
 
-import com.know_wave.comma.comma_backend.common.exception.idempotency.IdempotencyResponse;
-import com.know_wave.comma.comma_backend.common.exception.idempotency.IdempotencyUnprocessableEntity;
+import com.know_wave.comma.comma_backend.common.idempotency.exception.IdempotencyResponse;
+import com.know_wave.comma.comma_backend.common.idempotency.exception.IdempotencyUnprocessableEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

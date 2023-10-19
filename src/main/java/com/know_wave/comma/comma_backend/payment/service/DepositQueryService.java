@@ -1,7 +1,7 @@
 package com.know_wave.comma.comma_backend.payment.service;
 
 import com.know_wave.comma.comma_backend.account.entity.Account;
-import com.know_wave.comma.comma_backend.arduino.entity.OrderInfo;
+import com.know_wave.comma.comma_backend.order.entity.OrderInfo;
 import com.know_wave.comma.comma_backend.payment.entity.Deposit;
 import com.know_wave.comma.comma_backend.payment.repository.DepositRepository;
 import com.know_wave.comma.comma_backend.util.ValidateUtils;
@@ -20,7 +20,7 @@ public class DepositQueryService {
     private final DepositRepository depositRepository;
 
     public Deposit getDepositByRequestId(String paymentRequestId) {
-        Optional<Deposit> depositOptional = depositRepository.findByPaymentRequestId(paymentRequestId);
+        Optional<Deposit> depositOptional = depositRepository.fetchAccountByPaymentRequestId(paymentRequestId);
 
         ValidateUtils.throwIfEmpty(depositOptional);
 

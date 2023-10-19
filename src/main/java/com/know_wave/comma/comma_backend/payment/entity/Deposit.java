@@ -1,7 +1,7 @@
 package com.know_wave.comma.comma_backend.payment.entity;
 
 import com.know_wave.comma.comma_backend.account.entity.Account;
-import com.know_wave.comma.comma_backend.arduino.entity.OrderInfo;
+import com.know_wave.comma.comma_backend.order.entity.OrderInfo;
 import com.know_wave.comma.comma_backend.util.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,9 +13,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Deposit extends BaseTimeEntity {
 
-    public static Deposit of(PaymentType paymentType, String paymentRequestId, String transactionId, OrderInfo orderInfo, int amount, String productName, boolean paymentTermsAgreement, boolean personalInfoTermsAgreement) {
-        return new Deposit(orderInfo.getAccount(),
-                orderInfo,
+    public static Deposit of(PaymentType paymentType, String paymentRequestId, String transactionId, Account account, int amount, String productName, boolean paymentTermsAgreement, boolean personalInfoTermsAgreement) {
+        return new Deposit(account,
                 paymentRequestId,
                 transactionId,
                 DepositStatus.NONE,
@@ -29,9 +28,8 @@ public class Deposit extends BaseTimeEntity {
         );
     }
 
-    public Deposit(Account account, OrderInfo orderInfo, String paymentRequestId, String paymentTransactionId, DepositStatus depositStatus, PaymentStatus paymentStatus, PaymentType paymentType, PaymentMethodType paymentMethodType, int totalAmount, String itemName, boolean paymentTermsAgreement, boolean personalInfoTermsAgreement) {
+    public Deposit(Account account, String paymentRequestId, String paymentTransactionId, DepositStatus depositStatus, PaymentStatus paymentStatus, PaymentType paymentType, PaymentMethodType paymentMethodType, int totalAmount, String itemName, boolean paymentTermsAgreement, boolean personalInfoTermsAgreement) {
         this.account = account;
-        this.orderInfo = orderInfo;
         this.paymentRequestId = paymentRequestId;
         this.paymentTransactionId = paymentTransactionId;
         this.depositStatus = depositStatus;
@@ -56,6 +54,7 @@ public class Deposit extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_info_id")
     private OrderInfo orderInfo;
+
     private String paymentRequestId;
 
     private String paymentTransactionId;
@@ -92,5 +91,9 @@ public class Deposit extends BaseTimeEntity {
 
     public void setRefundedDate(LocalDateTime refundedDate) {
         this.refundedDate = refundedDate;
+    }
+
+    public void setOrderInfo(OrderInfo orderInfo) {
+        this.orderInfo = orderInfo;
     }
 }

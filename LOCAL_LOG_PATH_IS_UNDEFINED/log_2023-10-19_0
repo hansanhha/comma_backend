@@ -1357,7 +1357,7 @@
 [2023-10-19 00:08:31:184408] INFO  20389 --- [io-8080-exec-10] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-19 00:08:31:184408] INFO  20389 --- [io-8080-exec-10] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /order/arduino content-type : application/json
 [2023-10-19 00:08:31:184657] INFO  20389 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-19 00:08:31:184657] INFO  20389 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.arduino.controller.normal.OrderController#order(OrderRequest)
+[2023-10-19 00:08:31:184657] INFO  20389 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.order.controller.user.OrderController#order(OrderRequest)
 [2023-10-19 00:08:36:189824] INFO  20389 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
     "subject" : "SENIER_PROJECT",
     "description" : "테스트 주문 2"

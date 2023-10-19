@@ -8,7 +8,7 @@ import com.know_wave.comma.comma_backend.arduino.dto.basket.BasketResponse;
 import com.know_wave.comma.comma_backend.arduino.entity.Arduino;
 import com.know_wave.comma.comma_backend.arduino.entity.Basket;
 import com.know_wave.comma.comma_backend.arduino.repository.BasketRepository;
-import com.know_wave.comma.comma_backend.common.exception.EntityAlreadyExistException;
+import com.know_wave.comma.comma_backend.util.mail.exception.EntityAlreadyExistException;
 import com.know_wave.comma.comma_backend.util.ValidateUtils;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;

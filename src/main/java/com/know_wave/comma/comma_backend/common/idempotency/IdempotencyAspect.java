@@ -1,7 +1,7 @@
 package com.know_wave.comma.comma_backend.common.idempotency;
 
-import com.know_wave.comma.comma_backend.common.exception.idempotency.IdempotencyResponse;
-import com.know_wave.comma.comma_backend.common.exception.idempotency.IdempotencyUnprocessableEntity;
+import com.know_wave.comma.comma_backend.common.idempotency.exception.IdempotencyResponse;
+import com.know_wave.comma.comma_backend.common.idempotency.exception.IdempotencyUnprocessableEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;

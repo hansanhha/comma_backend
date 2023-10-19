@@ -1,10 +1,10 @@
 package com.know_wave.comma.comma_backend.payment.service;
 
-import com.know_wave.comma.comma_backend.arduino.entity.OrderInfo;
-import com.know_wave.comma.comma_backend.arduino.service.normal.OrderInfoQueryService;
+import com.know_wave.comma.comma_backend.order.entity.OrderInfo;
+import com.know_wave.comma.comma_backend.order.service.user.OrderInfoQueryService;
 import com.know_wave.comma.comma_backend.common.exception.NotFoundException;
-import com.know_wave.comma.comma_backend.common.exception.payment.AlreadyPaidException;
-import com.know_wave.comma.comma_backend.common.exception.payment.AlreadyRefundedException;
+import com.know_wave.comma.comma_backend.payment.exception.AlreadyPaidException;
+import com.know_wave.comma.comma_backend.payment.exception.AlreadyRefundedException;
 import com.know_wave.comma.comma_backend.payment.entity.Deposit;
 import com.know_wave.comma.comma_backend.payment.entity.DepositStatus;
 import com.know_wave.comma.comma_backend.payment.entity.PaymentType;
@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,17 +32,21 @@ public class PaymentManager {
     }
 
     public void checkAlreadyPaid(String orderNumber) throws AlreadyPaidException {
-        OrderInfo orderInfo = orderInfoQueryService.fetchAccount(orderNumber);
-        List<Deposit> deposits = depositQueryService.getDeposits(orderInfo.getAccount(), orderInfo);
+        Optional<OrderInfo> orderInfoOptional = orderInfoQueryService.optionalFetchAccount(orderNumber);
 
-        if (deposits.isEmpty()) {
-            return;
-        }
+        if (orderInfoOptional.isPresent()) {
+            OrderInfo orderInfo = orderInfoOptional.get();
+            List<Deposit> deposits = depositQueryService.getDeposits(orderInfo.getAccount(), orderInfo);
 
-        boolean paid = deposits.stream().anyMatch(deposit -> deposit.getDepositStatus().equals(DepositStatus.PAID));
+            if (deposits.isEmpty()) {
+                return;
+            }
 
-        if (paid) {
-            throw new AlreadyPaidException(ExceptionMessageSource.ALREADY_PAID);
+            boolean paid = deposits.stream().anyMatch(deposit -> deposit.getDepositStatus().equals(DepositStatus.PAID));
+
+            if (paid) {
+                throw new AlreadyPaidException(ExceptionMessageSource.ALREADY_PAID);
+            }
         }
     }
 

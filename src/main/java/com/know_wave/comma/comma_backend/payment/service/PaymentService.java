@@ -1,17 +1,17 @@
 package com.know_wave.comma.comma_backend.payment.service;
 
-import com.know_wave.comma.comma_backend.payment.dto.PaymentAuthRequest;
-import com.know_wave.comma.comma_backend.payment.dto.PaymentAuthResult;
-import com.know_wave.comma.comma_backend.payment.dto.PaymentRefundRequest;
+import com.know_wave.comma.comma_backend.order.dto.OrderInfoDto;
+import com.know_wave.comma.comma_backend.payment.dto.PaymentPrepareDto;
+import com.know_wave.comma.comma_backend.payment.dto.PaymentPrepareResult;
 import com.know_wave.comma.comma_backend.payment.dto.PaymentRefundResult;
 import com.know_wave.comma.comma_backend.payment.entity.Deposit;
 import com.know_wave.comma.comma_backend.payment.entity.PaymentType;
 
 public interface PaymentService {
 
-    PaymentAuthResult ready(String idempotencyKey, PaymentAuthRequest request);
+    PaymentPrepareResult ready(String idempotencyKey, PaymentPrepareDto paymentPrepareDto, OrderInfoDto orderInfo);
 
-    void pay(Deposit deposit, String paymentToken);
+    void pay(Deposit deposit, String tempOrderId, String paymentToken);
 
     PaymentRefundResult refund(Deposit request);
 

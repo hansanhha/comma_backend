@@ -1,6 +1,8 @@
 package com.know_wave.comma.comma_backend.arduino.entity;
 
 import com.know_wave.comma.comma_backend.account.entity.Account;
+import com.know_wave.comma.comma_backend.order.entity.Order;
+import com.know_wave.comma.comma_backend.order.entity.OrderInfo;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

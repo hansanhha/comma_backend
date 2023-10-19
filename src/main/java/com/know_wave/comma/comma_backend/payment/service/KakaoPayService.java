@@ -1,6 +1,11 @@
 package com.know_wave.comma.comma_backend.payment.service;
 
-import com.know_wave.comma.comma_backend.payment.dto.*;
+import com.know_wave.comma.comma_backend.account.service.normal.AccountQueryService;
+import com.know_wave.comma.comma_backend.order.dto.OrderInfoDto;
+import com.know_wave.comma.comma_backend.payment.dto.PaymentPrepareResult;
+import com.know_wave.comma.comma_backend.payment.dto.PaymentPrepareDto;
+import com.know_wave.comma.comma_backend.payment.dto.PaymentRefundResult;
+import com.know_wave.comma.comma_backend.payment.dto.WebEntityCreator;
 import com.know_wave.comma.comma_backend.payment.dto.kakao.*;
 import com.know_wave.comma.comma_backend.payment.entity.Deposit;
 import com.know_wave.comma.comma_backend.payment.entity.PaymentType;
@@ -32,10 +37,11 @@ public class KakaoPayService implements PaymentService {
     }
 
     @Override
-    public PaymentAuthResult ready(String idempotencyKey, PaymentAuthRequest request) {
+    public PaymentPrepareResult ready(String idempotencyKey, PaymentPrepareDto paymentPrepareDto, OrderInfoDto orderInfoDto) {
         String paymentRequestId = GenerateUtils.generatedCodeWithDate();
 
-        var readyRequest = KakaoPayReadyRequest.of(idempotencyKey, paymentRequestId, request, cid, depositPolicy);
+        String accountId = AccountQueryService.getAuthenticatedId();
+        var readyRequest = KakaoPayReadyRequest.of(idempotencyKey, paymentRequestId, paymentPrepareDto, accountId, cid, depositPolicy, orderInfoDto);
         var httpEntity = WebEntityCreator.toPaymentEntity(readyRequest.getValue());
 
         var kakaoPayReadyResponse = kakaoPayApiClient.postForObject(
@@ -43,12 +49,12 @@ public class KakaoPayService implements PaymentService {
                 httpEntity,
                 KakaoPayReadyResponse.class);
 
-        return PaymentAuthResult.of(Objects.requireNonNull(kakaoPayReadyResponse), paymentRequestId);
+        return PaymentPrepareResult.of(Objects.requireNonNull(kakaoPayReadyResponse), paymentRequestId);
     }
 
     @Override
-    public void pay(Deposit deposit, String paymentToken) {
-        var approveRequest = KakaoPayApproveRequest.of(cid, deposit, paymentToken);
+    public void pay(Deposit deposit, String tempOrderNumber, String paymentToken) {
+        var approveRequest = KakaoPayApproveRequest.of(cid, deposit, tempOrderNumber, paymentToken);
 
         var httpEntity = WebEntityCreator.toPaymentEntity(approveRequest.getValue());
 

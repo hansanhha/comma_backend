@@ -1,7 +1,7 @@
 [2023-10-17 20:05:54:65754] INFO  16093 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-17 20:05:54:65758] INFO  16093 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] /orders content-type : null
 [2023-10-17 20:05:54:65778] INFO  16093 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-17 20:05:54:65778] INFO  16093 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.arduino.controller.normal.OrderController#getOrders()
+[2023-10-17 20:05:54:65778] INFO  16093 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.order.controller.user.OrderController#getOrders()
 [2023-10-17 20:05:54:65794] INFO  16093 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Client payload = empty
 [2023-10-17 20:05:54:65795] INFO  16093 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: [{"accountId":"testid1234","orderCode":"e490de2310172005","orderStatus":"신청 완료","orderDate":"2023-10-17T20:05:48.859934","orderDescription":"테스트 주문 2","subject":"졸업작품","cancelReason":null}]
 [2023-10-17 20:06:16:88133] INFO  16093 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
@@ -1479,7 +1479,7 @@
 [2023-10-17 20:17:17:103418] INFO  16196 --- [nio-8080-exec-9] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-17 20:17:17:103419] INFO  16196 --- [nio-8080-exec-9] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /order/arduino content-type : application/json
 [2023-10-17 20:17:17:103436] INFO  16196 --- [nio-8080-exec-9] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-17 20:17:17:103436] INFO  16196 --- [nio-8080-exec-9] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.arduino.controller.normal.OrderController#order(OrderRequest)
+[2023-10-17 20:17:17:103436] INFO  16196 --- [nio-8080-exec-9] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.order.controller.user.OrderController#order(OrderRequest)
 [2023-10-17 20:17:21:107006] INFO  16196 --- [nio-8080-exec-9] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
     "subject" : "SENIER_PROJECT",
     "description" : "테스트 주문 2"
@@ -1488,7 +1488,7 @@
 [2023-10-17 20:17:26:112678] INFO  16196 --- [io-8080-exec-10] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-17 20:17:26:112678] INFO  16196 --- [io-8080-exec-10] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] /orders content-type : null
 [2023-10-17 20:17:26:112690] INFO  16196 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-17 20:17:26:112691] INFO  16196 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.arduino.controller.normal.OrderController#getOrders()
+[2023-10-17 20:17:26:112691] INFO  16196 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.order.controller.user.OrderController#getOrders()
 [2023-10-17 20:17:26:112710] INFO  16196 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : Client payload = empty
 [2023-10-17 20:17:26:112710] INFO  16196 --- [io-8080-exec-10] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: [{"accountId":"testid1234","orderCode":"77c6662310172017","orderStatus":"신청 완료","orderDate":"2023-10-17T20:17:17.717671","orderDescription":"테스트 주문 2","subject":"졸업작품","cancelReason":null}]
 [2023-10-17 20:17:45:131630] INFO  16196 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
