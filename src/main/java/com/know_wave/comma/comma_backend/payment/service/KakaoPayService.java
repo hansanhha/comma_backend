@@ -38,10 +38,26 @@ public class KakaoPayService implements PaymentService {
 
     @Override
     public PaymentPrepareResult ready(String idempotencyKey, PaymentPrepareDto paymentPrepareDto, OrderInfoDto orderInfoDto) {
-        String paymentRequestId = GenerateUtils.generatedCodeWithDate();
+        String paymentRequestId = GenerateUtils.generatedRandomCode();
 
         String accountId = AccountQueryService.getAuthenticatedId();
         var readyRequest = KakaoPayReadyRequest.of(idempotencyKey, paymentRequestId, paymentPrepareDto, accountId, cid, depositPolicy, orderInfoDto);
+        var httpEntity = WebEntityCreator.toPaymentEntity(readyRequest.getValue());
+
+        var kakaoPayReadyResponse = kakaoPayApiClient.postForObject(
+                paymentReadyUrl,
+                httpEntity,
+                KakaoPayReadyResponse.class);
+
+        return PaymentPrepareResult.of(Objects.requireNonNull(kakaoPayReadyResponse), paymentRequestId);
+    }
+
+    @Override
+    public PaymentPrepareResult readyWithSSE(String idempotencyKey, PaymentPrepareDto paymentPrepareDto, OrderInfoDto orderInfoDto, String sseId) {
+        String paymentRequestId = GenerateUtils.generatedRandomCode();
+
+        String accountId = AccountQueryService.getAuthenticatedId();
+        var readyRequest = KakaoPayReadyRequest.ofWithSSE(idempotencyKey, paymentRequestId, paymentPrepareDto, accountId, cid, depositPolicy, orderInfoDto, sseId);
         var httpEntity = WebEntityCreator.toPaymentEntity(readyRequest.getValue());
 
         var kakaoPayReadyResponse = kakaoPayApiClient.postForObject(

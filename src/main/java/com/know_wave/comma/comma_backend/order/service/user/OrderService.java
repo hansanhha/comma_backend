@@ -55,7 +55,7 @@ public class OrderService {
             throw new IllegalArgumentException(NOT_ACCEPTABLE_REQUEST);
         }
 
-        String orderNumber = GenerateUtils.generatedCodeWithDate();
+        String orderNumber = GenerateUtils.generatedRandomCode();
         OrderInfo orderInfo = new OrderInfo(account, orderNumber, subject);
 
         Order.ofList(baskets, orderInfo);

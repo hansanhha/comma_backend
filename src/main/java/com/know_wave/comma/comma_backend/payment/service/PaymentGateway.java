@@ -41,33 +41,36 @@ public class PaymentGateway {
     // 첫 번째 %s - paymentType : 결제 수단
     // 두 번째 %s - paymentRequestId : PG, 간편결제에서 결제 요청(결제 준비) 후 redirect 됐을 때 해당 결제건 식별 용도
     // 세 번째 %s - idempotencyKey : 멱등성 유지를 위한 키 값
+
+    // failUrl, cancelUrl 네 번째 %s - orderNumber : 주문 번호 (결제 실패, 취소 시 로직 처리 용도)
+    // failUrl, cancelUrl 다섯 번째 %s - emitterId : SSE 통신을 위한 emitterId
+
     // successUrl 네 번째 %s - accountId : 사용자 계정 (결제 성공 시 주문 기능 실행 용도)
     // successUrl 다섯 번째 %s - orderNumber : 주문 번호 (결제 성공 시 주문 기능 실행 용도)
     // successUrl 여섯 번째 %s - subject : 주문 교과목 (결제 성공 시 주문 기능 실행 용도)
-    public static final String successUrl = "http://localhost:8080/api/v1/payment/%s/success/%s/%s/%s/%s/%s";
-    public static final String failUrl = "http://localhost:8080/api/v1/payment/%s/fail/%s/%s";
-    public static final String cancelUrl = "http://localhost:8080/api/v1/payment/%s/cancel/%s/%s";
-
-//    public PaymentAuthResponse prepare(IdempotentDto idempotentDto, PaymentPrepareDto request) {
-//        paymentManager.checkAlreadyPaid(request.tempOrderId());
-//
-//        var paymentService = paymentManager.getPaymentService(request.paymentType());
-//        var paymentAuthResult = paymentService.ready(idempotentDto.idempotentKey(), request);
-//        var paymentAuthResponse = new PaymentAuthResponse(paymentAuthResult.redirectMobileWebUrl(), paymentAuthResult.redirectPcWebUrl());
-//
-//        OrderInfo orderInfo = orderInfoQueryService.fetchAccount(request.tempOrderId());
-//        Deposit deposit = Deposit.of(request.paymentType(), paymentAuthResult.paymentRequestId(), paymentAuthResult.transactionId(), orderInfo, depositPolicy.getAmount(), depositPolicy.getProductName(), true, true);
-//        Idempotent idempotent = IdempotentDto.of(idempotentDto, HttpStatus.OK.value(), paymentAuthResponse);
-//
-//        depositRepository.save(deposit);
-//        idempotentKeyRepository.save(idempotent);
-//
-//        return paymentAuthResponse;
-//    }
-
+    // successUrl 일곱 번째 %s - emitterId : SSE 통신을 위한 emitterId
+    public static final String successUrl = "http://localhost:8080/api/v1/payment/%s/success/%s/%s/%s/%s/%s/%s";
+    public static final String failUrl = "http://localhost:8080/api/v1/payment/%s/fail/%s/%s/%s/%s";
+    public static final String cancelUrl = "http://localhost:8080/api/v1/payment/%s/cancel/%s/%s/%s/%s";
+    
     public PaymentPrepareResponse prepare(IdempotentDto idempotentDto, PaymentPrepareDto paymentPrepareDto, OrderInfoDto orderInfoDto) {
         var paymentService = paymentManager.getPaymentService(paymentPrepareDto.paymentType());
         var paymentPrepareResult = paymentService.ready(idempotentDto.idempotentKey(), paymentPrepareDto, orderInfoDto);
+        var paymentPrepareResponse = new PaymentPrepareResponse(paymentPrepareResult.redirectPcWebUrl(), paymentPrepareResult.redirectMobileWebUrl());
+
+        Account account = accountQueryService.findAccount(AccountQueryService.getAuthenticatedId());
+        Deposit deposit = Deposit.of(paymentPrepareDto.paymentType(), paymentPrepareResult.paymentRequestId(), paymentPrepareResult.transactionId(), account, depositPolicy.getAmount(), depositPolicy.getProductName(), true, true);
+        Idempotent idempotent = IdempotentDto.of(idempotentDto, HttpStatus.OK.value(), paymentPrepareResponse);
+
+        depositRepository.save(deposit);
+        idempotentKeyRepository.save(idempotent);
+
+        return paymentPrepareResponse;
+    }
+
+    public PaymentPrepareResponse prepareWithSSE(IdempotentDto idempotentDto, PaymentPrepareDto paymentPrepareDto, OrderInfoDto orderInfoDto, String sseId) {
+        var paymentService = paymentManager.getPaymentService(paymentPrepareDto.paymentType());
+        var paymentPrepareResult = paymentService.readyWithSSE(idempotentDto.idempotentKey(), paymentPrepareDto, orderInfoDto, sseId);
         var paymentPrepareResponse = new PaymentPrepareResponse(paymentPrepareResult.redirectPcWebUrl(), paymentPrepareResult.redirectMobileWebUrl());
 
         Account account = accountQueryService.findAccount(AccountQueryService.getAuthenticatedId());

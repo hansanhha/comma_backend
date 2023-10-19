@@ -1,6 +1,7 @@
 package com.know_wave.comma.comma_backend.order.controller.user;
 
 import com.know_wave.comma.comma_backend.common.idempotency.IdempotentDto;
+import com.know_wave.comma.comma_backend.common.sse.SseEmitterService;
 import com.know_wave.comma.comma_backend.order.dto.*;
 import com.know_wave.comma.comma_backend.order.service.user.OrderService;
 import com.know_wave.comma.comma_backend.payment.dto.PaymentPrepareDto;
@@ -10,6 +11,7 @@ import com.know_wave.comma.comma_backend.util.GenerateUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -21,6 +23,7 @@ public class OrderController {
 
     private final OrderService orderService;
     private final PaymentGateway paymentGateway;
+    private final SseEmitterService sseEmitterService;
 
     @PostMapping("/api/test/order/arduino")
     public String order(@Valid @RequestBody OrderRequest request) {
@@ -32,7 +35,7 @@ public class OrderController {
     public PaymentPrepareResponse order(@RequestHeader("Idempotency-Key") String idempotencyKey,
                                         @Valid @RequestBody OrderRequest request) {
 
-        String orderNumber = GenerateUtils.generatedCodeWithDate();
+        String orderNumber = GenerateUtils.generatedRandomCode();
 
         var idempotentKeyDto = new IdempotentDto(idempotencyKey, HttpMethod.POST.name(), "/api/v1/order/arduino", request.toString());
 
@@ -41,19 +44,25 @@ public class OrderController {
                 new OrderInfoDto(request.getSubject()));
     }
 
+    @GetMapping(value = "/sse/connect", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter connectSse() {
+        return sseEmitterService.create();
+    }
+
     @PostMapping("/api/v2/order/arduino")
-    public SseEmitter orderUseSSE(@RequestHeader("Idempotency-Key") String idempotencyKey,
-                                   @Valid @RequestBody OrderRequest request) {
+    public PaymentPrepareResponse orderUseSSE(@RequestHeader("Idempotency-Key") String idempotencyKey,
+                                   @Valid @RequestBody OrderRequest orderRequest) {
 
-        String orderNumber = GenerateUtils.generatedCodeWithDate();
+        String orderNumber = GenerateUtils.generatedRandomCode();
 
-        var idempotentKeyDto = new IdempotentDto(idempotencyKey, HttpMethod.POST.name(), "/api/v1/order/arduino", request.toString());
+        var idempotentKeyDto = new IdempotentDto(idempotencyKey, HttpMethod.POST.name(), "/api/v1/order/arduino", orderRequest.toString());
 
-        PaymentPrepareResponse prepareResponse = paymentGateway.prepare(idempotentKeyDto,
-                new PaymentPrepareDto(orderNumber, request.getPaymentType()),
-                new OrderInfoDto(request.getSubject()));
-
-
+         return paymentGateway.prepareWithSSE(
+                 idempotentKeyDto,
+                 new PaymentPrepareDto(orderNumber, orderRequest.getPaymentType()),
+                 new OrderInfoDto(orderRequest.getSubject()),
+                 orderRequest.getSseId()
+         );
     }
 
     @PostMapping("/orders/{orderCode}/arduino")

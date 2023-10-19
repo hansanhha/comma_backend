@@ -11,8 +11,8 @@ public class GenerateUtils {
         return ThreadLocalRandom.current().nextInt(888888) + 111111;
     }
 
-    public static String generatedCodeWithDate() {
-        String uuid = UUID.randomUUID().toString().substring(0, 6);
+    public static String generatedRandomCode() {
+        String uuid = UUID.randomUUID().toString().substring(0, 8);
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMddHHmm");
         String dateString = now.format(formatter);

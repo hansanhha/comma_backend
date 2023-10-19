@@ -1,0 +1,8 @@
+[2023-10-19 21:15:52:427669] ERROR 24701 --- [nio-8080-exec-6] c.k.c.c.s.i.LoggingInterceptor           : Server error occurred
+[2023-10-19 21:15:52:427670] ERROR 24701 --- [nio-8080-exec-6] c.k.c.c.s.i.LoggingInterceptor           : - location : com.know_wave.comma.comma_backend.payment.controller.PaymentController#approvePayment(String, String, String, String, String, String, String, String)
+[2023-10-19 21:15:52:427670] ERROR 24701 --- [nio-8080-exec-6] c.k.c.c.s.i.LoggingInterceptor           : - exception : java.lang.NullPointerException: Cannot invoke "org.springframework.web.servlet.mvc.method.annotation.SseEmitter.send(org.springframework.web.servlet.mvc.method.annotation.SseEmitter$SseEventBuilder)" because "sseEmitter" is null
+[2023-10-19 21:15:52:427670] ERROR 24701 --- [nio-8080-exec-6] c.k.c.c.s.i.LoggingInterceptor           : - Client request payload : empty
+[2023-10-19 22:03:21:141534] ERROR 25265 --- [nio-8080-exec-5] c.k.c.c.s.i.LoggingInterceptor           : Server error occurred
+[2023-10-19 22:03:21:141536] ERROR 25265 --- [nio-8080-exec-5] c.k.c.c.s.i.LoggingInterceptor           : - location : com.know_wave.comma.comma_backend.payment.controller.PaymentController#approvePayment(String, String, String, String, String, String, String, String)
+[2023-10-19 22:03:21:141536] ERROR 25265 --- [nio-8080-exec-5] c.k.c.c.s.i.LoggingInterceptor           : - exception : java.lang.NullPointerException: Cannot invoke "org.springframework.web.servlet.mvc.method.annotation.SseEmitter.send(org.springframework.web.servlet.mvc.method.annotation.SseEmitter$SseEventBuilder)" because "sseEmitter" is null
+[2023-10-19 22:03:21:141536] ERROR 25265 --- [nio-8080-exec-5] c.k.c.c.s.i.LoggingInterceptor           : - Client request payload : empty

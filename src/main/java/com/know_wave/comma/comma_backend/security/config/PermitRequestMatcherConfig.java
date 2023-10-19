@@ -30,9 +30,11 @@ public class PermitRequestMatcherConfig {
         MvcRequestMatcher getArduino = new MvcRequestMatcher(handlerIntroceptor, "/arduino/*");
         MvcRequestMatcher getArduinoList = new MvcRequestMatcher(handlerIntroceptor, "/arduinos/**");
         MvcRequestMatcher getPaymentRedirect = new MvcRequestMatcher(handlerIntroceptor, "/api/v1/payment/**");
+        MvcRequestMatcher sseConnect = new MvcRequestMatcher(handlerIntroceptor, "/sse/connect");
         getArduino.setMethod(HttpMethod.GET);
         getArduinoList.setMethod(HttpMethod.GET);
         getPaymentRedirect.setMethod(HttpMethod.GET);
+        sseConnect.setMethod(HttpMethod.GET);
 
         userPermitRequestMatchers = List.of(
                 new MvcRequestMatcher(handlerIntroceptor, "/account/signin"),
@@ -41,7 +43,8 @@ public class PermitRequestMatcherConfig {
                 new MvcRequestMatcher(handlerIntroceptor, "/account/email/verify"),
                 getArduino,
                 getArduinoList,
-                getPaymentRedirect
+                getPaymentRedirect,
+                sseConnect
         );
 
         adminPermitRequestMatchers = List.of(

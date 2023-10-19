@@ -19,4 +19,5 @@ public class OrderRequest {
     @NotNull(message = "{Required}")
     private PaymentType paymentType;
 
+    private String sseId;
 }

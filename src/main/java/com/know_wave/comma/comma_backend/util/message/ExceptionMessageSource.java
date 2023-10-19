@@ -32,4 +32,6 @@ public class ExceptionMessageSource {
     public static final String NOT_SUPPORTED_PAYMENT_TYPE = "Not supported payment type";
     public static final String ALREADY_PAID = "Already paid";
     public static final String ALREADY_REFUNDED = "Already refunded";
+    public static final String SSE_EMITTER_SEND_ERROR = "SseEmitter send error";
+    public static final String SSE_EMITTER_JSON_ERROR = "SseEmitter json error";
 }

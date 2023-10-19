@@ -11,6 +11,8 @@ public interface PaymentService {
 
     PaymentPrepareResult ready(String idempotencyKey, PaymentPrepareDto paymentPrepareDto, OrderInfoDto orderInfo);
 
+    PaymentPrepareResult readyWithSSE(String idempotencyKey, PaymentPrepareDto paymentPrepareDto, OrderInfoDto orderInfo, String sseId);
+
     void pay(Deposit deposit, String tempOrderId, String paymentToken);
 
     PaymentRefundResult refund(Deposit request);

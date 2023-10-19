@@ -1,22 +1,17 @@
 package com.know_wave.comma.comma_backend.payment.controller;
 
 import com.know_wave.comma.comma_backend.common.idempotency.IdempotentDto;
+import com.know_wave.comma.comma_backend.common.sse.SseEmitterService;
 import com.know_wave.comma.comma_backend.order.entity.Subject;
 import com.know_wave.comma.comma_backend.order.service.user.OrderService;
-import com.know_wave.comma.comma_backend.payment.dto.*;
+import com.know_wave.comma.comma_backend.payment.dto.PaymentRefundRequest;
 import com.know_wave.comma.comma_backend.payment.service.PaymentGateway;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.net.URI;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,6 +19,7 @@ public class PaymentController {
 
     private final PaymentGateway paymentGateway;
     private final OrderService orderService;
+    private final SseEmitterService emitterService;
 
 //    @PostMapping("/api/v1/payment/ready")
 //    public PaymentAuthResponse preparePayment(@RequestHeader("Idempotency-Key") String idempotencyKey,
@@ -34,7 +30,7 @@ public class PaymentController {
 //        return paymentGateway.prepare(idempotentKeyDto, PaymentPrepareDto.of(request));
 //    }
 
-    @GetMapping("/api/v1/payment/{paymentType}/success/{paymentRequestId}/{idempotencyKey}/{accountId}/{orderNumber}/{subject}")
+    @GetMapping("/api/v1/payment/{paymentType}/success/{paymentRequestId}/{idempotencyKey}/{accountId}/{orderNumber}/{subject}/{emitterId}")
     public String approvePayment(
             @PathVariable("paymentType") String paymentType,
             @PathVariable("paymentRequestId") String paymentRequestId,
@@ -42,6 +38,7 @@ public class PaymentController {
             @PathVariable("accountId") String accountId,
             @PathVariable("orderNumber") String orderNumber,
             @PathVariable("subject") String subject,
+            @PathVariable("emitterId") String emitterId,
             @RequestParam("pg_token") String paymentToken) {
 
         var idempotentKeyDto = new IdempotentDto(idempotencyKey,
@@ -54,6 +51,8 @@ public class PaymentController {
         orderService.order(accountId, orderNumber, Subject.valueOf(subject.toUpperCase()));
 
         paymentGateway.postProcessing(id, orderNumber);
+
+        emitterService.sendEvent(emitterId, "success", Map.of("orderNumber", orderNumber));
 
         return "Ordered";
     }
@@ -69,11 +68,13 @@ public class PaymentController {
         return "Refunded deposit";
     }
 
-    @GetMapping("/api/v1/payment/{paymentType}/fail/{paymentRequestId}/{idempotencyKey}")
+    @GetMapping("/api/v1/payment/{paymentType}/fail/{paymentRequestId}/{idempotencyKey}/{orderNumber}/{emitterId}")
     public String failPayment(
             @PathVariable("paymentType") String paymentType,
             @PathVariable("paymentRequestId") String paymentRequestId,
-            @PathVariable("idempotencyKey") String idempotencyKey) {
+            @PathVariable("idempotencyKey") String idempotencyKey,
+            @PathVariable("orderNumber") String orderNumber,
+            @PathVariable("emitterId") String emitterId) {
 
         var idempotentKeyDto = new IdempotentDto(idempotencyKey,
                 HttpMethod.GET.name(),
@@ -82,14 +83,18 @@ public class PaymentController {
 
         paymentGateway.handlePaymentFailure(idempotentKeyDto, paymentType, paymentRequestId);
 
+        emitterService.sendEvent(emitterId, "failure", Map.of("orderNumber", orderNumber));
+
         return "Failed payment process";
     }
 
-    @GetMapping("/api/v1/payment/{paymentType}/cancel/{paymentRequestId}/{idempotencyKey}")
+    @GetMapping("/api/v1/payment/{paymentType}/cancel/{paymentRequestId}/{idempotencyKey}/{orderNumber}/{emitterId}")
     public String cancelPaymentProcess(
             @PathVariable("paymentType") String paymentType,
             @PathVariable("paymentRequestId") String paymentRequestId,
-            @PathVariable("idempotencyKey") String idempotencyKey) {
+            @PathVariable("idempotencyKey") String idempotencyKey,
+            @PathVariable("orderNumber") String orderNumber,
+            @PathVariable("emitterId") String emitterId) {
 
         var idempotentKeyDto = new IdempotentDto(idempotencyKey,
                 HttpMethod.GET.name(),
@@ -97,6 +102,8 @@ public class PaymentController {
                 paymentType + paymentRequestId + idempotencyKey);
 
         paymentGateway.handlePaymentCancel(idempotentKeyDto, paymentType, paymentRequestId);
+
+        emitterService.sendEvent(emitterId, "canceled", Map.of("orderNumber", orderNumber));
 
         return "Canceled payment process";
     }
