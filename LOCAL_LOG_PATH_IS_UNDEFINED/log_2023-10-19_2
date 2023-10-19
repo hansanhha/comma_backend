@@ -107,3 +107,75 @@ data:{"msg":"Comma EventStream Connected.","id":"5484587b2310192212"}
     "sseId" : "5484587b2310192212"
 }
 [2023-10-19 22:13:05:379155] INFO  25434 --- [nio-8080-exec-7] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: {"redirectPcWebUrl":"https://online-pay.kakao.com/mockup/v1/c4775e96e95ddc37da2681963b9237a838ad841ab5c65279f36a11d01eb16d98/info","redirectMobileWebUrl":"https://online-pay.kakao.com/mockup/v1/c4775e96e95ddc37da2681963b9237a838ad841ab5c65279f36a11d01eb16d98/mInfo"}
+[2023-10-19 22:26:49:422] INFO  25956 --- [           main] c.k.c.c.CommaBackendApplication          : Starting CommaBackendApplication using Java 17.0.7 with PID 25956 (/Users/hansanhha/Workspace/project/comma_backend/build/classes/java/main started by hansanhha in /Users/hansanhha/Workspace/project/comma_backend)
+[2023-10-19 22:26:49:423] INFO  25956 --- [           main] c.k.c.c.CommaBackendApplication          : The following 1 profile is active: "local"
+[2023-10-19 22:26:57:7986] INFO  25956 --- [           main] c.k.c.c.CommaBackendApplication          : Started CommaBackendApplication in 7.901 seconds (process running for 8.593)
+[2023-10-19 22:27:02:13581] INFO  25956 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 22:27:02:13582] INFO  25956 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] /sse/connect content-type : null
+[2023-10-19 22:27:02:13619] INFO  25956 --- [nio-8080-exec-2] c.k.c.c.common.sse.SseEmitterService     : SseEmitter created. emitters size: 1
+[2023-10-19 22:27:02:13630] INFO  25956 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: event:connect
+data:{"msg":"Comma EventStream Connected.","id":"962c7b072310192227"}
+
+
+[2023-10-19 22:28:03:73983] INFO  25956 --- [nio-8080-exec-3] c.k.c.c.common.sse.SseEmitterService     : SseEmitter timeout. emitters size: 1
+[2023-10-19 22:28:03:74021] INFO  25956 --- [nio-8080-exec-3] c.k.c.c.common.sse.SseEmitterService     : SseEmitter complete. emitters size: 0
+[2023-10-19 22:28:03:74026] INFO  25956 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 22:28:03:74026] INFO  25956 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /api/v2/order/arduino content-type : application/json
+[2023-10-19 22:28:03:74502] INFO  25956 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
+[2023-10-19 22:28:03:74502] INFO  25956 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.order.controller.user.OrderController#orderUseSSE(String, OrderRequest)
+[2023-10-19 22:28:04:75026] INFO  25956 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
+    "subject" : "SENIER_PROJECT",
+    "paymentType": "KAKAO",
+    "sseId" : "962c7b072310192227"
+}
+[2023-10-19 22:28:04:75026] INFO  25956 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: {"redirectPcWebUrl":"https://online-pay.kakao.com/mockup/v1/3b3f52cc06a7a2f831341ada90d1c6a54c360db4f4da755147995e27f8e8cf59/info","redirectMobileWebUrl":"https://online-pay.kakao.com/mockup/v1/3b3f52cc06a7a2f831341ada90d1c6a54c360db4f4da755147995e27f8e8cf59/mInfo"}
+[2023-10-19 22:30:40:231407] INFO  25956 --- [nio-8080-exec-5] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 22:30:40:231408] INFO  25956 --- [nio-8080-exec-5] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] /sse/connect content-type : null
+[2023-10-19 22:30:40:231425] INFO  25956 --- [nio-8080-exec-5] c.k.c.c.common.sse.SseEmitterService     : SseEmitter created. emitters size: 1
+[2023-10-19 22:30:40:231426] INFO  25956 --- [nio-8080-exec-5] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: event:connect
+data:{"msg":"Comma EventStream Connected.","id":"a8f489252310192230"}
+
+
+[2023-10-19 22:30:43:234443] INFO  25956 --- [nio-8080-exec-6] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 22:30:43:234443] INFO  25956 --- [nio-8080-exec-6] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] /sse/connect content-type : null
+[2023-10-19 22:30:43:234455] INFO  25956 --- [nio-8080-exec-6] c.k.c.c.common.sse.SseEmitterService     : SseEmitter created. emitters size: 2
+[2023-10-19 22:30:43:234456] INFO  25956 --- [nio-8080-exec-6] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: event:connect
+data:{"msg":"Comma EventStream Connected.","id":"ae72f63d2310192230"}
+
+
+[2023-10-19 22:31:41:291970] INFO  25956 --- [nio-8080-exec-7] c.k.c.c.common.sse.SseEmitterService     : SseEmitter timeout. emitters size: 2
+[2023-10-19 22:31:41:291987] INFO  25956 --- [nio-8080-exec-7] c.k.c.c.common.sse.SseEmitterService     : SseEmitter complete. emitters size: 1
+[2023-10-19 22:31:44:294974] INFO  25956 --- [nio-8080-exec-8] c.k.c.c.common.sse.SseEmitterService     : SseEmitter timeout. emitters size: 1
+[2023-10-19 22:31:44:294982] INFO  25956 --- [nio-8080-exec-8] c.k.c.c.common.sse.SseEmitterService     : SseEmitter complete. emitters size: 0
+[2023-10-19 22:31:44:294984] INFO  25956 --- [nio-8080-exec-8] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 22:31:44:294984] INFO  25956 --- [nio-8080-exec-8] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] /sse/connect content-type : null
+[2023-10-19 22:31:44:294994] INFO  25956 --- [nio-8080-exec-8] c.k.c.c.common.sse.SseEmitterService     : SseEmitter created. emitters size: 1
+[2023-10-19 22:31:44:294997] INFO  25956 --- [nio-8080-exec-8] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: event:connect
+data:{"msg":"Comma EventStream Connected.","id":"ec414af82310192231"}
+
+
+[2023-10-19 22:32:45:355972] INFO  25956 --- [nio-8080-exec-9] c.k.c.c.common.sse.SseEmitterService     : SseEmitter timeout. emitters size: 1
+[2023-10-19 22:32:45:355983] INFO  25956 --- [nio-8080-exec-9] c.k.c.c.common.sse.SseEmitterService     : SseEmitter complete. emitters size: 0
+[2023-10-19 22:32:45:355986] INFO  25956 --- [nio-8080-exec-9] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 22:32:45:355986] INFO  25956 --- [nio-8080-exec-9] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] /sse/connect content-type : null
+[2023-10-19 22:32:45:355993] INFO  25956 --- [nio-8080-exec-9] c.k.c.c.common.sse.SseEmitterService     : SseEmitter created. emitters size: 1
+[2023-10-19 22:32:45:355994] INFO  25956 --- [nio-8080-exec-9] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: event:connect
+data:{"msg":"Comma EventStream Connected.","id":"9efef6a32310192232"}
+
+
+[2023-10-19 22:33:43:412] INFO  26041 --- [           main] c.k.c.c.CommaBackendApplication          : Starting CommaBackendApplication using Java 17.0.7 with PID 26041 (/Users/hansanhha/Workspace/project/comma_backend/build/classes/java/main started by hansanhha in /Users/hansanhha/Workspace/project/comma_backend)
+[2023-10-19 22:33:43:413] INFO  26041 --- [           main] c.k.c.c.CommaBackendApplication          : The following 1 profile is active: "local"
+[2023-10-19 22:33:49:6474] INFO  26041 --- [           main] c.k.c.c.CommaBackendApplication          : Started CommaBackendApplication in 6.388 seconds (process running for 6.95)
+[2023-10-19 22:33:49:6660] INFO  26041 --- [nio-8080-exec-1] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 22:33:49:6660] INFO  26041 --- [nio-8080-exec-1] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] /sse/connect content-type : null
+[2023-10-19 22:33:49:6703] INFO  26041 --- [nio-8080-exec-1] c.k.c.c.common.sse.SseEmitterService     : SseEmitter created. emitters size: 1
+[2023-10-19 22:33:49:6712] INFO  26041 --- [nio-8080-exec-1] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: event:connect
+data:{"msg":"Comma EventStream Connected.","id":"8ff9d0c52310192233"}
+
+
+[2023-10-19 22:38:28:285830] INFO  26041 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 22:38:28:285832] INFO  26041 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /api/v2/order/arduino content-type : null
+[2023-10-19 22:38:28:285937] INFO  26041 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Server response : 401 payload: Invalid token
+[2023-10-19 22:40:13:390183] INFO  26041 --- [nio-8080-exec-4] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-19 22:40:13:390184] INFO  26041 --- [nio-8080-exec-4] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /api/v2/order/arduino content-type : null
+[2023-10-19 22:40:13:390295] INFO  26041 --- [nio-8080-exec-4] c.k.c.c.s.filter.LoggingFilter           : Server response : 401 payload: Invalid token

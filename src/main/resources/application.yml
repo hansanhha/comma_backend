@@ -53,3 +53,7 @@ payment:
   amount : 3000
   tax-free-amount: 3000
   product-name: 컴마 실습재료 신청 보증금
+
+server:
+  http2:
+    enabled: true

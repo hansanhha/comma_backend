@@ -20,7 +20,7 @@ public class SseEmitterService {
     private final Map<String, SseEmitter> emitters = new ConcurrentHashMap<>();
 
     public SseEmitter create() {
-        SseEmitter emitter = new SseEmitter(60 * 1000L);
+        SseEmitter emitter = new SseEmitter(60L * 1000 * 60);
 
         String id = GenerateUtils.generatedRandomCode();
         emitters.put(id, emitter);
