@@ -27,7 +27,7 @@ import static com.know_wave.comma.comma_backend.util.message.ExceptionMessageSou
 public class OrderService {
 
     private final AccountQueryService accountQueryService;
-    private final OrderQueryService orderQueryService;
+    private final OrderInfoQueryService orderInfoQueryService;
     private final OrderEmailService orderEmailService;
     private final ArduinoService arduinoService;
     private final BasketService basketService;
@@ -64,7 +64,7 @@ public class OrderService {
 
         Account account = accountQueryService.findAccount(getAuthenticatedId());
 
-        OrderInfo orderInfo = orderQueryService.fetchOrdersArduinoAccount(orderNumber);
+        OrderInfo orderInfo = orderInfoQueryService.fetchOrdersArduinoAccount(orderNumber);
 
         Arduino arduino = arduinoService.getArduino(request.getArduinoId());
 
@@ -92,7 +92,7 @@ public class OrderService {
 
         final String accountId = getAuthenticatedId();
         Account account = accountQueryService.findAccount(accountId);
-        List<OrderInfo> orderInfos = orderQueryService.getOrderInfosByAccount(account);
+        List<OrderInfo> orderInfos = orderInfoQueryService.getOrderInfosByAccount(account);
 
         return OrderResponse.ofList(orderInfos);
     }
@@ -100,7 +100,7 @@ public class OrderService {
     public OrderDetailResponse getOrderDetail(String orderNumber) {
 
         Account account = accountQueryService.findAccount(getAuthenticatedId());
-        OrderInfo orderInfo = orderQueryService.fetchOrdersArduinoAccount(orderNumber);
+        OrderInfo orderInfo = orderInfoQueryService.fetchOrdersArduinoAccount(orderNumber);
 
         if (orderInfo.isNotOrderer(account)) {
             throw new BadCredentialsException(BAD_CREDENTIALS);

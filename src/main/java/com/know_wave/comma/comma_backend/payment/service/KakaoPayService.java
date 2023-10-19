@@ -7,12 +7,9 @@ import com.know_wave.comma.comma_backend.payment.entity.PaymentType;
 import com.know_wave.comma.comma_backend.util.GenerateUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Service
@@ -39,7 +36,7 @@ public class KakaoPayService implements PaymentService {
         String paymentRequestId = GenerateUtils.generatedCodeWithDate();
 
         var readyRequest = KakaoPayReadyRequest.of(idempotencyKey, paymentRequestId, request, cid, depositPolicy);
-        var httpEntity = HttpEntityCreator.of(readyRequest.getValue());
+        var httpEntity = WebEntityCreator.toPaymentEntity(readyRequest.getValue());
 
         var kakaoPayReadyResponse = kakaoPayApiClient.postForObject(
                 paymentReadyUrl,
@@ -53,7 +50,7 @@ public class KakaoPayService implements PaymentService {
     public void pay(Deposit deposit, String paymentToken) {
         var approveRequest = KakaoPayApproveRequest.of(cid, deposit, paymentToken);
 
-        var httpEntity = HttpEntityCreator.of(approveRequest.getValue());
+        var httpEntity = WebEntityCreator.toPaymentEntity(approveRequest.getValue());
 
         var response = kakaoPayApiClient.postForEntity(
                 paymentApproveUrl,
@@ -65,7 +62,7 @@ public class KakaoPayService implements PaymentService {
     public PaymentRefundResult refund(Deposit deposit) {
         var cancelRequest = KaKaoPayCancelRequest.of(cid, deposit);
 
-        var httpEntity = HttpEntityCreator.of(cancelRequest.getValue());
+        var httpEntity = WebEntityCreator.toPaymentEntity(cancelRequest.getValue());
 
         var response = kakaoPayApiClient.postForEntity(
                 paymentCancelUrl,

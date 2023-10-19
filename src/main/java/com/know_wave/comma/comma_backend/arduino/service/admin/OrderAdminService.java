@@ -9,7 +9,7 @@ import com.know_wave.comma.comma_backend.arduino.entity.*;
 import com.know_wave.comma.comma_backend.arduino.repository.OrderInfoRepository;
 import com.know_wave.comma.comma_backend.arduino.service.normal.ArduinoService;
 import com.know_wave.comma.comma_backend.arduino.service.normal.OrderEmailService;
-import com.know_wave.comma.comma_backend.arduino.service.normal.OrderQueryService;
+import com.know_wave.comma.comma_backend.arduino.service.normal.OrderInfoQueryService;
 import com.know_wave.comma.comma_backend.arduino.service.normal.OrderService;
 import com.know_wave.comma.comma_backend.util.ValidateUtils;
 import com.know_wave.comma.comma_backend.security.annotation.PermissionProtection;
@@ -36,7 +36,7 @@ public class OrderAdminService {
     private final ArduinoService arduinoService;
     private final AccountQueryService accountQueryService;
     private final OrderInfoRepository orderInfoRepository;
-    private final OrderQueryService orderQueryService;
+    private final OrderInfoQueryService orderInfoQueryService;
 
     public List<OrderResponse> getOrders(Pageable pageable) {
         List<OrderInfo> orderInfos = orderInfoRepository.findAllOrderByCreateDate(pageable);
@@ -74,7 +74,7 @@ public class OrderAdminService {
     }
 
     public OrderDetailResponse getOrderDetailByOrderNumber(String orderNumber) {
-        OrderInfo orderInfo = orderQueryService.fetchOrdersArduinoAccount(orderNumber);
+        OrderInfo orderInfo = orderInfoQueryService.fetchOrdersArduinoAccount(orderNumber);
 
         List<ArduinoCategory> arduinoCategories = arduinoService.getArduinoCategoreisByArduinos(
                 orderInfo.getOrders().stream().map(Order::getArduino).toList());
@@ -86,7 +86,7 @@ public class OrderAdminService {
 
     public List<OrderResponse> getOrdersByAccountId(String accountId) {
         Account account = accountQueryService.findAccount(accountId);
-        List<OrderInfo> userOrderInfos = orderQueryService.getOrderInfosByAccount(account);
+        List<OrderInfo> userOrderInfos = orderInfoQueryService.getOrderInfosByAccount(account);
 
         return OrderResponse.ofList(userOrderInfos);
     }
@@ -100,7 +100,7 @@ public class OrderAdminService {
     }
 
     public void changeOrderStatus(String orderNumber, OrderStatus changedStatus) {
-        OrderInfo orderInfo = orderQueryService.fetchOrdersArduinoAccount(orderNumber);
+        OrderInfo orderInfo = orderInfoQueryService.fetchOrdersArduinoAccount(orderNumber);
 
         if (orderInfo.getStatus().changeableTo(changedStatus)) {
             orderInfo.setStatus(changedStatus);

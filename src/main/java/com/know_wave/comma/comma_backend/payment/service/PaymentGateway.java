@@ -1,5 +1,7 @@
 package com.know_wave.comma.comma_backend.payment.service;
 
+import com.know_wave.comma.comma_backend.arduino.entity.OrderInfo;
+import com.know_wave.comma.comma_backend.arduino.service.normal.OrderInfoQueryService;
 import com.know_wave.comma.comma_backend.common.idempotency.Idempotency;
 import com.know_wave.comma.comma_backend.common.idempotency.Idempotent;
 import com.know_wave.comma.comma_backend.common.idempotency.IdempotentDto;
@@ -25,9 +27,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class PaymentGateway {
 
     private final DepositQueryService depositQueryService;
+    private final OrderInfoQueryService orderInfoQueryService;
     private final PaymentManager paymentManager;
     private final DepositRepository depositRepository;
     private final IdempotentKeyRepository idempotentKeyRepository;
+    private final CommaArduinoDepositPolicy depositPolicy;
 
     // api/v1/payment/*/*/paymentRequestId/idempotencyKey
     // paymentRequestId : PG, 간편결제에서 결제 요청(결제 준비) 후 redirect 됐을 때 DB 로우 식별 용도
@@ -36,25 +40,24 @@ public class PaymentGateway {
     public static final String failUrl = "http://localhost:8080/api/v1/payment/%s/fail/%s/%s";
     public static final String cancelUrl = "http://localhost:8080/api/v1/payment/%s/cancel/%s/%s";
 
-    public PaymentAuthResponse ready(IdempotentDto idempotentDto, PaymentAuthRequest request) {
+    public PaymentAuthResponse preparePayment(IdempotentDto idempotentDto, PaymentAuthRequest request) {
         paymentManager.checkAlreadyPaid(request.arduinoOrderId());
 
         var paymentService = paymentManager.getPaymentService(request.paymentType());
-
         var paymentAuthResult = paymentService.ready(idempotentDto.idempotentKey(), request);
+        var paymentAuthResponse = new PaymentAuthResponse(paymentAuthResult.redirectMobileWebUrl(), paymentAuthResult.redirectPcWebUrl());
 
-        var result = new PaymentAuthResponse(paymentAuthResult.redirectMobileWebUrl(), paymentAuthResult.redirectPcWebUrl());
-
-        Deposit deposit = paymentManager.createEntity(request, paymentAuthResult.paymentRequestId(), paymentAuthResult.transactionId());
-        Idempotent idempotent = IdempotentDto.of(idempotentDto, HttpStatus.OK.value(), result);
+        OrderInfo orderInfo = orderInfoQueryService.fetchAccount(request.arduinoOrderId());
+        Deposit deposit = Deposit.of(request.paymentType(), paymentAuthResult.paymentRequestId(), paymentAuthResult.transactionId(), orderInfo, depositPolicy.getAmount(), depositPolicy.getProductName(), true, true);
+        Idempotent idempotent = IdempotentDto.of(idempotentDto, HttpStatus.OK.value(), paymentAuthResponse);
 
         depositRepository.save(deposit);
         idempotentKeyRepository.save(idempotent);
 
-        return result;
+        return paymentAuthResponse;
     }
 
-    public void pay(IdempotentDto idempotentDto, String type, String paymentRequestId, String paymentToken) {
+    public void confirmPayment(IdempotentDto idempotentDto, String type, String paymentRequestId, String paymentToken) {
         PaymentType paymentType = PaymentType.valueOf(type.toUpperCase());
 
         var paymentService = paymentManager.getPaymentService(paymentType);
@@ -70,7 +73,7 @@ public class PaymentGateway {
         deposit.setDepositStatus(DepositStatus.PAID);
     }
 
-    public void refund(IdempotentDto idempotentDto, PaymentRefundRequest request) {
+    public void refundPayment(IdempotentDto idempotentDto, PaymentRefundRequest request) {
         var paymentService = paymentManager.getPaymentService(request.getPaymentType());
 
         Deposit deposit = depositQueryService.getDepositById(request.getPaymentId());
@@ -90,7 +93,7 @@ public class PaymentGateway {
 //        paymentService.cancel(request);
     }
 
-    public void cancelProcess(IdempotentDto idempotentDto, String type, String paymentRequestId) {
+    public void handlePaymentCancel(IdempotentDto idempotentDto, String type, String paymentRequestId) {
         Deposit deposit = depositQueryService.getDepositByRequestId(paymentRequestId);
         Idempotent idempotent = IdempotentDto.of(idempotentDto, HttpStatus.OK.value(), "already canceled payment process");
 
@@ -98,7 +101,7 @@ public class PaymentGateway {
         idempotentKeyRepository.save(idempotent);
     }
 
-    public void failProcess(IdempotentDto idempotentDto, String type, String paymentRequestId) {
+    public void handlePaymentFailure(IdempotentDto idempotentDto, String type, String paymentRequestId) {
         Deposit deposit = depositQueryService.getDepositByRequestId(paymentRequestId);
         Idempotent idempotent = IdempotentDto.of(idempotentDto, HttpStatus.OK.value(), "already failed payment process");
 

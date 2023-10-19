@@ -16,7 +16,7 @@ import static com.know_wave.comma.comma_backend.util.message.ExceptionMessageSou
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class OrderQueryService {
+public class OrderInfoQueryService {
 
     private final OrderInfoRepository orderInfoRepository;
 

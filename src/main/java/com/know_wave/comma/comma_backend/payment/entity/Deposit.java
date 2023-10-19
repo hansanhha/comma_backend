@@ -13,6 +13,22 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Deposit extends BaseTimeEntity {
 
+    public static Deposit of(PaymentType paymentType, String paymentRequestId, String transactionId, OrderInfo orderInfo, int amount, String productName, boolean paymentTermsAgreement, boolean personalInfoTermsAgreement) {
+        return new Deposit(orderInfo.getAccount(),
+                orderInfo,
+                paymentRequestId,
+                transactionId,
+                DepositStatus.NONE,
+                PaymentStatus.REQUEST,
+                paymentType,
+                null,
+                amount,
+                productName,
+                paymentTermsAgreement,
+                personalInfoTermsAgreement
+        );
+    }
+
     public Deposit(Account account, OrderInfo orderInfo, String paymentRequestId, String paymentTransactionId, DepositStatus depositStatus, PaymentStatus paymentStatus, PaymentType paymentType, PaymentMethodType paymentMethodType, int totalAmount, String itemName, boolean paymentTermsAgreement, boolean personalInfoTermsAgreement) {
         this.account = account;
         this.orderInfo = orderInfo;
@@ -40,8 +56,8 @@ public class Deposit extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_info_id")
     private OrderInfo orderInfo;
-
     private String paymentRequestId;
+
     private String paymentTransactionId;
 
     @Enumerated(EnumType.STRING)
