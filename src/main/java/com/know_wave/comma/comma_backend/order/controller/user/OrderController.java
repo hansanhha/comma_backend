@@ -5,12 +5,14 @@ import com.know_wave.comma.comma_backend.order.service.user.OrderService;
 import com.know_wave.comma.comma_backend.order.dto.*;
 import com.know_wave.comma.comma_backend.payment.dto.PaymentPrepareDto;
 import com.know_wave.comma.comma_backend.payment.dto.PaymentPrepareResponse;
+import com.know_wave.comma.comma_backend.payment.dto.PaymentPrepareResponseSSE;
 import com.know_wave.comma.comma_backend.payment.service.PaymentGateway;
 import com.know_wave.comma.comma_backend.util.GenerateUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
 
@@ -38,6 +40,22 @@ public class OrderController {
         return paymentGateway.prepare(idempotentKeyDto,
                 new PaymentPrepareDto(orderNumber, request.getPaymentType()),
                 new OrderInfoDto(request.getSubject()));
+    }
+
+    @PostMapping("/api/v2/order/arduino")
+    public SseEmitter orderUseSSE(@RequestHeader("Idempotency-Key") String idempotencyKey,
+                                   @Valid @RequestBody OrderRequest request) {
+
+        String orderNumber = GenerateUtils.generatedCodeWithDate();
+
+        var idempotentKeyDto = new IdempotentDto(idempotencyKey, HttpMethod.POST.name(), "/api/v1/order/arduino", request.toString());
+
+        PaymentPrepareResponse prepareResponse = paymentGateway.prepare(idempotentKeyDto,
+                new PaymentPrepareDto(orderNumber, request.getPaymentType()),
+                new OrderInfoDto(request.getSubject()));
+
+        
+
     }
 
     @PostMapping("/orders/{orderCode}/arduino")
