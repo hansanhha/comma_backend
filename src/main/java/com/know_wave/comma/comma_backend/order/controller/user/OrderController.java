@@ -1,11 +1,10 @@
 package com.know_wave.comma.comma_backend.order.controller.user;
 
 import com.know_wave.comma.comma_backend.common.idempotency.IdempotentDto;
-import com.know_wave.comma.comma_backend.order.service.user.OrderService;
 import com.know_wave.comma.comma_backend.order.dto.*;
+import com.know_wave.comma.comma_backend.order.service.user.OrderService;
 import com.know_wave.comma.comma_backend.payment.dto.PaymentPrepareDto;
 import com.know_wave.comma.comma_backend.payment.dto.PaymentPrepareResponse;
-import com.know_wave.comma.comma_backend.payment.dto.PaymentPrepareResponseSSE;
 import com.know_wave.comma.comma_backend.payment.service.PaymentGateway;
 import com.know_wave.comma.comma_backend.util.GenerateUtils;
 import jakarta.validation.Valid;
@@ -54,7 +53,6 @@ public class OrderController {
                 new PaymentPrepareDto(orderNumber, request.getPaymentType()),
                 new OrderInfoDto(request.getSubject()));
 
-        
 
     }
 

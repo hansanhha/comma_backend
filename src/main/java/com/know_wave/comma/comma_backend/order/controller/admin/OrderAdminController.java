@@ -3,7 +3,7 @@ package com.know_wave.comma.comma_backend.order.controller.admin;
 import com.know_wave.comma.comma_backend.order.dto.OrderDetailResponse;
 import com.know_wave.comma.comma_backend.order.dto.OrderResponse;
 import com.know_wave.comma.comma_backend.order.dto.OrderStatusUpdateRequest;
-import com.know_wave.comma.comma_backend.arduino.service.admin.OrderAdminService;
+import com.know_wave.comma.comma_backend.order.service.admin.OrderAdminService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;

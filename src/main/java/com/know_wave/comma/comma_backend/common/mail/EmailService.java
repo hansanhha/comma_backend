@@ -1,9 +1,9 @@
-package com.know_wave.comma.comma_backend.util.mail;
+package com.know_wave.comma.comma_backend.common.mail;
 
 import com.know_wave.comma.comma_backend.account.entity.AccountEmailVerify;
 import com.know_wave.comma.comma_backend.account.repository.AccountVerifyRepository;
-import com.know_wave.comma.comma_backend.util.mail.exception.EmailVerifiedException;
-import com.know_wave.comma.comma_backend.util.mail.exception.NotFoundEmailException;
+import com.know_wave.comma.comma_backend.common.mail.exception.EmailVerifiedException;
+import com.know_wave.comma.comma_backend.common.mail.exception.NotFoundEmailException;
 import com.know_wave.comma.comma_backend.util.GenerateUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

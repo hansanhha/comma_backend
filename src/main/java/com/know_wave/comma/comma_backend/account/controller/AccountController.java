@@ -2,7 +2,7 @@ package com.know_wave.comma.comma_backend.account.controller;
 
 import com.know_wave.comma.comma_backend.account.dto.*;
 import com.know_wave.comma.comma_backend.account.service.normal.AccountManagementService;
-import com.know_wave.comma.comma_backend.util.mail.EmailService;
+import com.know_wave.comma.comma_backend.common.mail.EmailService;
 import com.know_wave.comma.comma_backend.account.service.auth.SignService;
 import com.know_wave.comma.comma_backend.account.service.auth.TokenService;
 import jakarta.servlet.http.Cookie;

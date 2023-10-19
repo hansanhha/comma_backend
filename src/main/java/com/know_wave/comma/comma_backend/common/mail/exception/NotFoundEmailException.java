@@ -1,4 +1,4 @@
-package com.know_wave.comma.comma_backend.util.mail.exception;
+package com.know_wave.comma.comma_backend.common.mail.exception;
 
 import jakarta.persistence.EntityNotFoundException;
 

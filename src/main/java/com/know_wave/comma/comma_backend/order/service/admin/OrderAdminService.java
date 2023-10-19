@@ -1,4 +1,4 @@
-package com.know_wave.comma.comma_backend.arduino.service.admin;
+package com.know_wave.comma.comma_backend.order.service.admin;
 
 import com.know_wave.comma.comma_backend.account.entity.Account;
 import com.know_wave.comma.comma_backend.account.entity.auth.Role;

@@ -1,6 +1,6 @@
 package com.know_wave.comma.comma_backend.order.service.user;
 
-import com.know_wave.comma.comma_backend.util.mail.EmailService;
+import com.know_wave.comma.comma_backend.common.mail.EmailService;
 import com.know_wave.comma.comma_backend.order.dto.OrderArduino;
 import com.know_wave.comma.comma_backend.order.entity.Order;
 import com.know_wave.comma.comma_backend.order.entity.OrderInfo;
