@@ -1,0 +1,21 @@
+[2023-10-20 10:36:38:475] INFO  27519 --- [           main] c.k.c.c.CommaBackendApplication          : Starting CommaBackendApplication using Java 17.0.7 with PID 27519 (/Users/hansanhha/Workspace/project/comma_backend/build/classes/java/main started by hansanhha in /Users/hansanhha/Workspace/project/comma_backend)
+[2023-10-20 10:36:38:476] INFO  27519 --- [           main] c.k.c.c.CommaBackendApplication          : The following 1 profile is active: "local"
+[2023-10-20 10:36:45:8230] INFO  27519 --- [           main] c.k.c.c.CommaBackendApplication          : Started CommaBackendApplication in 8.125 seconds (process running for 8.789)
+[2023-10-20 10:38:16:99014] INFO  27519 --- [nio-8080-exec-1] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-20 10:38:16:99015] INFO  27519 --- [nio-8080-exec-1] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /account/signin content-type : text/plain;charset=UTF-8
+[2023-10-20 10:38:16:99054] INFO  27519 --- [nio-8080-exec-1] c.k.c.c.s.filter.LoggingFilter           : Server response : 415 payload: empty
+[2023-10-20 10:41:16:278392] INFO  27519 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-20 10:41:16:278393] INFO  27519 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /account/signin content-type : text/plain;charset=UTF-8
+[2023-10-20 10:41:16:278407] INFO  27519 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Server response : 415 payload: empty
+[2023-10-20 10:41:27:289975] INFO  27519 --- [nio-8080-exec-5] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-20 10:41:27:289976] INFO  27519 --- [nio-8080-exec-5] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /account/signin content-type : text/plain;charset=UTF-8
+[2023-10-20 10:41:27:289980] INFO  27519 --- [nio-8080-exec-5] c.k.c.c.s.filter.LoggingFilter           : Server response : 415 payload: empty
+[2023-10-20 10:41:31:293437] INFO  27519 --- [nio-8080-exec-6] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-20 10:41:31:293438] INFO  27519 --- [nio-8080-exec-6] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /account/signin content-type : text/plain;charset=UTF-8
+[2023-10-20 10:41:31:293442] INFO  27519 --- [nio-8080-exec-6] c.k.c.c.s.filter.LoggingFilter           : Server response : 415 payload: empty
+[2023-10-20 10:42:27:350100] INFO  27519 --- [nio-8080-exec-8] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-20 10:42:27:350101] INFO  27519 --- [nio-8080-exec-8] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /account/signin content-type : text/plain;charset=UTF-8
+[2023-10-20 10:42:27:350104] INFO  27519 --- [nio-8080-exec-8] c.k.c.c.s.filter.LoggingFilter           : Server response : 415 payload: empty
+[2023-10-20 10:43:05:388362] INFO  27519 --- [io-8080-exec-10] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-20 10:43:05:388362] INFO  27519 --- [io-8080-exec-10] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /account/signin content-type : text/plain;charset=UTF-8
+[2023-10-20 10:43:05:388365] INFO  27519 --- [io-8080-exec-10] c.k.c.c.s.filter.LoggingFilter           : Server response : 415 payload: empty

@@ -1,0 +1,6 @@
+[2023-10-25 15:10:06:1771] INFO  46160 --- [           main] c.k.c.c.CommaBackendApplication          : Starting CommaBackendApplication using Java 20.0.1 with PID 46160 (/Users/hansanhha/Workspace/project/comma_backend/build/classes/java/main started by hansanhha in /Users/hansanhha/Workspace/project/comma_backend)
+[2023-10-25 15:10:06:1772] INFO  46160 --- [           main] c.k.c.c.CommaBackendApplication          : The following 1 profile is active: "local"
+[2023-10-25 15:10:16:11658] INFO  46160 --- [           main] c.k.c.c.CommaBackendApplication          : Started CommaBackendApplication in 11.444 seconds (process running for 12.409)
+[2023-10-25 17:38:22:435] INFO  47822 --- [           main] c.k.c.c.CommaBackendApplication          : Starting CommaBackendApplication using Java 20.0.1 with PID 47822 (/Users/hansanhha/Workspace/project/comma_backend/build/classes/java/main started by hansanhha in /Users/hansanhha/Workspace/project/comma_backend)
+[2023-10-25 17:38:22:436] INFO  47822 --- [           main] c.k.c.c.CommaBackendApplication          : The following 1 profile is active: "local"
+[2023-10-25 17:38:29:7179] INFO  47822 --- [           main] c.k.c.c.CommaBackendApplication          : Started CommaBackendApplication in 7.089 seconds (process running for 7.677)
