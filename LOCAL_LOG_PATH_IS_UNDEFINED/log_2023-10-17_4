@@ -1,15 +1,15 @@
 [2023-10-17 20:05:54:65754] INFO  16093 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-17 20:05:54:65758] INFO  16093 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] /orders content-type : null
 [2023-10-17 20:05:54:65778] INFO  16093 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-17 20:05:54:65778] INFO  16093 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.order.controller.user.OrderController#getOrders()
+[2023-10-17 20:05:54:65778] INFO  16093 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : user.controller.order.know_wave.comma.OrderController#getOrders()
 [2023-10-17 20:05:54:65794] INFO  16093 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Client payload = empty
 [2023-10-17 20:05:54:65795] INFO  16093 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: [{"accountId":"testid1234","orderCode":"e490de2310172005","orderStatus":"신청 완료","orderDate":"2023-10-17T20:05:48.859934","orderDescription":"테스트 주문 2","subject":"졸업작품","cancelReason":null}]
 [2023-10-17 20:06:16:88133] INFO  16093 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-17 20:06:16:88133] INFO  16093 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /api/v1/payment/ready content-type : application/json
 [2023-10-17 20:06:16:88155] INFO  16093 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-17 20:06:16:88155] INFO  16093 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(PaymentRequest)
+[2023-10-17 20:06:16:88155] INFO  16093 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : controller.payment.know_wave.comma.PaymentController#readyPayment(PaymentRequest)
 [2023-10-17 20:06:16:88248] ERROR 16093 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Server error occurred
-[2023-10-17 20:06:16:88249] ERROR 16093 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : - location : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(PaymentRequest)
+[2023-10-17 20:06:16:88249] ERROR 16093 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : - location : controller.payment.know_wave.comma.PaymentController#readyPayment(PaymentRequest)
 [2023-10-17 20:06:16:88249] ERROR 16093 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : - exception : org.springframework.web.client.HttpClientErrorException$BadRequest: 400 Bad Request: "{"msg":"cid can't be null.","code":-2}"
 [2023-10-17 20:06:16:88249] ERROR 16093 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : - Client request payload : {
     "accountId": "testid1234",
@@ -20,9 +20,9 @@
 [2023-10-17 20:08:36:227650] INFO  16093 --- [nio-8080-exec-6] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-17 20:08:36:227652] INFO  16093 --- [nio-8080-exec-6] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /api/v1/payment/ready content-type : application/json
 [2023-10-17 20:08:36:227688] INFO  16093 --- [nio-8080-exec-6] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-17 20:08:36:227688] INFO  16093 --- [nio-8080-exec-6] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(PaymentRequest)
+[2023-10-17 20:08:36:227688] INFO  16093 --- [nio-8080-exec-6] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : controller.payment.know_wave.comma.PaymentController#readyPayment(PaymentRequest)
 [2023-10-17 20:08:36:227746] ERROR 16093 --- [nio-8080-exec-6] c.k.c.c.s.i.LoggingInterceptor           : Server error occurred
-[2023-10-17 20:08:36:227746] ERROR 16093 --- [nio-8080-exec-6] c.k.c.c.s.i.LoggingInterceptor           : - location : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(PaymentRequest)
+[2023-10-17 20:08:36:227746] ERROR 16093 --- [nio-8080-exec-6] c.k.c.c.s.i.LoggingInterceptor           : - location : controller.payment.know_wave.comma.PaymentController#readyPayment(PaymentRequest)
 [2023-10-17 20:08:36:227746] ERROR 16093 --- [nio-8080-exec-6] c.k.c.c.s.i.LoggingInterceptor           : - exception : org.springframework.web.client.HttpClientErrorException$BadRequest: 400 Bad Request: "{"msg":"cid can't be null.","code":-2}"
 [2023-10-17 20:08:36:227746] ERROR 16093 --- [nio-8080-exec-6] c.k.c.c.s.i.LoggingInterceptor           : - Client request payload : {
     "accountId": "testid1234",
@@ -51,7 +51,7 @@
 [2023-10-17 20:16:02:27846] INFO  16196 --- [nio-8080-exec-4] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-17 20:16:02:27846] INFO  16196 --- [nio-8080-exec-4] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /admin/arduinos/category content-type : application/json
 [2023-10-17 20:16:02:27884] INFO  16196 --- [nio-8080-exec-4] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : admintest
-[2023-10-17 20:16:02:27885] INFO  16196 --- [nio-8080-exec-4] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.arduino.controller.admin.ArduinoAdminController#addCategory(CategoryNameDto)
+[2023-10-17 20:16:02:27885] INFO  16196 --- [nio-8080-exec-4] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : admin.controller.arduino.know_wave.comma.ArduinoAdminController#addCategory(CategoryNameDto)
 [2023-10-17 20:16:02:27892] INFO  16196 --- [nio-8080-exec-4] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
     "categoryName" : "모듈"
 }
@@ -59,17 +59,17 @@
 [2023-10-17 20:16:10:36683] INFO  16196 --- [nio-8080-exec-5] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-17 20:16:10:36683] INFO  16196 --- [nio-8080-exec-5] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /admin/arduinos content-type : application/json
 [2023-10-17 20:16:10:36704] INFO  16196 --- [nio-8080-exec-5] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : admintest
-[2023-10-17 20:16:10:36704] INFO  16196 --- [nio-8080-exec-5] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.arduino.controller.admin.ArduinoAdminController#addArduinoList(ArduinoCreateFormList)
+[2023-10-17 20:16:10:36704] INFO  16196 --- [nio-8080-exec-5] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : admin.controller.arduino.know_wave.comma.ArduinoAdminController#addArduinoList(ArduinoCreateFormList)
 [2023-10-17 20:16:11:36740] INFO  16196 --- [nio-8080-exec-5] c.k.c.c.s.filter.LoggingFilter           : Server response : 400 payload: Not exist category
 [2023-10-17 20:16:21:46785] INFO  16196 --- [nio-8080-exec-7] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-17 20:16:21:46786] INFO  16196 --- [nio-8080-exec-7] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /admin/arduinos/category content-type : application/json
 [2023-10-17 20:16:21:46809] INFO  16196 --- [nio-8080-exec-7] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : admintest
-[2023-10-17 20:16:21:46810] INFO  16196 --- [nio-8080-exec-7] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.arduino.controller.admin.ArduinoAdminController#addCategory(CategoryNameDto)
+[2023-10-17 20:16:21:46810] INFO  16196 --- [nio-8080-exec-7] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : admin.controller.arduino.know_wave.comma.ArduinoAdminController#addCategory(CategoryNameDto)
 [2023-10-17 20:16:21:46814] INFO  16196 --- [nio-8080-exec-7] c.k.c.c.s.filter.LoggingFilter           : Server response : 400 payload: Already exist value
 [2023-10-17 20:16:23:48843] INFO  16196 --- [nio-8080-exec-9] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-17 20:16:23:48844] INFO  16196 --- [nio-8080-exec-9] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /admin/arduinos/category content-type : application/json
 [2023-10-17 20:16:23:48869] INFO  16196 --- [nio-8080-exec-9] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : admintest
-[2023-10-17 20:16:23:48869] INFO  16196 --- [nio-8080-exec-9] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.arduino.controller.admin.ArduinoAdminController#addCategory(CategoryNameDto)
+[2023-10-17 20:16:23:48869] INFO  16196 --- [nio-8080-exec-9] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : admin.controller.arduino.know_wave.comma.ArduinoAdminController#addCategory(CategoryNameDto)
 [2023-10-17 20:16:23:48873] INFO  16196 --- [nio-8080-exec-9] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
     "categoryName" : "센서"
 }
@@ -77,12 +77,12 @@
 [2023-10-17 20:16:29:55410] INFO  16196 --- [io-8080-exec-10] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-17 20:16:29:55410] INFO  16196 --- [io-8080-exec-10] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /admin/arduinos content-type : application/json
 [2023-10-17 20:16:29:55434] INFO  16196 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : admintest
-[2023-10-17 20:16:29:55434] INFO  16196 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.arduino.controller.admin.ArduinoAdminController#addArduinoList(ArduinoCreateFormList)
+[2023-10-17 20:16:29:55434] INFO  16196 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : admin.controller.arduino.know_wave.comma.ArduinoAdminController#addArduinoList(ArduinoCreateFormList)
 [2023-10-17 20:16:29:55447] INFO  16196 --- [io-8080-exec-10] c.k.c.c.s.filter.LoggingFilter           : Server response : 400 payload: Not exist category
 [2023-10-17 20:16:33:59340] INFO  16196 --- [nio-8080-exec-1] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-17 20:16:33:59340] INFO  16196 --- [nio-8080-exec-1] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /admin/arduinos/category content-type : application/json
 [2023-10-17 20:16:33:59357] INFO  16196 --- [nio-8080-exec-1] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : admintest
-[2023-10-17 20:16:33:59357] INFO  16196 --- [nio-8080-exec-1] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.arduino.controller.admin.ArduinoAdminController#addCategory(CategoryNameDto)
+[2023-10-17 20:16:33:59357] INFO  16196 --- [nio-8080-exec-1] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : admin.controller.arduino.know_wave.comma.ArduinoAdminController#addCategory(CategoryNameDto)
 [2023-10-17 20:16:33:59364] INFO  16196 --- [nio-8080-exec-1] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
     "categoryName" : "기타"
 }
@@ -90,7 +90,7 @@
 [2023-10-17 20:16:39:65105] INFO  16196 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-17 20:16:39:65106] INFO  16196 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /admin/arduinos content-type : application/json
 [2023-10-17 20:16:39:65121] INFO  16196 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : admintest
-[2023-10-17 20:16:39:65122] INFO  16196 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.arduino.controller.admin.ArduinoAdminController#addArduinoList(ArduinoCreateFormList)
+[2023-10-17 20:16:39:65122] INFO  16196 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : admin.controller.arduino.know_wave.comma.ArduinoAdminController#addArduinoList(ArduinoCreateFormList)
 [2023-10-17 20:16:39:65520] INFO  16196 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
 	"arduinoCreateForms": [
 		{
@@ -1419,7 +1419,7 @@
 [2023-10-17 20:17:04:90622] INFO  16196 --- [nio-8080-exec-8] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-17 20:17:04:90623] INFO  16196 --- [nio-8080-exec-8] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /basket/arduino content-type : application/json
 [2023-10-17 20:17:04:90637] INFO  16196 --- [nio-8080-exec-8] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-17 20:17:04:90637] INFO  16196 --- [nio-8080-exec-8] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.arduino.controller.normal.BasketController#addArduinoToBasket(BasketRequest)
+[2023-10-17 20:17:04:90637] INFO  16196 --- [nio-8080-exec-8] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : normal.controller.arduino.know_wave.comma.BasketController#addArduinoToBasket(BasketRequest)
 [2023-10-17 20:17:04:90667] INFO  16196 --- [nio-8080-exec-8] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
     "arduinoId": 5,
     "containedCount" : 5
@@ -1428,7 +1428,7 @@
 [2023-10-17 20:17:05:91617] INFO  16196 --- [nio-8080-exec-9] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-17 20:17:05:91617] INFO  16196 --- [nio-8080-exec-9] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /basket/arduino content-type : application/json
 [2023-10-17 20:17:05:91631] INFO  16196 --- [nio-8080-exec-9] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-17 20:17:05:91631] INFO  16196 --- [nio-8080-exec-9] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.arduino.controller.normal.BasketController#addArduinoToBasket(BasketRequest)
+[2023-10-17 20:17:05:91631] INFO  16196 --- [nio-8080-exec-9] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : normal.controller.arduino.know_wave.comma.BasketController#addArduinoToBasket(BasketRequest)
 [2023-10-17 20:17:05:91640] INFO  16196 --- [nio-8080-exec-9] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
     "arduinoId": 4,
     "containedCount" : 5
@@ -1437,7 +1437,7 @@
 [2023-10-17 20:17:06:92291] INFO  16196 --- [io-8080-exec-10] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-17 20:17:06:92291] INFO  16196 --- [io-8080-exec-10] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /basket/arduino content-type : application/json
 [2023-10-17 20:17:06:92309] INFO  16196 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-17 20:17:06:92310] INFO  16196 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.arduino.controller.normal.BasketController#addArduinoToBasket(BasketRequest)
+[2023-10-17 20:17:06:92310] INFO  16196 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : normal.controller.arduino.know_wave.comma.BasketController#addArduinoToBasket(BasketRequest)
 [2023-10-17 20:17:06:92317] INFO  16196 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
     "arduinoId": 3,
     "containedCount" : 5
@@ -1446,22 +1446,22 @@
 [2023-10-17 20:17:07:92981] INFO  16196 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-17 20:17:07:92982] INFO  16196 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /basket/arduino content-type : application/json
 [2023-10-17 20:17:07:92997] INFO  16196 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-17 20:17:07:92997] INFO  16196 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.arduino.controller.normal.BasketController#addArduinoToBasket(BasketRequest)
+[2023-10-17 20:17:07:92997] INFO  16196 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : normal.controller.arduino.know_wave.comma.BasketController#addArduinoToBasket(BasketRequest)
 [2023-10-17 20:17:07:93003] INFO  16196 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Server response : 400 payload: Not found value
 [2023-10-17 20:17:07:93643] INFO  16196 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-17 20:17:07:93643] INFO  16196 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /basket/arduino content-type : application/json
 [2023-10-17 20:17:07:93662] INFO  16196 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-17 20:17:07:93662] INFO  16196 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.arduino.controller.normal.BasketController#addArduinoToBasket(BasketRequest)
+[2023-10-17 20:17:07:93662] INFO  16196 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : normal.controller.arduino.know_wave.comma.BasketController#addArduinoToBasket(BasketRequest)
 [2023-10-17 20:17:07:93668] INFO  16196 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Server response : 400 payload: Not found value
 [2023-10-17 20:17:08:94687] INFO  16196 --- [nio-8080-exec-5] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-17 20:17:08:94687] INFO  16196 --- [nio-8080-exec-5] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /basket/arduino content-type : application/json
 [2023-10-17 20:17:08:94708] INFO  16196 --- [nio-8080-exec-5] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-17 20:17:08:94708] INFO  16196 --- [nio-8080-exec-5] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.arduino.controller.normal.BasketController#addArduinoToBasket(BasketRequest)
+[2023-10-17 20:17:08:94708] INFO  16196 --- [nio-8080-exec-5] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : normal.controller.arduino.know_wave.comma.BasketController#addArduinoToBasket(BasketRequest)
 [2023-10-17 20:17:08:94714] INFO  16196 --- [nio-8080-exec-5] c.k.c.c.s.filter.LoggingFilter           : Server response : 400 payload: Not found value
 [2023-10-17 20:17:10:96494] INFO  16196 --- [nio-8080-exec-7] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-17 20:17:10:96495] INFO  16196 --- [nio-8080-exec-7] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /basket/arduino content-type : application/json
 [2023-10-17 20:17:10:96512] INFO  16196 --- [nio-8080-exec-7] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-17 20:17:10:96512] INFO  16196 --- [nio-8080-exec-7] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.arduino.controller.normal.BasketController#addArduinoToBasket(BasketRequest)
+[2023-10-17 20:17:10:96512] INFO  16196 --- [nio-8080-exec-7] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : normal.controller.arduino.know_wave.comma.BasketController#addArduinoToBasket(BasketRequest)
 [2023-10-17 20:17:10:96520] INFO  16196 --- [nio-8080-exec-7] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
     "arduinoId": 6,
     "containedCount" : 5
@@ -1470,7 +1470,7 @@
 [2023-10-17 20:17:12:97958] INFO  16196 --- [nio-8080-exec-8] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-17 20:17:12:97958] INFO  16196 --- [nio-8080-exec-8] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /basket/arduino content-type : application/json
 [2023-10-17 20:17:12:97970] INFO  16196 --- [nio-8080-exec-8] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-17 20:17:12:97970] INFO  16196 --- [nio-8080-exec-8] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.arduino.controller.normal.BasketController#addArduinoToBasket(BasketRequest)
+[2023-10-17 20:17:12:97970] INFO  16196 --- [nio-8080-exec-8] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : normal.controller.arduino.know_wave.comma.BasketController#addArduinoToBasket(BasketRequest)
 [2023-10-17 20:17:12:97977] INFO  16196 --- [nio-8080-exec-8] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
     "arduinoId": 7,
     "containedCount" : 5
@@ -1479,7 +1479,7 @@
 [2023-10-17 20:17:17:103418] INFO  16196 --- [nio-8080-exec-9] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-17 20:17:17:103419] INFO  16196 --- [nio-8080-exec-9] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /order/arduino content-type : application/json
 [2023-10-17 20:17:17:103436] INFO  16196 --- [nio-8080-exec-9] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-17 20:17:17:103436] INFO  16196 --- [nio-8080-exec-9] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.order.controller.user.OrderController#order(OrderRequest)
+[2023-10-17 20:17:17:103436] INFO  16196 --- [nio-8080-exec-9] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : user.controller.order.know_wave.comma.OrderController#order(OrderRequest)
 [2023-10-17 20:17:21:107006] INFO  16196 --- [nio-8080-exec-9] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
     "subject" : "SENIER_PROJECT",
     "description" : "테스트 주문 2"
@@ -1488,15 +1488,15 @@
 [2023-10-17 20:17:26:112678] INFO  16196 --- [io-8080-exec-10] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-17 20:17:26:112678] INFO  16196 --- [io-8080-exec-10] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] /orders content-type : null
 [2023-10-17 20:17:26:112690] INFO  16196 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-17 20:17:26:112691] INFO  16196 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.order.controller.user.OrderController#getOrders()
+[2023-10-17 20:17:26:112691] INFO  16196 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : user.controller.order.know_wave.comma.OrderController#getOrders()
 [2023-10-17 20:17:26:112710] INFO  16196 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : Client payload = empty
 [2023-10-17 20:17:26:112710] INFO  16196 --- [io-8080-exec-10] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: [{"accountId":"testid1234","orderCode":"77c6662310172017","orderStatus":"신청 완료","orderDate":"2023-10-17T20:17:17.717671","orderDescription":"테스트 주문 2","subject":"졸업작품","cancelReason":null}]
 [2023-10-17 20:17:45:131630] INFO  16196 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-17 20:17:45:131631] INFO  16196 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /api/v1/payment/ready content-type : application/json
 [2023-10-17 20:17:45:131648] INFO  16196 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-17 20:17:45:131648] INFO  16196 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(PaymentRequest)
+[2023-10-17 20:17:45:131648] INFO  16196 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : controller.payment.know_wave.comma.PaymentController#readyPayment(PaymentRequest)
 [2023-10-17 20:17:46:131758] ERROR 16196 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Server error occurred
-[2023-10-17 20:17:46:131758] ERROR 16196 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : - location : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(PaymentRequest)
+[2023-10-17 20:17:46:131758] ERROR 16196 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : - location : controller.payment.know_wave.comma.PaymentController#readyPayment(PaymentRequest)
 [2023-10-17 20:17:46:131758] ERROR 16196 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : - exception : org.springframework.web.client.HttpClientErrorException$BadRequest: 400 Bad Request: "{"msg":"cid can't be null.","code":-2}"
 [2023-10-17 20:17:46:131758] ERROR 16196 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : - Client request payload : {
     "accountId": "testid1234",

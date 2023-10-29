@@ -1,0 +1,24 @@
+package know_wave.comma.payment.entity;
+
+public enum PaymentStatus {
+
+    REQUEST("결제 요청"),
+    APPROVE("결제 승인"),
+    CANCEL_PROCESS("결제 중 취소"),
+    FAIL_PROCESS("결제 중 실패"),
+    CANCEL("결제 취소"),
+    TIME_OUT("결제 요청 유효 시간 지남"),
+    AUTH_FAIL("결제 인증 실패"),
+    INSUFFICIENT_BALANCE("잔액 부족");
+
+    private final String value;
+
+    PaymentStatus(String value) {
+        this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return value;
+    }
+}

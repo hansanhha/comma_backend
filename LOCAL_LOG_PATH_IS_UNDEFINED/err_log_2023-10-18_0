@@ -1,5 +1,5 @@
 [2023-10-18 22:31:47:15693] ERROR 18791 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Server error occurred
-[2023-10-18 22:31:47:15694] ERROR 18791 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : - location : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(String, PaymentRequest)
+[2023-10-18 22:31:47:15694] ERROR 18791 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : - location : controller.payment.know_wave.comma.PaymentController#readyPayment(String, PaymentRequest)
 [2023-10-18 22:31:47:15694] ERROR 18791 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : - exception : org.springframework.orm.jpa.JpaSystemException: could not execute statement [Field 'idempotent_key_id' doesn't have a default value] [insert into idempotent (api_path,created_date,http_method,idempotent_key,last_modified_date,payload,response_message,response_status,idempotent_id) values (?,?,?,?,?,?,?,?,?)]
 [2023-10-18 22:31:47:15694] ERROR 18791 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : - Client request payload : {
     "accountId": "testid1234",
@@ -7,7 +7,7 @@
     "paymentType": "KAKAO"
 }
 [2023-10-18 22:44:37:579477] ERROR 18839 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : Server error occurred
-[2023-10-18 22:44:37:579477] ERROR 18839 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : - location : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(String, PaymentRequest)
+[2023-10-18 22:44:37:579477] ERROR 18839 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : - location : controller.payment.know_wave.comma.PaymentController#readyPayment(String, PaymentRequest)
 [2023-10-18 22:44:37:579477] ERROR 18839 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : - exception : org.springframework.dao.IncorrectResultSizeDataAccessException: query did not return a unique result: 2
 [2023-10-18 22:44:37:579478] ERROR 18839 --- [io-8080-exec-10] c.k.c.c.s.i.LoggingInterceptor           : - Client request payload : {
     "accountId": "testid1234",

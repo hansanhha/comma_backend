@@ -4,7 +4,7 @@
 [2023-10-18 22:58:26:17219] INFO  19057 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-18 22:58:26:17219] INFO  19057 --- [nio-8080-exec-2] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /api/v1/payment/ready content-type : application/json
 [2023-10-18 22:58:26:17636] INFO  19057 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-18 22:58:26:17636] INFO  19057 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(String, PaymentRequest)
+[2023-10-18 22:58:26:17636] INFO  19057 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : controller.payment.know_wave.comma.PaymentController#readyPayment(String, PaymentRequest)
 [2023-10-18 22:58:27:18202] INFO  19057 --- [nio-8080-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
     "accountId": "testid1234",
     "arduinoOrderId": "56900b2310182238",
@@ -28,13 +28,13 @@
 [2023-10-18 22:59:29:80683] INFO  19057 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-18 22:59:29:80684] INFO  19057 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /api/v1/payment/ready content-type : application/json
 [2023-10-18 22:59:29:80959] INFO  19057 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-18 22:59:29:80959] INFO  19057 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(String, PaymentRequest)
+[2023-10-18 22:59:29:80959] INFO  19057 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : controller.payment.know_wave.comma.PaymentController#readyPayment(String, PaymentRequest)
 [2023-10-18 22:59:29:80989] INFO  19057 --- [nio-8080-exec-3] c.k.c.c.c.i.IdempotencyAspect            : Idempotency response
 [2023-10-18 22:59:30:81042] INFO  19057 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: {"redirectMobileWebUrl":"https://online-pay.kakao.com/mockup/v1/359a83c9511aa461a26b450e20262705283bb41ec3ca0ffa45dd8a68e70a7e09/mInfo","redirectPcWebUrl":"https://online-pay.kakao.com/mockup/v1/359a83c9511aa461a26b450e20262705283bb41ec3ca0ffa45dd8a68e70a7e09/info"}
 [2023-10-18 23:00:13:124273] INFO  19057 --- [nio-8080-exec-4] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-18 23:00:13:124274] INFO  19057 --- [nio-8080-exec-4] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /api/v1/payment/ready content-type : application/json
 [2023-10-18 23:00:13:124794] INFO  19057 --- [nio-8080-exec-4] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-18 23:00:13:124794] INFO  19057 --- [nio-8080-exec-4] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(String, PaymentRequest)
+[2023-10-18 23:00:13:124794] INFO  19057 --- [nio-8080-exec-4] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : controller.payment.know_wave.comma.PaymentController#readyPayment(String, PaymentRequest)
 [2023-10-18 23:00:13:124848] INFO  19057 --- [nio-8080-exec-4] c.k.c.c.c.i.IdempotencyAspect            : Idempotency response
 [2023-10-18 23:00:13:124882] INFO  19057 --- [nio-8080-exec-4] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: {"redirectMobileWebUrl":"https://online-pay.kakao.com/mockup/v1/359a83c9511aa461a26b450e20262705283bb41ec3ca0ffa45dd8a68e70a7e09/mInfo","redirectPcWebUrl":"https://online-pay.kakao.com/mockup/v1/359a83c9511aa461a26b450e20262705283bb41ec3ca0ffa45dd8a68e70a7e09/info"}
 [2023-10-18 23:22:57:1672] INFO  19742 --- [           main] c.k.c.c.CommaBackendApplication          : Starting CommaBackendApplication using Java 17.0.7 with PID 19742 (/Users/hansanhha/Workspace/project/comma_backend/build/classes/java/main started by hansanhha in /Users/hansanhha/Workspace/project/comma_backend)
@@ -43,13 +43,13 @@
 [2023-10-18 23:23:04:9388] INFO  19742 --- [nio-8080-exec-1] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-18 23:23:04:9388] INFO  19742 --- [nio-8080-exec-1] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /api/v1/payment/ready content-type : application/json
 [2023-10-18 23:23:05:9815] INFO  19742 --- [nio-8080-exec-1] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-18 23:23:05:9815] INFO  19742 --- [nio-8080-exec-1] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(String, PaymentRequest)
+[2023-10-18 23:23:05:9815] INFO  19742 --- [nio-8080-exec-1] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : controller.payment.know_wave.comma.PaymentController#readyPayment(String, PaymentRequest)
 [2023-10-18 23:23:05:9911] INFO  19742 --- [nio-8080-exec-1] c.k.c.c.c.i.IdempotencyAspect            : Idempotency response
 [2023-10-18 23:23:05:9936] INFO  19742 --- [nio-8080-exec-1] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: {"redirectMobileWebUrl":"https://online-pay.kakao.com/mockup/v1/359a83c9511aa461a26b450e20262705283bb41ec3ca0ffa45dd8a68e70a7e09/mInfo","redirectPcWebUrl":"https://online-pay.kakao.com/mockup/v1/359a83c9511aa461a26b450e20262705283bb41ec3ca0ffa45dd8a68e70a7e09/info"}
 [2023-10-18 23:23:09:14403] INFO  19742 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-18 23:23:09:14403] INFO  19742 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /api/v1/payment/ready content-type : application/json
 [2023-10-18 23:23:10:14669] INFO  19742 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-18 23:23:10:14669] INFO  19742 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(String, PaymentRequest)
+[2023-10-18 23:23:10:14669] INFO  19742 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : controller.payment.know_wave.comma.PaymentController#readyPayment(String, PaymentRequest)
 [2023-10-18 23:23:10:15093] INFO  19742 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
     "accountId": "testid1234",
     "arduinoOrderId": "56900b2310182238",
@@ -66,7 +66,7 @@
 [2023-10-18 23:23:54:59422] INFO  19742 --- [nio-8080-exec-8] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-18 23:23:54:59423] INFO  19742 --- [nio-8080-exec-8] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /api/v1/payment/ready content-type : application/json
 [2023-10-18 23:23:55:59676] INFO  19742 --- [nio-8080-exec-8] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-18 23:23:55:59676] INFO  19742 --- [nio-8080-exec-8] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.payment.controller.PaymentController#readyPayment(String, PaymentRequest)
+[2023-10-18 23:23:55:59676] INFO  19742 --- [nio-8080-exec-8] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : controller.payment.know_wave.comma.PaymentController#readyPayment(String, PaymentRequest)
 [2023-10-18 23:23:55:59864] INFO  19742 --- [nio-8080-exec-8] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
     "accountId": "testid1234",
     "arduinoOrderId": "56900b2310182238",

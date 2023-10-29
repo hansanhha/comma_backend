@@ -20,7 +20,7 @@ data:{"msg":"Comma EventStream Connected.","id":"369fec612310192201"}
 [2023-10-19 22:02:12:72606] INFO  25265 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-19 22:02:12:72606] INFO  25265 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /api/v2/order/arduino content-type : application/json
 [2023-10-19 22:02:13:73223] INFO  25265 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-19 22:02:13:73223] INFO  25265 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.order.controller.user.OrderController#orderUseSSE(String, OrderRequest)
+[2023-10-19 22:02:13:73223] INFO  25265 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : user.controller.order.know_wave.comma.OrderController#orderUseSSE(String, OrderRequest)
 [2023-10-19 22:02:13:73741] INFO  25265 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
     "subject" : "SENIER_PROJECT",
     "paymentType": "KAKAO",
@@ -30,7 +30,7 @@ data:{"msg":"Comma EventStream Connected.","id":"369fec612310192201"}
 [2023-10-19 22:03:14:134059] INFO  25265 --- [nio-8080-exec-5] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-19 22:03:14:134060] INFO  25265 --- [nio-8080-exec-5] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] /api/v1/payment/kakao/success/da93b2022310192202/sadfkjlafshjfdsa3213kdfshjk324bndfbm2313/testid1234/0d255db32310192202/SENIER_PROJECT/369fec612310192201?pg_token=b99da80dbb8e97715fb2 content-type : null
 [2023-10-19 22:03:21:141534] ERROR 25265 --- [nio-8080-exec-5] c.k.c.c.s.i.LoggingInterceptor           : Server error occurred
-[2023-10-19 22:03:21:141536] ERROR 25265 --- [nio-8080-exec-5] c.k.c.c.s.i.LoggingInterceptor           : - location : com.know_wave.comma.comma_backend.payment.controller.PaymentController#approvePayment(String, String, String, String, String, String, String, String)
+[2023-10-19 22:03:21:141536] ERROR 25265 --- [nio-8080-exec-5] c.k.c.c.s.i.LoggingInterceptor           : - location : controller.payment.know_wave.comma.PaymentController#approvePayment(String, String, String, String, String, String, String, String)
 [2023-10-19 22:03:21:141536] ERROR 25265 --- [nio-8080-exec-5] c.k.c.c.s.i.LoggingInterceptor           : - exception : java.lang.NullPointerException: Cannot invoke "org.springframework.web.servlet.mvc.method.annotation.SseEmitter.send(org.springframework.web.servlet.mvc.method.annotation.SseEmitter$SseEventBuilder)" because "sseEmitter" is null
 [2023-10-19 22:03:21:141536] ERROR 25265 --- [nio-8080-exec-5] c.k.c.c.s.i.LoggingInterceptor           : - Client request payload : empty
 [2023-10-19 22:03:21:141539] INFO  25265 --- [nio-8080-exec-5] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: empty
@@ -43,12 +43,12 @@ data:{"msg":"Comma EventStream Connected.","id":"369fec612310192201"}
 [2023-10-19 22:05:22:16588] INFO  25418 --- [nio-8080-exec-1] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-19 22:05:22:16588] INFO  25418 --- [nio-8080-exec-1] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] /basket content-type : null
 [2023-10-19 22:05:23:17448] INFO  25418 --- [nio-8080-exec-1] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-19 22:05:23:17449] INFO  25418 --- [nio-8080-exec-1] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.arduino.controller.normal.BasketController#getBasket()
+[2023-10-19 22:05:23:17449] INFO  25418 --- [nio-8080-exec-1] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : normal.controller.arduino.know_wave.comma.BasketController#getBasket()
 [2023-10-19 22:05:23:17664] INFO  25418 --- [nio-8080-exec-1] c.k.c.c.s.filter.LoggingFilter           : Server response : 400 payload: Not found value
 [2023-10-19 22:05:29:23288] INFO  25418 --- [nio-8080-exec-4] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-19 22:05:29:23288] INFO  25418 --- [nio-8080-exec-4] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /basket/arduino content-type : application/json
 [2023-10-19 22:05:29:23600] INFO  25418 --- [nio-8080-exec-4] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-19 22:05:29:23600] INFO  25418 --- [nio-8080-exec-4] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.arduino.controller.normal.BasketController#addArduinoToBasket(BasketRequest)
+[2023-10-19 22:05:29:23600] INFO  25418 --- [nio-8080-exec-4] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : normal.controller.arduino.know_wave.comma.BasketController#addArduinoToBasket(BasketRequest)
 [2023-10-19 22:05:30:23908] INFO  25418 --- [nio-8080-exec-4] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
     "arduinoId": 1,
     "containedCount" : 5
@@ -57,7 +57,7 @@ data:{"msg":"Comma EventStream Connected.","id":"369fec612310192201"}
 [2023-10-19 22:05:31:24753] INFO  25418 --- [nio-8080-exec-5] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-19 22:05:31:24754] INFO  25418 --- [nio-8080-exec-5] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /basket/arduino content-type : application/json
 [2023-10-19 22:05:31:25289] INFO  25418 --- [nio-8080-exec-5] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-19 22:05:31:25289] INFO  25418 --- [nio-8080-exec-5] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.arduino.controller.normal.BasketController#addArduinoToBasket(BasketRequest)
+[2023-10-19 22:05:31:25289] INFO  25418 --- [nio-8080-exec-5] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : normal.controller.arduino.know_wave.comma.BasketController#addArduinoToBasket(BasketRequest)
 [2023-10-19 22:05:31:25384] INFO  25418 --- [nio-8080-exec-5] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
     "arduinoId": 2,
     "containedCount" : 5
@@ -81,7 +81,7 @@ data:{"msg":"Comma EventStream Connected.","id":"44774e8d2310192207"}
 [2023-10-19 22:08:06:79540] INFO  25434 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-19 22:08:06:79540] INFO  25434 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /api/v2/order/arduino content-type : application/json
 [2023-10-19 22:08:07:80406] INFO  25434 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-19 22:08:07:80406] INFO  25434 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.order.controller.user.OrderController#orderUseSSE(String, OrderRequest)
+[2023-10-19 22:08:07:80406] INFO  25434 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : user.controller.order.know_wave.comma.OrderController#orderUseSSE(String, OrderRequest)
 [2023-10-19 22:08:08:81386] INFO  25434 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
     "subject" : "SENIER_PROJECT",
     "paymentType": "KAKAO",
@@ -100,7 +100,7 @@ data:{"msg":"Comma EventStream Connected.","id":"5484587b2310192212"}
 [2023-10-19 22:13:05:378486] INFO  25434 --- [nio-8080-exec-7] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-19 22:13:05:378486] INFO  25434 --- [nio-8080-exec-7] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /api/v2/order/arduino content-type : application/json
 [2023-10-19 22:13:05:378941] INFO  25434 --- [nio-8080-exec-7] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-19 22:13:05:378941] INFO  25434 --- [nio-8080-exec-7] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.order.controller.user.OrderController#orderUseSSE(String, OrderRequest)
+[2023-10-19 22:13:05:378941] INFO  25434 --- [nio-8080-exec-7] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : user.controller.order.know_wave.comma.OrderController#orderUseSSE(String, OrderRequest)
 [2023-10-19 22:13:05:379154] INFO  25434 --- [nio-8080-exec-7] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
     "subject" : "SENIER_PROJECT",
     "paymentType": "KAKAO",
@@ -122,7 +122,7 @@ data:{"msg":"Comma EventStream Connected.","id":"962c7b072310192227"}
 [2023-10-19 22:28:03:74026] INFO  25956 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
 [2023-10-19 22:28:03:74026] INFO  25956 --- [nio-8080-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client request = [POST] /api/v2/order/arduino content-type : application/json
 [2023-10-19 22:28:03:74502] INFO  25956 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Client login ID : testid1234
-[2023-10-19 22:28:03:74502] INFO  25956 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : com.know_wave.comma.comma_backend.order.controller.user.OrderController#orderUseSSE(String, OrderRequest)
+[2023-10-19 22:28:03:74502] INFO  25956 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Invoked handler : user.controller.order.know_wave.comma.OrderController#orderUseSSE(String, OrderRequest)
 [2023-10-19 22:28:04:75026] INFO  25956 --- [nio-8080-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Client payload = {
     "subject" : "SENIER_PROJECT",
     "paymentType": "KAKAO",

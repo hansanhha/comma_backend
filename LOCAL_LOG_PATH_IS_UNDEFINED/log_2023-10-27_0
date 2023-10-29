@@ -3,3 +3,64 @@
 [2023-10-27 16:13:21:7640] INFO  51652 --- [           main] c.k.c.c.CommaBackendApplication          : Started CommaBackendApplication in 7.476 seconds (process running for 8.282)
 [2023-10-27 16:18:09:447] INFO  52273 --- [           main] c.k.c.c.CommaBackendApplication          : Starting CommaBackendApplication using Java 20.0.1 with PID 52273 (/Users/hansanhha/Workspace/project/comma_backend/build/classes/java/main started by hansanhha in /Users/hansanhha/Workspace/project/comma_backend)
 [2023-10-27 16:18:09:447] INFO  52273 --- [           main] c.k.c.c.CommaBackendApplication          : The following 1 profile is active: "local"
+[2023-10-27 16:45:08:430] INFO  54652 --- [           main] c.k.c.c.CommaBackendApplication          : Starting CommaBackendApplication using Java 20.0.1 with PID 54652 (/Users/hansanhha/Workspace/project/comma_backend/build/classes/java/main started by hansanhha in /Users/hansanhha/Workspace/project/comma_backend)
+[2023-10-27 16:45:08:431] INFO  54652 --- [           main] c.k.c.c.CommaBackendApplication          : The following 1 profile is active: "local"
+[2023-10-27 16:45:15:7161] INFO  54652 --- [           main] c.k.c.c.CommaBackendApplication          : Started CommaBackendApplication in 7.051 seconds (process running for 7.824)
+[2023-10-27 16:46:02:54286] INFO  54652 --- [-nio-443-exec-5] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-27 16:46:02:54287] INFO  54652 --- [-nio-443-exec-5] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] / content-type : null
+[2023-10-27 16:46:02:54383] INFO  54652 --- [-nio-443-exec-5] c.k.c.c.s.filter.LoggingFilter           : Server response : 401 payload: Invalid token
+[2023-10-27 16:46:03:54802] INFO  54652 --- [-nio-443-exec-7] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-27 16:46:03:54803] INFO  54652 --- [-nio-443-exec-7] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] /favicon.ico content-type : null
+[2023-10-27 16:46:03:54848] INFO  54652 --- [-nio-443-exec-7] c.k.c.c.s.filter.LoggingFilter           : Server response : 401 payload: Invalid token
+[2023-10-27 16:47:59:393] INFO  54712 --- [           main] c.k.c.c.CommaBackendApplication          : Starting CommaBackendApplication using Java 20.0.1 with PID 54712 (/Users/hansanhha/Workspace/project/comma_backend/build/classes/java/main started by hansanhha in /Users/hansanhha/Workspace/project/comma_backend)
+[2023-10-27 16:47:59:393] INFO  54712 --- [           main] c.k.c.c.CommaBackendApplication          : The following 1 profile is active: "local"
+[2023-10-27 16:48:06:6550] INFO  54712 --- [           main] c.k.c.c.CommaBackendApplication          : Started CommaBackendApplication in 6.465 seconds (process running for 6.861)
+[2023-10-27 16:51:00:180617] INFO  54712 --- [nio-443-exec-10] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-27 16:51:00:180617] INFO  54712 --- [nio-443-exec-10] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] / content-type : null
+[2023-10-27 16:51:00:180665] INFO  54712 --- [nio-443-exec-10] c.k.c.c.s.filter.LoggingFilter           : Server response : 401 payload: Invalid token
+[2023-10-27 16:51:00:180950] INFO  54712 --- [-nio-443-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-27 16:51:00:180950] INFO  54712 --- [-nio-443-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] /favicon.ico content-type : null
+[2023-10-27 16:51:00:180997] INFO  54712 --- [-nio-443-exec-3] c.k.c.c.s.filter.LoggingFilter           : Server response : 401 payload: Invalid token
+[2023-10-27 16:51:05:185543] INFO  54712 --- [-nio-443-exec-5] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-27 16:51:05:185544] INFO  54712 --- [-nio-443-exec-5] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] / content-type : null
+[2023-10-27 16:51:05:185592] INFO  54712 --- [-nio-443-exec-5] c.k.c.c.s.filter.LoggingFilter           : Server response : 401 payload: Invalid token
+[2023-10-27 16:51:05:185802] INFO  54712 --- [-nio-443-exec-7] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-27 16:51:05:185802] INFO  54712 --- [-nio-443-exec-7] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] /favicon.ico content-type : null
+[2023-10-27 16:51:05:185837] INFO  54712 --- [-nio-443-exec-7] c.k.c.c.s.filter.LoggingFilter           : Server response : 401 payload: Invalid token
+[2023-10-27 16:51:12:193354] INFO  54712 --- [-nio-443-exec-9] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-27 16:51:12:193354] INFO  54712 --- [-nio-443-exec-9] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] / content-type : null
+[2023-10-27 16:51:12:193394] INFO  54712 --- [-nio-443-exec-9] c.k.c.c.s.filter.LoggingFilter           : Server response : 401 payload: Invalid token
+[2023-10-27 16:51:13:193671] INFO  54712 --- [-nio-443-exec-4] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-27 16:51:13:193672] INFO  54712 --- [-nio-443-exec-4] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] /favicon.ico content-type : null
+[2023-10-27 16:51:13:193709] INFO  54712 --- [-nio-443-exec-4] c.k.c.c.s.filter.LoggingFilter           : Server response : 401 payload: Invalid token
+[2023-10-27 16:52:12:411] INFO  55167 --- [           main] c.k.c.c.CommaBackendApplication          : Starting CommaBackendApplication using Java 20.0.1 with PID 55167 (/Users/hansanhha/Workspace/project/comma_backend/build/classes/java/main started by hansanhha in /Users/hansanhha/Workspace/project/comma_backend)
+[2023-10-27 16:52:12:412] INFO  55167 --- [           main] c.k.c.c.CommaBackendApplication          : The following 1 profile is active: "local"
+[2023-10-27 16:52:18:6460] INFO  55167 --- [           main] c.k.c.c.CommaBackendApplication          : Started CommaBackendApplication in 6.37 seconds (process running for 7.153)
+[2023-10-27 16:52:29:17806] INFO  55167 --- [-nio-443-exec-7] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-27 16:52:29:17806] INFO  55167 --- [-nio-443-exec-7] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] / content-type : null
+[2023-10-27 16:52:29:17856] INFO  55167 --- [-nio-443-exec-7] c.k.c.c.s.filter.LoggingFilter           : Server response : 401 payload: Invalid token
+[2023-10-27 16:52:29:18161] INFO  55167 --- [-nio-443-exec-8] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-27 16:52:29:18162] INFO  55167 --- [-nio-443-exec-8] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] /favicon.ico content-type : null
+[2023-10-27 16:52:30:18208] INFO  55167 --- [-nio-443-exec-8] c.k.c.c.s.filter.LoggingFilter           : Server response : 401 payload: Invalid token
+[2023-10-27 16:53:22:996] INFO  55192 --- [           main] c.k.c.c.CommaBackendApplication          : Starting CommaBackendApplication using Java 20.0.1 with PID 55192 (/Users/hansanhha/Workspace/project/comma_backend/build/classes/java/main started by hansanhha in /Users/hansanhha/Workspace/project/comma_backend)
+[2023-10-27 16:53:22:997] INFO  55192 --- [           main] c.k.c.c.CommaBackendApplication          : The following 1 profile is active: "local"
+[2023-10-27 16:53:28:7276] INFO  55192 --- [           main] c.k.c.c.CommaBackendApplication          : Started CommaBackendApplication in 7.019 seconds (process running for 7.822)
+[2023-10-27 16:53:33:12217] INFO  55192 --- [-nio-443-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-27 16:53:33:12217] INFO  55192 --- [-nio-443-exec-3] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] / content-type : null
+[2023-10-27 16:53:33:12253] INFO  55192 --- [-nio-443-exec-3] c.k.c.c.s.i.LoggingInterceptor           : Client payload = empty
+[2023-10-27 16:53:33:12254] INFO  55192 --- [-nio-443-exec-3] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: Comma Backend is running
+[2023-10-27 16:53:34:12424] INFO  55192 --- [-nio-443-exec-5] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-27 16:53:34:12425] INFO  55192 --- [-nio-443-exec-5] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] /favicon.ico content-type : null
+[2023-10-27 16:53:34:12516] INFO  55192 --- [-nio-443-exec-5] c.k.c.c.s.filter.LoggingFilter           : Server response : 401 payload: Invalid token
+[2023-10-27 16:58:12:290974] INFO  55192 --- [-nio-443-exec-2] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-27 16:58:12:290974] INFO  55192 --- [-nio-443-exec-2] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] / content-type : null
+[2023-10-27 16:58:12:290987] INFO  55192 --- [-nio-443-exec-2] c.k.c.c.s.i.LoggingInterceptor           : Client payload = empty
+[2023-10-27 16:58:12:290988] INFO  55192 --- [-nio-443-exec-2] c.k.c.c.s.filter.LoggingFilter           : Server response : 200 payload: Comma Backend is running
+[2023-10-27 16:58:12:291285] INFO  55192 --- [-nio-443-exec-8] c.k.c.c.s.filter.LoggingFilter           : Client info = IP : 0:0:0:0:0:0:0:1
+[2023-10-27 16:58:12:291285] INFO  55192 --- [-nio-443-exec-8] c.k.c.c.s.filter.LoggingFilter           : Client request = [GET] /favicon.ico content-type : null
+[2023-10-27 16:58:12:291336] INFO  55192 --- [-nio-443-exec-8] c.k.c.c.s.filter.LoggingFilter           : Server response : 401 payload: Invalid token
+[2023-10-27 17:01:45:416] INFO  55348 --- [           main] c.k.c.c.CommaBackendApplication          : Starting CommaBackendApplication using Java 20.0.1 with PID 55348 (/Users/hansanhha/Workspace/project/comma_backend/build/classes/java/main started by hansanhha in /Users/hansanhha/Workspace/project/comma_backend)
+[2023-10-27 17:01:45:417] INFO  55348 --- [           main] c.k.c.c.CommaBackendApplication          : The following 1 profile is active: "local"
+[2023-10-27 17:01:51:6281] INFO  55348 --- [           main] c.k.c.c.CommaBackendApplication          : Started CommaBackendApplication in 6.199 seconds (process running for 6.86)
+[2023-10-27 17:01:59:630] INFO  55356 --- [           main] c.k.c.c.CommaBackendApplication          : Starting CommaBackendApplication using Java 20.0.1 with PID 55356 (/Users/hansanhha/Workspace/project/comma_backend/build/classes/java/main started by hansanhha in /Users/hansanhha/Workspace/project/comma_backend)
+[2023-10-27 17:01:59:631] INFO  55356 --- [           main] c.k.c.c.CommaBackendApplication          : The following 1 profile is active: "local"
