@@ -1,8 +1,8 @@
 package know_wave.comma.arduino.entity;
 
 import know_wave.comma.account.entity.Account;
-import know_wave.comma.util.entity.BaseTimeEntity;
-import know_wave.comma.util.entity.ContentStatus;
+import know_wave.comma.common.entity.BaseTimeEntity;
+import know_wave.comma.common.entity.ContentStatus;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;

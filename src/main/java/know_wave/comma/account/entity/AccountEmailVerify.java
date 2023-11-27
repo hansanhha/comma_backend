@@ -1,6 +1,6 @@
 package know_wave.comma.account.entity;
 
-import know_wave.comma.util.entity.BaseTimeEntity;
+import know_wave.comma.common.entity.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

@@ -2,7 +2,7 @@ package know_wave.comma.account.service.auth;
 
 import know_wave.comma.account.entity.Account;
 import know_wave.comma.account.service.normal.AccountQueryService;
-import know_wave.comma.security.service.TokenService;
+import know_wave.comma.common.config.security.service.TokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

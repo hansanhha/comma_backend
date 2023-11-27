@@ -9,7 +9,7 @@ import know_wave.comma.arduino.entity.Arduino;
 import know_wave.comma.arduino.entity.Basket;
 import know_wave.comma.arduino.repository.BasketRepository;
 import know_wave.comma.common.mail.exception.EntityAlreadyExistException;
-import know_wave.comma.util.ValidateUtils;
+import know_wave.comma.common.util.ValidateUtils;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static know_wave.comma.account.service.normal.AccountQueryService.getAuthenticatedId;
-import static know_wave.comma.util.message.ExceptionMessageSource.*;
+import static know_wave.comma.common.message.ExceptionMessageSource.*;
 
 @Service
 @Transactional

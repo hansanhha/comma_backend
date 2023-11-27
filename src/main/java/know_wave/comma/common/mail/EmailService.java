@@ -4,8 +4,8 @@ import know_wave.comma.account.entity.AccountEmailVerify;
 import know_wave.comma.account.repository.AccountVerifyRepository;
 import know_wave.comma.common.mail.exception.EmailVerifiedException;
 import know_wave.comma.common.mail.exception.NotFoundEmailException;
-import know_wave.comma.util.GenerateUtils;
-import know_wave.comma.util.message.ExceptionMessageSource;
+import know_wave.comma.common.util.GenerateUtils;
+import know_wave.comma.common.message.ExceptionMessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

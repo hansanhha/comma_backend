@@ -8,7 +8,7 @@ import know_wave.comma.payment.exception.AlreadyRefundedException;
 import know_wave.comma.payment.entity.Deposit;
 import know_wave.comma.payment.entity.DepositStatus;
 import know_wave.comma.payment.entity.PaymentType;
-import know_wave.comma.util.message.ExceptionMessageSource;
+import know_wave.comma.common.message.ExceptionMessageSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

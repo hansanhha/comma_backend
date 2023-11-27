@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-import static know_wave.comma.util.message.ExceptionMessageSource.INVALID_VALUE;
+import static know_wave.comma.common.message.ExceptionMessageSource.INVALID_VALUE;
 
 @RestControllerAdvice(annotations = RestController.class)
 public class EntityExceptionAdvice {

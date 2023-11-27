@@ -2,10 +2,10 @@ package know_wave.comma.account.entity;
 
 import know_wave.comma.account.entity.auth.Authority;
 import know_wave.comma.order.entity.OrderInfo;
-import know_wave.comma.util.entity.BaseTimeEntity;
+import know_wave.comma.common.entity.BaseTimeEntity;
 import know_wave.comma.account.entity.auth.Role;
 import know_wave.comma.account.entity.token.Token;
-import know_wave.comma.security.auth.SecurityAccount;
+import know_wave.comma.common.config.security.auth.SecurityAccount;
 import jakarta.persistence.*;
 import org.springframework.data.domain.Persistable;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -9,7 +9,7 @@ import know_wave.comma.payment.dto.WebEntityCreator;
 import know_wave.comma.payment.dto.kakao.*;
 import know_wave.comma.payment.entity.Deposit;
 import know_wave.comma.payment.entity.PaymentType;
-import know_wave.comma.util.GenerateUtils;
+import know_wave.comma.common.util.GenerateUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

@@ -7,7 +7,7 @@ import know_wave.comma.order.service.user.OrderService;
 import know_wave.comma.payment.dto.PaymentPrepareDto;
 import know_wave.comma.payment.dto.PaymentPrepareResponse;
 import know_wave.comma.payment.service.PaymentGateway;
-import know_wave.comma.util.GenerateUtils;
+import know_wave.comma.common.util.GenerateUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.*;

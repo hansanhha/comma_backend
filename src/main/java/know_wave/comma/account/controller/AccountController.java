@@ -8,7 +8,7 @@ import know_wave.comma.account.service.auth.LogoutService;
 import know_wave.comma.account.service.auth.SignService;
 import know_wave.comma.account.service.normal.AccountManagementService;
 import know_wave.comma.common.mail.EmailService;
-import know_wave.comma.security.service.TokenService;
+import know_wave.comma.common.config.security.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

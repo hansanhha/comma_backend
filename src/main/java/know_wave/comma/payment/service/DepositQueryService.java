@@ -4,7 +4,7 @@ import know_wave.comma.account.entity.Account;
 import know_wave.comma.order.entity.OrderInfo;
 import know_wave.comma.payment.entity.Deposit;
 import know_wave.comma.payment.repository.DepositRepository;
-import know_wave.comma.util.ValidateUtils;
+import know_wave.comma.common.util.ValidateUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

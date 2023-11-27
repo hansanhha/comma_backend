@@ -1,7 +1,7 @@
 package know_wave.comma.order.entity;
 
 import know_wave.comma.account.entity.Account;
-import know_wave.comma.util.entity.BaseTimeEntity;
+import know_wave.comma.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import org.springframework.data.domain.Persistable;
 

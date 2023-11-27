@@ -1,6 +1,6 @@
 package know_wave.comma.arduino.entity;
 
-import know_wave.comma.util.entity.BaseTimeEntity;
+import know_wave.comma.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 
