@@ -1,6 +1,7 @@
 package know_wave.comma.account.entity;
 
 import know_wave.comma.account.entity.auth.Authority;
+import know_wave.comma.alarm.entity.AlarmOption;
 import know_wave.comma.order.entity.OrderInfo;
 import know_wave.comma.common.entity.BaseTimeEntity;
 import know_wave.comma.account.entity.auth.Role;
@@ -66,6 +67,9 @@ public class Account extends BaseTimeEntity implements Persistable<String> {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
+
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    private AlarmOption alarmOption;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Token> tokenList;
