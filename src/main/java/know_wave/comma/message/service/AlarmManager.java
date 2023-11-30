@@ -1,8 +1,8 @@
-package know_wave.comma.alarm.service;
+package know_wave.comma.message.service;
 
 import jakarta.annotation.PostConstruct;
-import know_wave.comma.alarm.dto.AlarmSendDto;
-import know_wave.comma.alarm.dto.AlarmType;
+import know_wave.comma.message.dto.AlarmSendDto;
+import know_wave.comma.message.dto.AlarmType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

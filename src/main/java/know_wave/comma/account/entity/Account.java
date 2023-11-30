@@ -1,7 +1,7 @@
 package know_wave.comma.account.entity;
 
 import know_wave.comma.account.entity.auth.Authority;
-import know_wave.comma.alarm.entity.AlarmOption;
+import know_wave.comma.message.entity.AlarmOption;
 import know_wave.comma.order.entity.OrderInfo;
 import know_wave.comma.common.entity.BaseTimeEntity;
 import know_wave.comma.account.entity.auth.Role;

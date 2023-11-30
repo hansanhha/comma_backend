@@ -1,4 +1,4 @@
-package know_wave.comma.alarm.entity;
+package know_wave.comma.message.entity;
 
 import jakarta.persistence.*;
 import know_wave.comma.account.entity.Account;
