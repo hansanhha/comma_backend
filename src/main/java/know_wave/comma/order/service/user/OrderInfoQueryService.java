@@ -1,11 +1,10 @@
 package know_wave.comma.order.service.user;
 
+import jakarta.persistence.EntityNotFoundException;
 import know_wave.comma.account.entity.Account;
+import know_wave.comma.message.util.ExceptionMessageSource;
 import know_wave.comma.order.entity.OrderInfo;
 import know_wave.comma.order.repository.OrderInfoRepository;
-import know_wave.comma.common.util.ValidateUtils;
-import jakarta.persistence.EntityNotFoundException;
-import know_wave.comma.common.message.ExceptionMessageSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,9 +34,6 @@ public class OrderInfoQueryService {
     }
 
     public List<OrderInfo> getOrderInfosByAccount(Account account) {
-        List<OrderInfo> orderInfos = orderInfoRepository.findAllByAccount(account);
-
-        ValidateUtils.throwIfEmpty(orderInfos);
-        return orderInfos;
+        return orderInfoRepository.findAllByAccount(account);
     }
 }

@@ -40,7 +40,7 @@ public class KakaoPayService implements PaymentService {
 
     @Override
     public PaymentPrepareResult ready(String idempotencyKey, PaymentPrepareDto paymentPrepareDto, OrderInfoDto orderInfoDto) {
-        String paymentRequestId = GenerateUtils.generatedRandomCode();
+        String paymentRequestId = GenerateUtils.generateRandomCode();
 
         String accountId = accountQueryService.getAuthenticatedId();
         var readyRequest = KakaoPayReadyRequest.of(idempotencyKey, paymentRequestId, paymentPrepareDto, accountId, cid, depositPolicy, orderInfoDto);
@@ -56,7 +56,7 @@ public class KakaoPayService implements PaymentService {
 
     @Override
     public PaymentPrepareResult readyWithSSE(String idempotencyKey, PaymentPrepareDto paymentPrepareDto, OrderInfoDto orderInfoDto, String sseId) {
-        String paymentRequestId = GenerateUtils.generatedRandomCode();
+        String paymentRequestId = GenerateUtils.generateRandomCode();
 
         String accountId = accountQueryService.getAuthenticatedId();
         var readyRequest = KakaoPayReadyRequest.ofWithSSE(idempotencyKey, paymentRequestId, paymentPrepareDto, accountId, cid, depositPolicy, orderInfoDto, sseId);

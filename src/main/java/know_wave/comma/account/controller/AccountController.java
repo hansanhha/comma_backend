@@ -4,10 +4,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import know_wave.comma.account.dto.*;
+import know_wave.comma.account.service.auth.AuthenticationService;
 import know_wave.comma.account.service.auth.LogoutService;
 import know_wave.comma.account.service.auth.SignService;
-import know_wave.comma.account.service.normal.AccountManagementService;
-import know_wave.comma.common.mail.EmailService;
+import know_wave.comma.account.service.normal.AccountManager;
 import know_wave.comma.common.config.security.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,10 +22,10 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AccountController {
 
+    private final AuthenticationService authenticationService;
     private final SignService signService;
     private final LogoutService logoutService;
-    private final AccountManagementService accountManagementService;
-    private final EmailService emailService;
+    private final AccountManager accountManager;
 
     @PostMapping("/signup")
     public ResponseEntity<String> signUp(@Valid @RequestBody AccountCreateForm form) {
@@ -53,26 +53,26 @@ public class AccountController {
 
     @PostMapping("/email/r")
     public ResponseEntity<String> emailAuthenticationRequest(@Valid @RequestBody EmailAuthRequest requestDto) {
-        emailService.sendAuthCode(requestDto.getEmail());
+        authenticationService.sendAuthCode(requestDto.getEmail());
         return ResponseEntity.ok("Send authentication code email");
     }
 
     @PostMapping("/email/verify")
     public ResponseEntity<String> emailAuthentication(@Valid @RequestBody EmailVerifyRequest requestDto) {
-        boolean result = emailService.verifyAuthCode(requestDto.getEmail(), Integer.parseInt(requestDto.getCode()));
+        boolean result = authenticationService.verifyAuthCode(requestDto.getEmail(), Integer.parseInt(requestDto.getCode()));
         if (result) return ResponseEntity.ok("Completed email authentication");
         else return new ResponseEntity<>("Failed email authentication", HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/me")
     public ResponseEntity<AccountResponse> getAccount() {
-        AccountResponse accountResponse = accountManagementService.getAccount();
+        AccountResponse accountResponse = accountManager.getAccount();
         return ResponseEntity.ok(accountResponse);
     }
 
     @DeleteMapping("/me")
     public Map<String, Object> deleteAccount(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        accountManagementService.deleteAccount();
+        accountManager.deleteAccount();
 
         logoutService.logout(request, response, authentication);
 
@@ -81,7 +81,7 @@ public class AccountController {
 
     @PostMapping("/password")
     public ResponseEntity<String> checkPassword(@Valid @RequestBody AccountPasswordRequest requestDto) {
-        boolean isSame = accountManagementService.checkMatchPassword(requestDto.getPassword());
+        boolean isSame = accountManager.checkMatchPassword(requestDto.getPassword());
 
         if (!isSame) {
             return new ResponseEntity<>("Incorrect password", HttpStatus.BAD_REQUEST);
@@ -92,7 +92,7 @@ public class AccountController {
 
     @PatchMapping("/password")
     public ResponseEntity<String> changePassword(@Valid @RequestBody AccountPasswordRequest requestDto) {
-        accountManagementService.changePassword(requestDto.getPassword());
+        accountManager.changePassword(requestDto.getPassword());
         return ResponseEntity.ok("Completed change password");
     }
 

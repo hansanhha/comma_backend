@@ -1,7 +1,7 @@
 package know_wave.comma.web.advice;
 
-import know_wave.comma.common.mail.exception.EmailVerifiedException;
-import know_wave.comma.common.mail.exception.NotFoundEmailException;
+import know_wave.comma.message.exception.EmailVerifiedException;
+import know_wave.comma.message.exception.NotFoundEmailException;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceException;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-import static know_wave.comma.common.message.ExceptionMessageSource.INVALID_VALUE;
+import static know_wave.comma.message.util.ExceptionMessageSource.INVALID_VALUE;
 
 @RestControllerAdvice(annotations = RestController.class)
 public class EntityExceptionAdvice {

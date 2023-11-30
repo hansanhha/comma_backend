@@ -9,14 +9,13 @@ import know_wave.comma.arduino.dto.basket.BasketResponse;
 import know_wave.comma.arduino.entity.Arduino;
 import know_wave.comma.arduino.entity.Basket;
 import know_wave.comma.arduino.repository.BasketRepository;
-import know_wave.comma.common.mail.exception.EntityAlreadyExistException;
-import know_wave.comma.common.util.ValidateUtils;
+import know_wave.comma.message.exception.EntityAlreadyExistException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static know_wave.comma.common.message.ExceptionMessageSource.*;
+import static know_wave.comma.message.util.ExceptionMessageSource.*;
 
 @Service
 @Transactional
@@ -36,8 +35,6 @@ public class BasketService {
 
         Account account = accountQueryService.findAccount(accountQueryService.getAuthenticatedId());
         List<Basket> baskets = getBasketsByAccount(account);
-
-        ValidateUtils.throwIfEmpty(baskets);
 
         return BasketResponse.of(baskets);
     }
@@ -92,10 +89,6 @@ public class BasketService {
     }
 
     public List<Basket> getBasketsByAccount(Account account) {
-        List<Basket> arduinoList = basketRepository.findAllFetchArduinoByAccount(account);
-
-        ValidateUtils.throwIfEmpty(arduinoList);
-
-        return arduinoList;
+        return basketRepository.findAllFetchArduinoByAccount(account);
     }
 }

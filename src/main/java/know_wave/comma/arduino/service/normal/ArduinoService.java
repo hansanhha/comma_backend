@@ -11,13 +11,14 @@ import know_wave.comma.arduino.repository.ArduinoCategoryRepository;
 import know_wave.comma.arduino.repository.ArduinoRepository;
 import know_wave.comma.arduino.repository.CategoryCrudRepository;
 import know_wave.comma.arduino.repository.CommentRepository;
-import know_wave.comma.common.util.ValidateUtils;
+import know_wave.comma.message.util.ExceptionMessageSource;
 import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import java.util.Comparator;
 import java.util.List;
@@ -78,7 +79,7 @@ public class ArduinoService {
     public Arduino getArduino(Long id) {
         Optional<Arduino> arduinoOptional = arduinoRepository.findFetchCategoriesById(id);
 
-        ValidateUtils.throwIfEmpty(arduinoOptional);
+        throwIfEmpty(arduinoOptional);
 
         return arduinoOptional.get();
     }
@@ -86,8 +87,18 @@ public class ArduinoService {
     public List<ArduinoCategory> getArduinoCategoreisByArduinos(List<Arduino> arduinos) {
         List<ArduinoCategory> arduinoCategories = arduinoCategoryRepository.findALlFetchByArduinos(arduinos);
 
-        ValidateUtils.throwIfEmpty(arduinoCategories);
+        throwIfEmpty(arduinoCategories);
 
         return arduinoCategories;
+    }
+
+    private void throwIfEmpty(Iterable<?> iterable) {
+        if (!iterable.iterator().hasNext()) {
+            throw new IllegalArgumentException(ExceptionMessageSource.NOT_FOUND_VALUE);
+        }
+    }
+
+    private void throwIfEmpty(Optional<?> optional) {
+        Assert.isTrue(optional.isPresent(), ExceptionMessageSource.NOT_FOUND_VALUE);
     }
 }

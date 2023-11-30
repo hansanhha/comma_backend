@@ -3,23 +3,19 @@ package know_wave.comma.account.service.normal;
 import know_wave.comma.account.dto.AccountResponse;
 import know_wave.comma.account.entity.Account;
 import know_wave.comma.account.repository.AccountRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class AccountManagementService {
+@RequiredArgsConstructor
+public class AccountManager {
 
     private final AccountQueryService accountQueryService;
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
-
-    public AccountManagementService(AccountQueryService accountQueryService, AccountRepository accountRepository, PasswordEncoder passwordEncoder) {
-        this.accountQueryService = accountQueryService;
-        this.accountRepository = accountRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     public AccountResponse getAccount() {
         String accountId = accountQueryService.getAuthenticatedId();

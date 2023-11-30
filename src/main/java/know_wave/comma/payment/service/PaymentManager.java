@@ -1,14 +1,13 @@
 package know_wave.comma.payment.service;
 
+import know_wave.comma.message.util.ExceptionMessageSource;
 import know_wave.comma.order.entity.OrderInfo;
 import know_wave.comma.order.service.user.OrderInfoQueryService;
-import know_wave.comma.common.exception.NotFoundException;
-import know_wave.comma.payment.exception.AlreadyPaidException;
-import know_wave.comma.payment.exception.AlreadyRefundedException;
 import know_wave.comma.payment.entity.Deposit;
 import know_wave.comma.payment.entity.DepositStatus;
 import know_wave.comma.payment.entity.PaymentType;
-import know_wave.comma.common.message.ExceptionMessageSource;
+import know_wave.comma.payment.exception.AlreadyPaidException;
+import know_wave.comma.payment.exception.AlreadyRefundedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +22,12 @@ public class PaymentManager {
     private final OrderInfoQueryService orderInfoQueryService;
     private final DepositQueryService depositQueryService;
 
-    public PaymentService getPaymentService(PaymentType paymentType) throws NotFoundException {
+    public PaymentService getPaymentService(PaymentType paymentType) throws IllegalArgumentException {
         return paymentServices.stream()
                 .filter(paymentService -> paymentService.supports(paymentType))
                 .findFirst()
                 .orElseThrow(() ->
-                        new NotFoundException(ExceptionMessageSource.NOT_SUPPORTED_PAYMENT_TYPE));
+                        new IllegalArgumentException(ExceptionMessageSource.NOT_SUPPORTED_PAYMENT_TYPE));
     }
 
     public void checkAlreadyPaid(String orderNumber) throws AlreadyPaidException {

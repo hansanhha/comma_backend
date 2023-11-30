@@ -3,7 +3,7 @@ package know_wave.comma.account.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 
-import static know_wave.comma.common.util.StringStorage.emailRegex;
+import static know_wave.comma.message.util.regexPattern.emailRegex;
 
 public class EmailAuthRequest {
 

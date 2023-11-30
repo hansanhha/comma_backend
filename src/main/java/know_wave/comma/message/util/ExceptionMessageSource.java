@@ -1,4 +1,4 @@
-package know_wave.comma.common.message;
+package know_wave.comma.message.util;
 
 import org.springframework.stereotype.Component;
 

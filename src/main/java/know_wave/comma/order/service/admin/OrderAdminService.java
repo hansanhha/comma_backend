@@ -7,7 +7,6 @@ import know_wave.comma.arduino.entity.Arduino;
 import know_wave.comma.arduino.entity.ArduinoCategory;
 import know_wave.comma.arduino.service.normal.ArduinoService;
 import know_wave.comma.common.config.security.annotation.PermissionProtection;
-import know_wave.comma.common.util.ValidateUtils;
 import know_wave.comma.order.dto.OrderDetailResponse;
 import know_wave.comma.order.dto.OrderResponse;
 import know_wave.comma.order.entity.Order;
@@ -44,8 +43,6 @@ public class OrderAdminService {
     public List<OrderResponse> getOrders(Pageable pageable) {
         List<OrderInfo> orderInfos = orderInfoRepository.findAllOrderByCreateDate(pageable);
 
-        ValidateUtils.throwIfEmpty(orderInfos);
-
         return OrderResponse.ofList(orderInfos);
     }
 
@@ -55,7 +52,9 @@ public class OrderAdminService {
 
     List<OrderInfo> orderInfos = orderInfoRepository.findAllApplyStatus(pageable);
 
-    ValidateUtils.throwIfEmpty(orderInfos);
+    if (orderInfos.isEmpty()) {
+        return List.of();
+    }
 
     List<OrderInfo> relatedOrderInfo = orderInfoRepository.findAllApplyStatusByRelatedAccount(
             orderInfos.stream().map(OrderInfo::getAccount).collect(toUnmodifiableSet()),
@@ -96,8 +95,6 @@ public class OrderAdminService {
 
     public List<OrderResponse> getCancelRequestOrders(Pageable pageable) {
         List<OrderInfo> cancelRequestOrderInfos = orderInfoRepository.findAllCancelRequestStatus(pageable);
-
-        ValidateUtils.throwIfEmpty(cancelRequestOrderInfos);
 
         return OrderResponse.ofList(cancelRequestOrderInfos);
     }

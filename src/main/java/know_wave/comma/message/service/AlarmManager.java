@@ -15,19 +15,19 @@ import java.util.Map;
 public class AlarmManager {
 
     private final AlarmOptionCheckService alarmOptionCheckService;
-    private final List<AlarmNotifier> alarmNotifiers;
+    private final List<Sender> alarmNotifiers;
     private final AlarmHistoryService alarmHistoryService;
-    private final Map<AlarmType, Class<? extends AlarmNotifier>> notifierTypeMatcher = new HashMap<>();
+    private final Map<AlarmType, Class<? extends Sender>> notifierTypeMatcher = new HashMap<>();
 
     @PostConstruct
     public void init() {
-        notifierTypeMatcher.put(AlarmType.WEB, WebNotifier.class);
-        notifierTypeMatcher.put(AlarmType.KAKAOTALK, KakaotalkNotifier.class);
-        notifierTypeMatcher.put(AlarmType.STUDENT_EMAIL, EmailNotifier.class);
+        notifierTypeMatcher.put(AlarmType.WEB, WebSender.class);
+        notifierTypeMatcher.put(AlarmType.KAKAOTALK, KakaotalkSender.class);
+        notifierTypeMatcher.put(AlarmType.STUDENT_EMAIL, EmailSender.class);
     }
 
     public void sendAlarm(AlarmSendDto alarmSendDto) {
-        if (alarmOptionCheckService.isAllowTime() && alarmOptionCheckService.isAllowFeature(alarmSendDto.feature())) {
+        if (alarmOptionCheckService.isAllowTime() && alarmOptionCheckService.isAllowFeature(alarmSendDto.alarmFeature())) {
             sendAlarmAllowedTypes(alarmSendDto);
             loggingAlarmHistory(alarmSendDto);
         }
@@ -37,19 +37,19 @@ public class AlarmManager {
         List<AlarmType> allowedAlarmTypes = alarmOptionCheckService.getAllowedTypes();
 
         allowedAlarmTypes.forEach(alarmType -> {
-            Class<? extends AlarmNotifier> alarmNotifierClassType = notifierTypeMatcher.get(alarmType);
+            Class<? extends Sender> alarmNotifierClassType = notifierTypeMatcher.get(alarmType);
 
             getAlarmNotifier(alarmNotifierClassType)
-                    .notify(alarmSendDto.title(), alarmSendDto.content(), alarmSendDto.link());
+                    .send(alarmSendDto.dest(), alarmSendDto.title(), alarmSendDto.content());
         });
     }
 
     private void loggingAlarmHistory(AlarmSendDto alarmSendDto) {
-        alarmHistoryService.logAccountHistory(alarmSendDto.title(), alarmSendDto.content(), alarmSendDto.link());
+        alarmHistoryService.logAccountHistory(alarmSendDto.title(), alarmSendDto.content());
         alarmHistoryService.logSystemHistory(alarmSendDto.title(), alarmSendDto.content());
     }
 
-    private AlarmNotifier getAlarmNotifier(Class<? extends AlarmNotifier> alarmNotifierClassType) {
+    private Sender getAlarmNotifier(Class<? extends Sender> alarmNotifierClassType) {
         return alarmNotifiers.stream()
                 .filter(alarmNotifier -> alarmNotifier.getClass().equals(alarmNotifierClassType))
                 .findFirst()

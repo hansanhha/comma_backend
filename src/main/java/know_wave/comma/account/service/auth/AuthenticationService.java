@@ -1,37 +1,31 @@
-package know_wave.comma.common.mail;
+package know_wave.comma.account.service.auth;
 
 import know_wave.comma.account.entity.AccountEmailVerify;
 import know_wave.comma.account.repository.AccountVerifyRepository;
-import know_wave.comma.common.mail.exception.EmailVerifiedException;
-import know_wave.comma.common.mail.exception.NotFoundEmailException;
+import know_wave.comma.message.exception.EmailVerifiedException;
+import know_wave.comma.message.exception.NotFoundEmailException;
+import know_wave.comma.message.util.ExceptionMessageSource;
 import know_wave.comma.common.util.GenerateUtils;
-import know_wave.comma.common.message.ExceptionMessageSource;
+import know_wave.comma.message.service.EmailSender;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 @Service
 @Transactional
-public class EmailService {
+@RequiredArgsConstructor
+public class AuthenticationService {
 
     private final AccountVerifyRepository accountVerifyRepository;
     private final EmailSender emailSender;
+
     public static final String AUTH_CODE_TITLE = "컴마 인증 코드";
-
-    public EmailService(AccountVerifyRepository accountVerifyRepository, EmailSender emailSender) {
-        this.accountVerifyRepository = accountVerifyRepository;
-        this.emailSender = emailSender;
-    }
-
-    public void send(String receiveEmail, String title, String text) {
-        if (receiveEmail.isEmpty() || title.isEmpty() || text.isEmpty()) {
-            throw new IllegalArgumentException(ExceptionMessageSource.UNABLE_SEND_EMAIL);
-        }
-        emailSender.send(receiveEmail, title, text);
-    }
 
     public void sendAuthCode(String email) {
 
-        final int code = GenerateUtils.generateSixRandomCode();
+        final int code = generateSixRandomCode();
 
         accountVerifyRepository.findById(email).ifPresentOrElse(accountEmailVerify ->
                 {
@@ -69,5 +63,9 @@ public class EmailService {
                 });
 
         return result[0];
+    }
+
+    private int generateSixRandomCode() {
+        return ThreadLocalRandom.current().nextInt(888888) + 111111;
     }
 }

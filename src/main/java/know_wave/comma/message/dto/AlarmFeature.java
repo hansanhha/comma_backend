@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public enum Feature {
+public enum AlarmFeature {
 
     ACCOUNT("account"),
     ARDUINO("arduino"),

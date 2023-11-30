@@ -1,14 +1,13 @@
-package know_wave.comma.common.message;
+package know_wave.comma.message.util;
 
 import jakarta.validation.MessageInterpolator;
 import org.hibernate.validator.internal.engine.MessageInterpolatorContext;
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
 import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
-import org.springframework.util.StringUtils;
 
 import java.util.Locale;
 
-public class FIeldNameMessageInterpolator implements MessageInterpolator {
+public class FieldNameMessageInterpolator implements MessageInterpolator {
 
     private final MessageInterpolator defaultInterpolator = new ResourceBundleMessageInterpolator(new PlatformResourceBundleLocator("messages"));
 

@@ -31,7 +31,7 @@ public class OrderController {
     public PaymentPrepareResponse order(@RequestHeader("Idempotency-Key") String idempotencyKey,
                                         @Valid @RequestBody OrderRequest request) {
 
-        String orderNumber = GenerateUtils.generatedRandomCode();
+        String orderNumber = GenerateUtils.generateRandomCode();
 
         var idempotentKeyDto = new IdempotentDto(idempotencyKey, HttpMethod.POST.name(), "/api/v1/order/arduino", request.toString());
 
@@ -44,7 +44,7 @@ public class OrderController {
     public PaymentPrepareResponse orderUseSSE(@RequestHeader("Idempotency-Key") String idempotencyKey,
                                    @Valid @RequestBody OrderRequest orderRequest) {
 
-        String orderNumber = GenerateUtils.generatedRandomCode();
+        String orderNumber = GenerateUtils.generateRandomCode();
 
         var idempotentKeyDto = new IdempotentDto(idempotencyKey, HttpMethod.POST.name(), "/api/v2/order/arduino", orderRequest.toString());
 

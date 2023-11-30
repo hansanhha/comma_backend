@@ -3,7 +3,7 @@ package know_wave.comma.account.service.normal;
 import know_wave.comma.account.entity.Account;
 import know_wave.comma.account.repository.AccountRepository;
 import jakarta.persistence.EntityNotFoundException;
-import know_wave.comma.common.message.ExceptionMessageSource;
+import know_wave.comma.message.util.ExceptionMessageSource;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

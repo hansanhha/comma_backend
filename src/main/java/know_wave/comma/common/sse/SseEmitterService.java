@@ -1,7 +1,7 @@
 package know_wave.comma.common.sse;
 
 import know_wave.comma.common.util.GenerateUtils;
-import know_wave.comma.common.message.ExceptionMessageSource;
+import know_wave.comma.message.util.ExceptionMessageSource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class SseEmitterService {
             throw new SseEmitterSendException(ExceptionMessageSource.SSE_EMITTER_ALREADY_EXIST);
         }
 
-        String emitterId = GenerateUtils.generatedRandomCode();
+        String emitterId = GenerateUtils.generateRandomCode();
         SseEmitter emitter = new SseEmitter(60L * 1000 * 60);
         emitters.put(remoteHost, Map.of(emitterId, emitter));
 

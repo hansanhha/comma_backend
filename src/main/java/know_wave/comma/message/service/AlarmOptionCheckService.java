@@ -3,7 +3,7 @@ package know_wave.comma.message.service;
 import know_wave.comma.account.entity.Account;
 import know_wave.comma.account.service.normal.AccountQueryService;
 import know_wave.comma.message.dto.AlarmType;
-import know_wave.comma.message.dto.Feature;
+import know_wave.comma.message.dto.AlarmFeature;
 import know_wave.comma.message.entity.AlarmOption;
 import know_wave.comma.message.repository.AlarmOptionRepository;
 import know_wave.comma.common.config.security.exception.NotSignInException;
@@ -35,11 +35,11 @@ public class AlarmOptionCheckService {
                 && isNotAlarmOffTime(account);
     }
 
-    public boolean isAllowFeature(Feature feature) {
+    public boolean isAllowFeature(AlarmFeature alarmFeature) {
         String authenticatedId = accountQueryService.getAuthenticatedId();
         Account account = accountQueryService.findAccount(authenticatedId);
 
-        return isAllowFeature(account, feature);
+        return isAllowFeature(account, alarmFeature);
     }
 
     public List<AlarmType> getAllowedTypes() {
@@ -89,10 +89,10 @@ public class AlarmOptionCheckService {
         return alarmOption.getAlarmOffEndTime();
     }
 
-    private boolean isAllowFeature(Account account, Feature feature) {
+    private boolean isAllowFeature(Account account, AlarmFeature alarmFeature) {
         AlarmOption alarmOption = getAlarmOption(account);
 
-        return alarmOption.isAlarmSpecificFeatureOn(feature.getName());
+        return alarmOption.isAlarmSpecificFeatureOn(alarmFeature.getName());
     }
 
     private boolean isNightTime() {

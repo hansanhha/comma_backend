@@ -1,10 +1,11 @@
 package know_wave.comma.order.service.user;
 
-import know_wave.comma.common.mail.EmailService;
+import know_wave.comma.message.service.EmailSender;
 import know_wave.comma.order.dto.OrderArduino;
 import know_wave.comma.order.entity.Order;
 import know_wave.comma.order.entity.OrderInfo;
 import know_wave.comma.order.entity.OrderStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class OrderEmailService {
 
     private static final String ORDER_APPLY_CONTENT =
@@ -50,14 +52,10 @@ public class OrderEmailService {
             제품에 문제가 있을 경우 관리자에게 문의해주세요
             """;
 
-    private final EmailService emailService;
-
-    public OrderEmailService(EmailService emailService) {
-        this.emailService = emailService;
-    }
+    private final EmailSender emailSender;
 
     public void sendOrderEmail(OrderInfo orderInfo) {
-        emailService.send(
+        emailSender.send(
                 getEmail(orderInfo),
                 getTitle(orderInfo),
                 getText(orderInfo)

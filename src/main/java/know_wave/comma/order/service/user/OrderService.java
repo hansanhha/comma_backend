@@ -10,7 +10,7 @@ import know_wave.comma.arduino.entity.Basket;
 import know_wave.comma.arduino.repository.BasketRepository;
 import know_wave.comma.arduino.service.normal.ArduinoService;
 import know_wave.comma.arduino.service.normal.BasketService;
-import know_wave.comma.common.message.ExceptionMessageSource;
+import know_wave.comma.message.util.ExceptionMessageSource;
 import know_wave.comma.common.util.GenerateUtils;
 import know_wave.comma.order.dto.OrderCancelRequest;
 import know_wave.comma.order.dto.OrderDetailResponse;
@@ -58,7 +58,7 @@ public class OrderService {
             throw new IllegalArgumentException(ExceptionMessageSource.NOT_ACCEPTABLE_REQUEST);
         }
 
-        String orderNumber = GenerateUtils.generatedRandomCode();
+        String orderNumber = GenerateUtils.generateRandomCode();
         OrderInfo orderInfo = new OrderInfo(account, orderNumber, subject);
 
         Order.ofList(baskets, orderInfo);

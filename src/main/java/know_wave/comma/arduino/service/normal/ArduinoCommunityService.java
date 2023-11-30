@@ -11,8 +11,7 @@ import know_wave.comma.arduino.entity.Comment;
 import know_wave.comma.arduino.entity.Like;
 import know_wave.comma.arduino.repository.CommentRepository;
 import know_wave.comma.arduino.repository.LikeRepository;
-import know_wave.comma.common.message.ExceptionMessageSource;
-import know_wave.comma.common.util.ValidateUtils;
+import know_wave.comma.message.util.ExceptionMessageSource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -131,17 +129,13 @@ public class ArduinoCommunityService {
     }
 
     public Comment getComment(Long commentId) {
-        Optional<Comment> commentOptional = commentRepository.findById(commentId);
-
-        ValidateUtils.throwIfEmpty(commentOptional);
-
-        return commentOptional.get();
+        return commentRepository.findById(commentId).orElse(null);
     }
 
     public List<Comment> getReplyComments(Comment comment, PageRequest pageRequest) {
         List<Comment> replyComments = commentRepository.findFetchReplyCommentByComment(comment, pageRequest);
 
-        ValidateUtils.throwIfEmpty(replyComments);
+        throwIfEmpty(replyComments);
 
         return replyComments;
     }
@@ -149,6 +143,12 @@ public class ArduinoCommunityService {
     private static void checkIsOwnComment(Comment comment, Account account) {
         if (comment.isNotWriter(account.getId())) {
             throw new BadCredentialsException(ExceptionMessageSource.BAD_CREDENTIALS);
+        }
+    }
+
+    private void throwIfEmpty(Iterable<?> iterable) {
+        if (!iterable.iterator().hasNext()) {
+            throw new IllegalArgumentException(ExceptionMessageSource.NOT_FOUND_VALUE);
         }
     }
 }

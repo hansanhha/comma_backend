@@ -11,9 +11,9 @@ import know_wave.comma.arduino.entity.Category;
 import know_wave.comma.arduino.repository.ArduinoCategoryRepository;
 import know_wave.comma.arduino.repository.ArduinoRepository;
 import know_wave.comma.arduino.repository.CategoryCrudRepository;
-import know_wave.comma.common.mail.exception.EntityAlreadyExistException;
+import know_wave.comma.message.exception.EntityAlreadyExistException;
 import know_wave.comma.common.config.security.annotation.PermissionProtection;
-import know_wave.comma.common.message.ExceptionMessageSource;
+import know_wave.comma.message.util.ExceptionMessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
