@@ -20,6 +20,7 @@ import java.util.Objects;
 @Service
 public class KakaoPayService implements PaymentService {
 
+    private final AccountQueryService accountQueryService;
     private final RestTemplate kakaoPayApiClient;
 
     private final CommaArduinoDepositPolicy depositPolicy;
@@ -31,16 +32,17 @@ public class KakaoPayService implements PaymentService {
     private static final String paymentApproveUrl = "https://kapi.kakao.com/v1/payment/approve";
     private static final String paymentCancelUrl = "https://kapi.kakao.com/v1/payment/cancel";
 
-    public KakaoPayService(@Qualifier("kakaoPayApiClient") RestTemplate kakaoPayApiClient, CommaArduinoDepositPolicy depositPolicy) {
+    public KakaoPayService(@Qualifier("kakaoPayApiClient") RestTemplate kakaoPayApiClient, CommaArduinoDepositPolicy depositPolicy, AccountQueryService accountQueryService) {
         this.kakaoPayApiClient = kakaoPayApiClient;
         this.depositPolicy = depositPolicy;
+        this.accountQueryService = accountQueryService;
     }
 
     @Override
     public PaymentPrepareResult ready(String idempotencyKey, PaymentPrepareDto paymentPrepareDto, OrderInfoDto orderInfoDto) {
         String paymentRequestId = GenerateUtils.generatedRandomCode();
 
-        String accountId = AccountQueryService.getAuthenticatedId();
+        String accountId = accountQueryService.getAuthenticatedId();
         var readyRequest = KakaoPayReadyRequest.of(idempotencyKey, paymentRequestId, paymentPrepareDto, accountId, cid, depositPolicy, orderInfoDto);
         var httpEntity = WebEntityCreator.toPaymentEntity(readyRequest.getValue());
 
@@ -56,7 +58,7 @@ public class KakaoPayService implements PaymentService {
     public PaymentPrepareResult readyWithSSE(String idempotencyKey, PaymentPrepareDto paymentPrepareDto, OrderInfoDto orderInfoDto, String sseId) {
         String paymentRequestId = GenerateUtils.generatedRandomCode();
 
-        String accountId = AccountQueryService.getAuthenticatedId();
+        String accountId = accountQueryService.getAuthenticatedId();
         var readyRequest = KakaoPayReadyRequest.ofWithSSE(idempotencyKey, paymentRequestId, paymentPrepareDto, accountId, cid, depositPolicy, orderInfoDto, sseId);
         var httpEntity = WebEntityCreator.toPaymentEntity(readyRequest.getValue());
 

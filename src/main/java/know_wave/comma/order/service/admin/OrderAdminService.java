@@ -6,6 +6,8 @@ import know_wave.comma.account.service.normal.AccountQueryService;
 import know_wave.comma.arduino.entity.Arduino;
 import know_wave.comma.arduino.entity.ArduinoCategory;
 import know_wave.comma.arduino.service.normal.ArduinoService;
+import know_wave.comma.common.config.security.annotation.PermissionProtection;
+import know_wave.comma.common.util.ValidateUtils;
 import know_wave.comma.order.dto.OrderDetailResponse;
 import know_wave.comma.order.dto.OrderResponse;
 import know_wave.comma.order.entity.Order;
@@ -15,8 +17,6 @@ import know_wave.comma.order.repository.OrderInfoRepository;
 import know_wave.comma.order.service.user.OrderEmailService;
 import know_wave.comma.order.service.user.OrderInfoQueryService;
 import know_wave.comma.order.service.user.OrderService;
-import know_wave.comma.common.config.security.annotation.PermissionProtection;
-import know_wave.comma.common.util.ValidateUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toUnmodifiableSet;
-import static know_wave.comma.account.service.normal.AccountQueryService.getAuthenticatedId;
 
 @Service
 @Transactional
@@ -109,7 +108,7 @@ public class OrderAdminService {
         if (orderInfo.getStatus().changeableTo(changedStatus)) {
             orderInfo.setStatus(changedStatus);
 
-            Account account = accountQueryService.findAccount(getAuthenticatedId());
+            Account account = accountQueryService.findAccount(accountQueryService.getAuthenticatedId());
             if (account.getRole() != Role.ADMIN) { // 관리자 계정은 이메일이 없으므로 메일 전송 X
                 orderEmailService.sendOrderEmail(orderInfo);
             }

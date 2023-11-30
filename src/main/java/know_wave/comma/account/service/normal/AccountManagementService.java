@@ -7,8 +7,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static know_wave.comma.account.service.normal.AccountQueryService.getAuthenticatedId;
-
 @Service
 @Transactional
 public class AccountManagementService {
@@ -24,21 +22,21 @@ public class AccountManagementService {
     }
 
     public AccountResponse getAccount() {
-        String accountId = getAuthenticatedId();
+        String accountId = accountQueryService.getAuthenticatedId();
         Account account = accountQueryService.findAccount(accountId);
 
         return AccountResponse.of(account);
     }
 
     public boolean checkMatchPassword(String password) {
-        String accountId = getAuthenticatedId();
+        String accountId = accountQueryService.getAuthenticatedId();
         Account account = accountQueryService.findAccount(accountId);
 
         return passwordEncoder.matches(password, account.getPassword());
     }
 
     public void changePassword(String password) {
-        String accountId = getAuthenticatedId();
+        String accountId = accountQueryService.getAuthenticatedId();
         Account account = accountQueryService.findAccount(accountId);
 
         account.setPassword(passwordEncoder.encode(password));
@@ -46,7 +44,7 @@ public class AccountManagementService {
 
 
     public void deleteAccount() {
-        String accountId = getAuthenticatedId();
+        String accountId = accountQueryService.getAuthenticatedId();
         Account account = accountQueryService.findAccount(accountId);
 
         accountRepository.delete(account);

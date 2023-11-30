@@ -24,7 +24,7 @@ public class AccountQueryService {
                         new EntityNotFoundException(ExceptionMessageSource.NOT_EXIST_ACCOUNT));
     }
 
-    public static String getAuthenticatedId() {
+    public String getAuthenticatedId() {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
 
         if (name.isEmpty() || name.equals("anonymousUser")) {

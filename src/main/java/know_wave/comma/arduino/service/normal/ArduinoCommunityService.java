@@ -1,5 +1,6 @@
 package know_wave.comma.arduino.service.normal;
 
+import jakarta.persistence.EntityNotFoundException;
 import know_wave.comma.account.entity.Account;
 import know_wave.comma.account.service.normal.AccountQueryService;
 import know_wave.comma.arduino.dto.arduino.ArduinoReplyCommentResponse;
@@ -10,9 +11,8 @@ import know_wave.comma.arduino.entity.Comment;
 import know_wave.comma.arduino.entity.Like;
 import know_wave.comma.arduino.repository.CommentRepository;
 import know_wave.comma.arduino.repository.LikeRepository;
-import know_wave.comma.common.util.ValidateUtils;
-import jakarta.persistence.EntityNotFoundException;
 import know_wave.comma.common.message.ExceptionMessageSource;
+import know_wave.comma.common.util.ValidateUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -40,14 +40,14 @@ public class ArduinoCommunityService {
 
     public void submitComment(Long arduinoId, CommentRequest request) {
         Arduino arduino = arduinoService.getArduino(arduinoId);
-        Account account = accountQueryService.findAccount(AccountQueryService.getAuthenticatedId());
+        Account account = accountQueryService.findAccount(accountQueryService.getAuthenticatedId());
         String commentContent = request.getArduinoUserComment();
 
         commentRepository.save(new Comment(arduino, account, commentContent));
     }
 
     public void updateComment(Long arduinoId, Long commentId, CommentRequest request) {
-        Account account = accountQueryService.findAccount(AccountQueryService.getAuthenticatedId());
+        Account account = accountQueryService.findAccount(accountQueryService.getAuthenticatedId());
         String commentContent = request.getArduinoUserComment();
 
         Comment comment = getComment(commentId);
@@ -57,7 +57,7 @@ public class ArduinoCommunityService {
     }
 
     public void deleteComment(Long arduinoId, Long commentId) {
-        Account account = accountQueryService.findAccount(AccountQueryService.getAuthenticatedId());
+        Account account = accountQueryService.findAccount(accountQueryService.getAuthenticatedId());
 
         Comment comment = getComment(commentId);
 
@@ -78,7 +78,7 @@ public class ArduinoCommunityService {
 
     public void submitReplyComment(Long arduinoId, Long commentId, ReplyCommentRequest request) {
         Arduino arduino = arduinoService.getArduino(arduinoId);
-        Account account = accountQueryService.findAccount(AccountQueryService.getAuthenticatedId());
+        Account account = accountQueryService.findAccount(accountQueryService.getAuthenticatedId());
         Comment comment = getComment(commentId);
         String replyCommentContent = request.getArduinoUserReplyComment();
 
@@ -88,7 +88,7 @@ public class ArduinoCommunityService {
     public void updateReplyComment(Long arduinoId, Long commentId,
                                    Long replyCommentId, ReplyCommentRequest request) {
 
-        Account account = accountQueryService.findAccount(AccountQueryService.getAuthenticatedId());
+        Account account = accountQueryService.findAccount(accountQueryService.getAuthenticatedId());
         String replyCommentContent = request.getArduinoUserReplyComment();
 
         Comment replyComment = getComment(replyCommentId);
@@ -101,7 +101,7 @@ public class ArduinoCommunityService {
     public void deleteReplyComment(Long arduinoId, Long commentId,
                                    Long replyCommentId) {
 
-        Account account = accountQueryService.findAccount(AccountQueryService.getAuthenticatedId());
+        Account account = accountQueryService.findAccount(accountQueryService.getAuthenticatedId());
 
 
         Comment replyComment = getComment(replyCommentId);
@@ -113,7 +113,7 @@ public class ArduinoCommunityService {
 
     public void likeArduino(Long arduinoId) {
         Arduino arduino = arduinoService.getArduino(arduinoId);
-        Account account = accountQueryService.findAccount(AccountQueryService.getAuthenticatedId());
+        Account account = accountQueryService.findAccount(accountQueryService.getAuthenticatedId());
 
         likeRepository.findByArduinoAndAccount(arduino, account).ifPresentOrElse(
                         likeRepository::delete,
@@ -122,7 +122,7 @@ public class ArduinoCommunityService {
 
     public void unlikeArduino(Long arduinoId) {
         Arduino arduino = arduinoService.getArduino(arduinoId);
-        Account account = accountQueryService.findAccount(AccountQueryService.getAuthenticatedId());
+        Account account = accountQueryService.findAccount(accountQueryService.getAuthenticatedId());
 
         likeRepository.findByArduinoAndAccount(arduino, account).ifPresentOrElse(
                         likeRepository::delete,

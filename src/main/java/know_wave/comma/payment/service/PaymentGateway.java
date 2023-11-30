@@ -2,13 +2,13 @@ package know_wave.comma.payment.service;
 
 import know_wave.comma.account.entity.Account;
 import know_wave.comma.account.service.normal.AccountQueryService;
-import know_wave.comma.order.dto.OrderInfoDto;
-import know_wave.comma.order.entity.OrderInfo;
-import know_wave.comma.order.service.user.OrderInfoQueryService;
 import know_wave.comma.common.idempotency.Idempotency;
 import know_wave.comma.common.idempotency.Idempotent;
 import know_wave.comma.common.idempotency.IdempotentDto;
 import know_wave.comma.common.idempotency.IdempotentKeyRepository;
+import know_wave.comma.order.dto.OrderInfoDto;
+import know_wave.comma.order.entity.OrderInfo;
+import know_wave.comma.order.service.user.OrderInfoQueryService;
 import know_wave.comma.payment.dto.PaymentPrepareDto;
 import know_wave.comma.payment.dto.PaymentPrepareResponse;
 import know_wave.comma.payment.dto.PaymentRefundRequest;
@@ -58,7 +58,7 @@ public class PaymentGateway {
         var paymentPrepareResult = paymentService.ready(idempotentDto.idempotentKey(), paymentPrepareDto, orderInfoDto);
         var paymentPrepareResponse = new PaymentPrepareResponse(paymentPrepareResult.redirectPcWebUrl(), paymentPrepareResult.redirectMobileWebUrl());
 
-        Account account = accountQueryService.findAccount(AccountQueryService.getAuthenticatedId());
+        Account account = accountQueryService.findAccount(accountQueryService.getAuthenticatedId());
         Deposit deposit = Deposit.of(paymentPrepareDto.paymentType(), paymentPrepareResult.paymentRequestId(), paymentPrepareResult.transactionId(), account, depositPolicy.getAmount(), depositPolicy.getProductName(), true, true);
         Idempotent idempotent = IdempotentDto.of(idempotentDto, HttpStatus.OK.value(), paymentPrepareResponse);
 
@@ -73,7 +73,7 @@ public class PaymentGateway {
         var paymentPrepareResult = paymentService.readyWithSSE(idempotentDto.idempotentKey(), paymentPrepareDto, orderInfoDto, sseId);
         var paymentPrepareResponse = new PaymentPrepareResponse(paymentPrepareResult.redirectPcWebUrl(), paymentPrepareResult.redirectMobileWebUrl());
 
-        Account account = accountQueryService.findAccount(AccountQueryService.getAuthenticatedId());
+        Account account = accountQueryService.findAccount(accountQueryService.getAuthenticatedId());
         Deposit deposit = Deposit.of(paymentPrepareDto.paymentType(), paymentPrepareResult.paymentRequestId(), paymentPrepareResult.transactionId(), account, depositPolicy.getAmount(), depositPolicy.getProductName(), true, true);
         Idempotent idempotent = IdempotentDto.of(idempotentDto, HttpStatus.OK.value(), paymentPrepareResponse);
 

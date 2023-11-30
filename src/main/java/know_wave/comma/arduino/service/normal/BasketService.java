@@ -1,5 +1,6 @@
 package know_wave.comma.arduino.service.normal;
 
+import jakarta.persistence.EntityNotFoundException;
 import know_wave.comma.account.entity.Account;
 import know_wave.comma.account.service.normal.AccountQueryService;
 import know_wave.comma.arduino.dto.basket.BasketDeleteRequest;
@@ -10,13 +11,11 @@ import know_wave.comma.arduino.entity.Basket;
 import know_wave.comma.arduino.repository.BasketRepository;
 import know_wave.comma.common.mail.exception.EntityAlreadyExistException;
 import know_wave.comma.common.util.ValidateUtils;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static know_wave.comma.account.service.normal.AccountQueryService.getAuthenticatedId;
 import static know_wave.comma.common.message.ExceptionMessageSource.*;
 
 @Service
@@ -35,7 +34,7 @@ public class BasketService {
 
     public List<BasketResponse> getBasket() {
 
-        Account account = accountQueryService.findAccount(getAuthenticatedId());
+        Account account = accountQueryService.findAccount(accountQueryService.getAuthenticatedId());
         List<Basket> baskets = getBasketsByAccount(account);
 
         ValidateUtils.throwIfEmpty(baskets);
@@ -45,7 +44,7 @@ public class BasketService {
 
     public void addArduinoToBasket(BasketRequest request) {
 
-        Account account = accountQueryService.findAccount(getAuthenticatedId());
+        Account account = accountQueryService.findAccount(accountQueryService.getAuthenticatedId());
         Arduino arduino = arduinoService.getArduino(request.getArduinoId());
 
         int orderCount = request.getContainedCount();
@@ -62,7 +61,7 @@ public class BasketService {
 
     public void deleteArduinoFromBasket(BasketDeleteRequest request) {
 
-        Account account = accountQueryService.findAccount(getAuthenticatedId());
+        Account account = accountQueryService.findAccount(accountQueryService.getAuthenticatedId());
         Arduino arduino = arduinoService.getArduino(request.getArduinoId());
 
         basketRepository.findByAccountAndArduino(account, arduino)
@@ -72,7 +71,7 @@ public class BasketService {
 
     public void updateArduinoFromBasket(BasketRequest request) {
 
-        Account account = accountQueryService.findAccount(getAuthenticatedId());
+        Account account = accountQueryService.findAccount(accountQueryService.getAuthenticatedId());
         Arduino arduino = arduinoService.getArduino(request.getArduinoId());
 
         if (arduino.isNotEnoughCount(request.getContainedCount())) {
@@ -86,7 +85,7 @@ public class BasketService {
     }
 
     public void emptyBasket() {
-        Account account = accountQueryService.findAccount(getAuthenticatedId());
+        Account account = accountQueryService.findAccount(accountQueryService.getAuthenticatedId());
         List<Basket> basket = getBasketsByAccount(account);
 
         basketRepository.deleteAll(basket);

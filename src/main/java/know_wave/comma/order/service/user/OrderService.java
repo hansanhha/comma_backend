@@ -10,6 +10,8 @@ import know_wave.comma.arduino.entity.Basket;
 import know_wave.comma.arduino.repository.BasketRepository;
 import know_wave.comma.arduino.service.normal.ArduinoService;
 import know_wave.comma.arduino.service.normal.BasketService;
+import know_wave.comma.common.message.ExceptionMessageSource;
+import know_wave.comma.common.util.GenerateUtils;
 import know_wave.comma.order.dto.OrderCancelRequest;
 import know_wave.comma.order.dto.OrderDetailResponse;
 import know_wave.comma.order.dto.OrderMoreRequest;
@@ -19,8 +21,6 @@ import know_wave.comma.order.entity.OrderInfo;
 import know_wave.comma.order.entity.OrderStatus;
 import know_wave.comma.order.entity.Subject;
 import know_wave.comma.order.repository.OrderInfoRepository;
-import know_wave.comma.common.util.GenerateUtils;
-import know_wave.comma.common.message.ExceptionMessageSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -29,8 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
-
-import static know_wave.comma.account.service.normal.AccountQueryService.getAuthenticatedId;
 
 @Service
 @Transactional
@@ -48,7 +46,7 @@ public class OrderService {
 
     public void order(Subject subject) {
 
-        Account account = accountQueryService.findAccount(getAuthenticatedId());
+        Account account = accountQueryService.findAccount(accountQueryService.getAuthenticatedId());
 
         if (account.dontHaveAuthority(Authority.MEMBER_EQUIPMENT_APPLY)) {
             throw new AccessDeniedException(ExceptionMessageSource.PERMISSION_DENIED);
@@ -97,7 +95,7 @@ public class OrderService {
 
     public void moreOrder(String orderNumber, OrderMoreRequest request) {
 
-        Account account = accountQueryService.findAccount(getAuthenticatedId());
+        Account account = accountQueryService.findAccount(accountQueryService.getAuthenticatedId());
 
         OrderInfo orderInfo = orderInfoQueryService.fetchOrdersArduinoAccount(orderNumber);
 
@@ -125,7 +123,7 @@ public class OrderService {
 
     public List<OrderResponse> getOrders() {
 
-        final String accountId = getAuthenticatedId();
+        final String accountId = accountQueryService.getAuthenticatedId();
         Account account = accountQueryService.findAccount(accountId);
         List<OrderInfo> orderInfos = orderInfoQueryService.getOrderInfosByAccount(account);
 
@@ -134,7 +132,7 @@ public class OrderService {
 
     public OrderDetailResponse getOrderDetail(String orderNumber) {
 
-        Account account = accountQueryService.findAccount(getAuthenticatedId());
+        Account account = accountQueryService.findAccount(accountQueryService.getAuthenticatedId());
         OrderInfo orderInfo = orderInfoQueryService.fetchOrdersArduinoAccount(orderNumber);
 
         if (orderInfo.isNotOrderer(account)) {
@@ -152,7 +150,7 @@ public class OrderService {
 
     public void cancelOrderRequest(String orderNumber, OrderCancelRequest request) {
 
-        Account account = accountQueryService.findAccount(getAuthenticatedId());
+        Account account = accountQueryService.findAccount(accountQueryService.getAuthenticatedId());
 
         orderInfoRepository.findById(orderNumber).ifPresentOrElse(orderInfo -> {
 
