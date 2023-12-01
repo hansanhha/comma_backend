@@ -1,4 +1,4 @@
-package know_wave.comma.message.exception;
+package know_wave.comma.alarm.exception;
 
 import jakarta.persistence.EntityExistsException;
 

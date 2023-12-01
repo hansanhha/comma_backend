@@ -11,7 +11,7 @@ import know_wave.comma.arduino.repository.ArduinoCategoryRepository;
 import know_wave.comma.arduino.repository.ArduinoRepository;
 import know_wave.comma.arduino.repository.CategoryCrudRepository;
 import know_wave.comma.arduino.repository.CommentRepository;
-import know_wave.comma.message.util.ExceptionMessageSource;
+import know_wave.comma.alarm.util.ExceptionMessageSource;
 import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

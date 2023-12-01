@@ -1,11 +1,11 @@
-package know_wave.comma.message.service;
+package know_wave.comma.alarm.service;
 
 import know_wave.comma.account.entity.Account;
 import know_wave.comma.account.service.normal.AccountQueryService;
-import know_wave.comma.message.dto.AlarmType;
-import know_wave.comma.message.dto.AlarmFeature;
-import know_wave.comma.message.entity.AlarmOption;
-import know_wave.comma.message.repository.AlarmOptionRepository;
+import know_wave.comma.alarm.dto.AlarmType;
+import know_wave.comma.alarm.dto.AlarmFeature;
+import know_wave.comma.alarm.entity.AlarmOption;
+import know_wave.comma.alarm.repository.AlarmOptionRepository;
 import know_wave.comma.common.config.security.exception.NotSignInException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

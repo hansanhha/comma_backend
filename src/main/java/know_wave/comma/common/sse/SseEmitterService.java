@@ -1,7 +1,7 @@
 package know_wave.comma.common.sse;
 
 import know_wave.comma.common.util.GenerateUtils;
-import know_wave.comma.message.util.ExceptionMessageSource;
+import know_wave.comma.alarm.util.ExceptionMessageSource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

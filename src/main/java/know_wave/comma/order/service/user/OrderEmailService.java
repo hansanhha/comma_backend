@@ -1,6 +1,6 @@
 package know_wave.comma.order.service.user;
 
-import know_wave.comma.message.service.EmailSender;
+import know_wave.comma.alarm.service.EmailSender;
 import know_wave.comma.order.dto.OrderArduino;
 import know_wave.comma.order.entity.Order;
 import know_wave.comma.order.entity.OrderInfo;

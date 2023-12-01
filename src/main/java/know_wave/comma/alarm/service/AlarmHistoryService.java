@@ -1,4 +1,4 @@
-package know_wave.comma.message.service;
+package know_wave.comma.alarm.service;
 
 import org.springframework.stereotype.Service;
 

@@ -3,7 +3,7 @@ package know_wave.comma.account.service.admin;
 import know_wave.comma.account.entity.Account;
 import know_wave.comma.account.entity.auth.Role;
 import know_wave.comma.account.repository.AccountRepository;
-import know_wave.comma.message.util.ExceptionMessageSource;
+import know_wave.comma.alarm.util.ExceptionMessageSource;
 import know_wave.comma.common.config.security.annotation.PermissionProtection;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;

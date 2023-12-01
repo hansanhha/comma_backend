@@ -11,7 +11,7 @@ import know_wave.comma.arduino.entity.Comment;
 import know_wave.comma.arduino.entity.Like;
 import know_wave.comma.arduino.repository.CommentRepository;
 import know_wave.comma.arduino.repository.LikeRepository;
-import know_wave.comma.message.util.ExceptionMessageSource;
+import know_wave.comma.alarm.util.ExceptionMessageSource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.BadCredentialsException;

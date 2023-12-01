@@ -1,8 +1,9 @@
-package know_wave.comma.message.service;
+package know_wave.comma.alarm.service;
 
 import jakarta.annotation.PostConstruct;
-import know_wave.comma.message.dto.AlarmSendDto;
-import know_wave.comma.message.dto.AlarmType;
+import know_wave.comma.alarm.dto.AlarmSendDto;
+import know_wave.comma.alarm.dto.AlarmType;
+import know_wave.comma.alarm.dto.MailSendDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,13 +16,13 @@ import java.util.Map;
 public class AlarmManager {
 
     private final AlarmOptionCheckService alarmOptionCheckService;
-    private final List<Sender> alarmNotifiers;
+    private final List<AlarmSender> alarmNotifiers;
     private final AlarmHistoryService alarmHistoryService;
-    private final Map<AlarmType, Class<? extends Sender>> notifierTypeMatcher = new HashMap<>();
+    private final Map<AlarmType, Class<? extends AlarmSender>> notifierTypeMatcher = new HashMap<>();
 
     @PostConstruct
     public void init() {
-        notifierTypeMatcher.put(AlarmType.WEB, WebSender.class);
+        notifierTypeMatcher.put(AlarmType.WEB, WebBrowserSender.class);
         notifierTypeMatcher.put(AlarmType.KAKAOTALK, KakaotalkSender.class);
         notifierTypeMatcher.put(AlarmType.STUDENT_EMAIL, EmailSender.class);
     }
@@ -33,11 +34,16 @@ public class AlarmManager {
         }
     }
 
+    public void sendMail(MailSendDto mailSendDto) {
+        getAlarmNotifier(EmailSender.class)
+                .send(mailSendDto.destMail(), mailSendDto.title(), mailSendDto.content());
+    }
+
     private void sendAlarmAllowedTypes(AlarmSendDto alarmSendDto) {
         List<AlarmType> allowedAlarmTypes = alarmOptionCheckService.getAllowedTypes();
 
         allowedAlarmTypes.forEach(alarmType -> {
-            Class<? extends Sender> alarmNotifierClassType = notifierTypeMatcher.get(alarmType);
+            Class<? extends AlarmSender> alarmNotifierClassType = notifierTypeMatcher.get(alarmType);
 
             getAlarmNotifier(alarmNotifierClassType)
                     .send(alarmSendDto.dest(), alarmSendDto.title(), alarmSendDto.content());
@@ -49,7 +55,7 @@ public class AlarmManager {
         alarmHistoryService.logSystemHistory(alarmSendDto.title(), alarmSendDto.content());
     }
 
-    private Sender getAlarmNotifier(Class<? extends Sender> alarmNotifierClassType) {
+    private AlarmSender getAlarmNotifier(Class<? extends AlarmSender> alarmNotifierClassType) {
         return alarmNotifiers.stream()
                 .filter(alarmNotifier -> alarmNotifier.getClass().equals(alarmNotifierClassType))
                 .findFirst()

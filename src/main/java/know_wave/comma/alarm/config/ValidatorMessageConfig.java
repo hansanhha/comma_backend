@@ -1,6 +1,6 @@
-package know_wave.comma.message.config;
+package know_wave.comma.alarm.config;
 
-import know_wave.comma.message.util.FieldNameMessageInterpolator;
+import know_wave.comma.alarm.util.FieldNameMessageInterpolator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;

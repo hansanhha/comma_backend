@@ -1,4 +1,4 @@
-package know_wave.comma.message.util;
+package know_wave.comma.alarm.util;
 
 import jakarta.validation.MessageInterpolator;
 import org.hibernate.validator.internal.engine.MessageInterpolatorContext;

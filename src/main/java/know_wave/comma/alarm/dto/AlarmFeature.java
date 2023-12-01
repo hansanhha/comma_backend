@@ -1,4 +1,4 @@
-package know_wave.comma.message.dto;
+package know_wave.comma.alarm.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

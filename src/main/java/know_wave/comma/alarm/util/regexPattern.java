@@ -1,4 +1,4 @@
-package know_wave.comma.message.util;
+package know_wave.comma.alarm.util;
 
 public class regexPattern {
 

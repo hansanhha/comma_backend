@@ -2,11 +2,10 @@ package know_wave.comma.account.service.auth;
 
 import know_wave.comma.account.entity.AccountEmailVerify;
 import know_wave.comma.account.repository.AccountVerifyRepository;
-import know_wave.comma.message.exception.EmailVerifiedException;
-import know_wave.comma.message.exception.NotFoundEmailException;
-import know_wave.comma.message.util.ExceptionMessageSource;
-import know_wave.comma.common.util.GenerateUtils;
-import know_wave.comma.message.service.EmailSender;
+import know_wave.comma.alarm.exception.EmailVerifiedException;
+import know_wave.comma.alarm.exception.NotFoundEmailException;
+import know_wave.comma.alarm.util.ExceptionMessageSource;
+import know_wave.comma.alarm.service.EmailSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

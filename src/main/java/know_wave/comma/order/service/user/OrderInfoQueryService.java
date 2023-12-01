@@ -2,7 +2,7 @@ package know_wave.comma.order.service.user;
 
 import jakarta.persistence.EntityNotFoundException;
 import know_wave.comma.account.entity.Account;
-import know_wave.comma.message.util.ExceptionMessageSource;
+import know_wave.comma.alarm.util.ExceptionMessageSource;
 import know_wave.comma.order.entity.OrderInfo;
 import know_wave.comma.order.repository.OrderInfoRepository;
 import lombok.RequiredArgsConstructor;

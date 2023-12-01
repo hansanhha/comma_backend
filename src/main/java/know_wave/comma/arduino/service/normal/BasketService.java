@@ -9,13 +9,13 @@ import know_wave.comma.arduino.dto.basket.BasketResponse;
 import know_wave.comma.arduino.entity.Arduino;
 import know_wave.comma.arduino.entity.Basket;
 import know_wave.comma.arduino.repository.BasketRepository;
-import know_wave.comma.message.exception.EntityAlreadyExistException;
+import know_wave.comma.alarm.exception.EntityAlreadyExistException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static know_wave.comma.message.util.ExceptionMessageSource.*;
+import static know_wave.comma.alarm.util.ExceptionMessageSource.*;
 
 @Service
 @Transactional
