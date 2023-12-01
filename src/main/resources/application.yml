@@ -45,9 +45,12 @@ logging:
 
 kakao:
   api:
-    key: ${KAKAO_API_KEY}
+    pay:
+      key: ${KAKAO_API_KEY}
     customer:
       id: ${KAKAO_CUSTOMER_ID}
+    message:
+      key: ${KAKAO_MESSAGE_KEY}
 
 payment:
   amount : 3000

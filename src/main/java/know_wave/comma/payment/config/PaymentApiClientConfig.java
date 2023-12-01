@@ -3,19 +3,18 @@ package know_wave.comma.payment.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 
 @Configuration
-public class ApiClientConfig {
+public class PaymentApiClientConfig {
 
-    @Value("${kakao.api.key}")
+    @Value("${kakao.api.pay.key}")
     private String kakaoPayApiKey;
 
-    @Bean("kakaoPayApiClient")
+    @Bean
     public RestTemplate kakaoPayApiClient() {
         RestTemplate restTemplate = new RestTemplate();
 
@@ -27,5 +26,4 @@ public class ApiClientConfig {
         restTemplate.setInterceptors(Collections.singletonList(httpRequestInterceptor));
         return restTemplate;
     }
-
 }

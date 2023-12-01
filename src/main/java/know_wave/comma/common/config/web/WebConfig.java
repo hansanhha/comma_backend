@@ -1,4 +1,4 @@
-package know_wave.comma.web.config;
+package know_wave.comma.common.config.web;
 
 import know_wave.comma.common.config.security.service.TokenService;
 import org.springframework.context.annotation.Configuration;

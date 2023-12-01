@@ -1,4 +1,4 @@
-package know_wave.comma.web.advice;
+package know_wave.comma.common.advice;
 
 import know_wave.comma.common.idempotency.exception.IdempotencyResponse;
 import know_wave.comma.common.idempotency.exception.IdempotencyUnprocessableEntity;
