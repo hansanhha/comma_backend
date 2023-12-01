@@ -27,6 +27,9 @@ public class Arduino extends BaseTimeEntity {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Enumerated(EnumType.STRING)
+    private ArduinoStatus status;
+
     @Min(0)
     private int count;
 
