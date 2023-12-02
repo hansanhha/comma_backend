@@ -18,6 +18,7 @@ public class Arduino extends BaseTimeEntity {
         this.count = originalCount;
         this.originalCount = originalCount;
         this.description = description;
+        this.status = ArduinoStockStatus.getArduinoStatus(originalCount);
     }
 
     @Id @GeneratedValue
@@ -28,7 +29,7 @@ public class Arduino extends BaseTimeEntity {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    private ArduinoStatus status;
+    private ArduinoStockStatus status;
 
     @Min(0)
     private int count;
@@ -70,6 +71,10 @@ public class Arduino extends BaseTimeEntity {
 
     public String getName() {
         return name;
+    }
+
+    public ArduinoStockStatus getStatus() {
+        return status;
     }
 
     public int getCount() {
