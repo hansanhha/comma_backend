@@ -1,7 +1,7 @@
 package know_wave.comma.common.config.security.filter;
 
 import know_wave.comma.account.entity.Account;
-import know_wave.comma.account.service.normal.AccountQueryService;
+import know_wave.comma.account.service.system.AccountQueryService;
 import know_wave.comma.common.config.security.service.TokenService;
 import know_wave.comma.common.config.security.config.PermitRequestMatcherConfig;
 import io.jsonwebtoken.Claims;
@@ -9,7 +9,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import know_wave.comma.alarm.util.ExceptionMessageSource;
+import know_wave.comma.notification.alarm.util.ExceptionMessageSource;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;

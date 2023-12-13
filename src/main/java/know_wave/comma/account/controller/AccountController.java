@@ -4,10 +4,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import know_wave.comma.account.dto.*;
-import know_wave.comma.account.service.auth.AuthenticationService;
-import know_wave.comma.account.service.auth.LogoutService;
-import know_wave.comma.account.service.auth.SignService;
-import know_wave.comma.account.service.normal.AccountManager;
+import know_wave.comma.account.service.AuthenticationService;
+import know_wave.comma.account.service.LogoutService;
+import know_wave.comma.account.service.SignService;
+import know_wave.comma.account.service.AccountManagementService;
 import know_wave.comma.common.config.security.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,7 +25,7 @@ public class AccountController {
     private final AuthenticationService authenticationService;
     private final SignService signService;
     private final LogoutService logoutService;
-    private final AccountManager accountManager;
+    private final AccountManagementService accountManager;
 
     @PostMapping("/signup")
     public ResponseEntity<String> signUp(@Valid @RequestBody AccountCreateForm form) {

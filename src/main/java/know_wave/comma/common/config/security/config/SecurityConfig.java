@@ -1,6 +1,6 @@
 package know_wave.comma.common.config.security.config;
 
-import know_wave.comma.account.service.auth.LogoutService;
+import know_wave.comma.account.service.LogoutService;
 import know_wave.comma.common.config.security.filter.LoggingFilter;
 import know_wave.comma.common.config.security.filter.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;

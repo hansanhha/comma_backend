@@ -1,19 +1,23 @@
 package know_wave.comma.account.entity;
 
 import know_wave.comma.account.entity.auth.Authority;
-import know_wave.comma.alarm.entity.AlarmOption;
+import know_wave.comma.notification.alarm.entity.AlarmOption;
 import know_wave.comma.order_.entity.OrderInfo;
 import know_wave.comma.common.entity.BaseTimeEntity;
 import know_wave.comma.account.entity.auth.Role;
 import know_wave.comma.account.entity.token.Token;
 import know_wave.comma.common.config.security.auth.SecurityAccount;
 import jakarta.persistence.*;
+import lombok.Builder;
+import lombok.Getter;
 import org.springframework.data.domain.Persistable;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
 @Entity
+@Getter
+@Builder
 public class Account extends BaseTimeEntity implements Persistable<String> {
 
     protected Account() {}
@@ -27,6 +31,7 @@ public class Account extends BaseTimeEntity implements Persistable<String> {
         this.academicMajor = academicMajor;
         this.academicStatus = academicStatus;
         this.role = Role.MEMBER;
+        this.accountStatus = AccountStatus.ACTIVE;
     }
 
     public Account(String id, String email, String name, String password, String academicNumber, AcademicMajor academicMajor, AcademicStatus academicStatus, Role role) {
@@ -38,6 +43,7 @@ public class Account extends BaseTimeEntity implements Persistable<String> {
         this.academicMajor = academicMajor;
         this.academicStatus = academicStatus;
         this.role = role;
+        this.accountStatus = AccountStatus.ACTIVE;
     }
 
     @Id
@@ -68,6 +74,12 @@ public class Account extends BaseTimeEntity implements Persistable<String> {
     @Column(nullable = false)
     private Role role;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private AccountStatus accountStatus;
+
+    private String profileImage;
+
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private AlarmOption alarmOption;
 
@@ -85,65 +97,6 @@ public class Account extends BaseTimeEntity implements Persistable<String> {
         return !role.getPermissions().contains(authority);
     }
 
-    public static Builder builder() {
-        return new Builder();
-    }
-
-    public static class Builder {
-
-        private Builder() {}
-
-        private String id = "";
-        private String password = "";
-        private Role role = Role.MEMBER;
-
-        private String email = "";
-        private String name = "";
-        private AcademicStatus academicStatus = null;
-        private String academicNumber = "";
-        private AcademicMajor academicMajor = null;
-
-        public Builder id(String id) {
-            this.id = id;
-            return this;
-        }
-        public Builder password(String password) {
-            this.password = password;
-            return this;
-        }
-        public Builder role(Role role) {
-            this.role = role;
-            return this;
-        }
-        public Builder email(String email) {
-            this.email = email;
-            return this;
-        }
-
-        public Builder name(String name) {
-            this.name = name;
-            return this;
-        }
-        public Builder academicStatus(AcademicStatus academicStatus) {
-            this.academicStatus = academicStatus;
-            return this;
-        }
-
-        public Builder academicNumber(String academicNumber) {
-            this.academicNumber = academicNumber;
-            return this;
-        }
-
-        public Builder academicMajor(AcademicMajor major) {
-            this.academicMajor = major;
-            return this;
-        }
-
-        public Account build() {
-            return new Account(id, email, name, password, academicNumber, academicMajor, academicStatus, role);
-        }
-    }
-
     @Override
     public String getId() {
         return id;
@@ -152,38 +105,6 @@ public class Account extends BaseTimeEntity implements Persistable<String> {
     @Override
     public boolean isNew() {
         return getCreatedDate() == null;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getAcademicNumber() {
-        return academicNumber;
-    }
-
-    public String getAcademicMajor() {
-        return academicMajor.getMajor();
-    }
-
-    public String getAcademicStatus() {
-        return academicStatus.getStatus();
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public List<Token> getTokenList() {
-        return tokenList;
     }
 
     public void setRole(Role role) {

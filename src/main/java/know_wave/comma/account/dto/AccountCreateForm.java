@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
-import static know_wave.comma.alarm.util.regexPattern.emailRegex;
+import static know_wave.comma.notification.alarm.util.regexPattern.emailRegex;
 
 public class AccountCreateForm {
 

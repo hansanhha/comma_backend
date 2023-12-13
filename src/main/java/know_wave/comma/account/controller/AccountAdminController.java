@@ -4,7 +4,7 @@ import know_wave.comma.account.dto.AccountIdRequest;
 import know_wave.comma.account.dto.AdminCreateForm;
 import know_wave.comma.account.entity.auth.Role;
 import know_wave.comma.account.service.admin.AccountAdminService;
-import know_wave.comma.account.service.auth.SignService;
+import know_wave.comma.account.service.SignService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
