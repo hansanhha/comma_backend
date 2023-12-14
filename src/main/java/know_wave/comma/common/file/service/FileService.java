@@ -18,7 +18,7 @@ import java.util.UUID;
 @Service
 public class FileService {
 
-    private final Set<String> SUPPORT_IMAGE_FILE_TYPES = Set.of("image/png", "image/jpeg", "image/gif", "image/svg+xml", "image/webp", "image/jpg", "image/jpeg");
+    private final Set<String> SUPPORT_IMAGE_FILE_TYPES = Set.of("image/png", "image/jpeg", "image/gif", "image/svg+xml", "image/webp", "image/jpg");
 
     public FileDto save(MultipartFile file, String uploadPath) throws UploadFileException {
         String uuid = getUuid();

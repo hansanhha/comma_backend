@@ -1,7 +1,7 @@
 package know_wave.comma.arduino.component.dto;
 
 import know_wave.comma.arduino.component.entity.Arduino;
-import know_wave.comma.arduino.component.entity.ArduinoCategory;
+import know_wave.comma.arduino.component.entity.Category;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +45,7 @@ public class ArduinoPageResponse {
                     arduino.getCount(),
                     arduino.getStockStatus().getStatus(),
                     arduino.getCategories().stream()
-                            .map(ArduinoCategory::getName)
+                            .map(Category::getName)
                             .toList(),
                     arduino.getPhotos().get(0).getFilePath());
         }

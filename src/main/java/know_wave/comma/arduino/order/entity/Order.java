@@ -2,6 +2,8 @@ package know_wave.comma.arduino.order.entity;
 
 import jakarta.persistence.*;
 import know_wave.comma.account.entity.Account;
+import know_wave.comma.arduino.component.entity.Arduino;
+import know_wave.comma.arduino.component.entity.ArduinoStockStatus;
 import know_wave.comma.common.entity.BaseTimeEntity;
 import know_wave.comma.common.entity.ExceptionMessageSource;
 import lombok.AccessLevel;
@@ -9,11 +11,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
-// TODO : 엔티티 상태 변경 메서드에서 예외 처리를 할 지(어떤 예외?), 서비스에서 예외 처리를 할 지 고민
 @Getter
-@Entity
+@Entity(name = "arduino_order")
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order extends BaseTimeEntity {
@@ -50,10 +52,23 @@ public class Order extends BaseTimeEntity {
         return order;
     }
 
-    public boolean isAbleToOrder() {
-        return orderStatus == OrderStatus.DEPOSIT_PAYMENT_REQUIRED
-                && deposit.getDepositStatus() != DepositStatus.REFUND
-                || deposit.getDepositStatus() != DepositStatus.COLLECT;
+    public static OrderStatus validate(Arduino arduino, int orderQuantity) {
+        ArduinoStockStatus stockStatus = arduino.getStockStatus();
+
+        if (stockStatus == ArduinoStockStatus.NONE || stockStatus == ArduinoStockStatus.UPCOMMING) {
+            return OrderStatus.FAILURE_CAUSE_ARDUINO_STOCK_STATUS;
+        } else if (orderQuantity > arduino.getCount()) {
+            return OrderStatus.FAILURE_CAUSE_ARDUINO_STOCK;
+        } else
+            return OrderStatus.VALID;
+    }
+
+    public static OrderStatus validateList(List<OrderDetail> details, int maxQuantity) {
+        return details.stream()
+                .map(detail -> validate(detail.getArduino(), detail.getOrderArduinoCount()))
+                .filter(orderStatus -> orderStatus != OrderStatus.VALID)
+                .findFirst()
+                .orElse(OrderStatus.VALID);
     }
 
     public boolean isAbleToFreeCancel() {
@@ -73,43 +88,58 @@ public class Order extends BaseTimeEntity {
         this.orderStatus = orderStatus;
     }
 
-    public void cancelOrder() {
+    public void freeCancelOrder() {
         if (orderStatus == OrderStatus.ORDERED) {
-            updateStatus(DepositStatus.REFUND, OrderStatus.CANCEL);
-        } else if (orderStatus == OrderStatus.PREPARING || orderStatus == OrderStatus.BE_READY) {
-            updateStatus(DepositStatus.COLLECT, OrderStatus.CANCEL);
-        } else {
-            throw new IllegalStateException(ExceptionMessageSource.UNABLE_TO_CANCEL_ORDER);
+            updateStatus(DepositStatus.RETURN, OrderStatus.FREE_CANCEL);
+            return;
         }
+
+        throw new IllegalStateException(ExceptionMessageSource.UNABLE_TO_CANCEL_ORDER);
+    }
+
+    public void cancelOrder() {
+        if (orderStatus == OrderStatus.PREPARING || orderStatus == OrderStatus.BE_READY) {
+            updateStatus(DepositStatus.RECLAIMED, OrderStatus.CANCEL);
+            return;
+        }
+
+        throw new IllegalStateException(ExceptionMessageSource.UNABLE_TO_CANCEL_ORDER);
     }
 
     public void rejectOrder() {
         if (orderStatus == OrderStatus.ORDERED || orderStatus == OrderStatus.PREPARING) {
-            updateStatus(DepositStatus.REFUND, OrderStatus.FAILURE_CAUSE_REJECTED);
+            updateStatus(DepositStatus.RETURN, OrderStatus.FAILURE_CAUSE_REJECTED);
             return;
         }
 
         throw new IllegalStateException(ExceptionMessageSource.UNABLE_TO_REJECT_ORDER);
     }
 
-    // 실패 원인에 따라 보증금 환불 또는 회수 처리
-    public void refundFailOrder(OrderStatus orderStatus) {
-        if (orderStatus == OrderStatus.FAILURE_CAUSE_ARDUINO_STATUS) {
-            updateStatus(DepositStatus.REFUND, OrderStatus.FAILURE_CAUSE_ARDUINO_STATUS);
+    public void handleDepositReturn() {
+        if (deposit.getDepositStatus() == DepositStatus.RETURN_SCHEDULED) {
+            deposit.setDepositStatus(DepositStatus.RETURN);
             return;
-        } else if (orderStatus == OrderStatus.FAILURE_CAUSE_ARDUINO_STOCK) {
-            updateStatus(DepositStatus.REFUND, OrderStatus.FAILURE_CAUSE_ARDUINO_STOCK);
+        }
+    }
+    
+    // 보증금 결제 후 주문 실패 시 보증금 반환 예정 처리
+    public void handleFailureDuringOrderProcessing(OrderStatus cause) {
+        if (cause == OrderStatus.FAILURE_CAUSE_ARDUINO_STOCK_STATUS) {
+            updateStatus(DepositStatus.RETURN_SCHEDULED, OrderStatus.FAILURE_CAUSE_ARDUINO_STOCK_STATUS);
+            return;
+        } else if (cause == OrderStatus.FAILURE_CAUSE_ARDUINO_STOCK) {
+            updateStatus(DepositStatus.RETURN_SCHEDULED, OrderStatus.FAILURE_CAUSE_ARDUINO_STOCK);
             return;
         }
 
         throw new IllegalStateException(ExceptionMessageSource.UNABLE_TO_FAIL_ORDER);
     }
 
-    public void notRefundFailOrder(OrderStatus orderStatus) {
-        if (orderStatus == OrderStatus.FAILURE_CAUSE_DEPOSIT_FAILURE) {
+    public void handleFailureCauseDepositPayment(OrderStatus cause) {
+        if (cause == OrderStatus.FAILURE_CAUSE_DEPOSIT_FAILURE) {
             updateOrderStatus(OrderStatus.FAILURE_CAUSE_DEPOSIT_FAILURE);
             return;
-        } else if (orderStatus == OrderStatus.FAILURE_CAUSE_DEPOSIT_CANCEL) {
+        } else if (cause == OrderStatus.FAILURE_CAUSE_DEPOSIT_CANCEL) {
             updateOrderStatus(OrderStatus.FAILURE_CAUSE_DEPOSIT_CANCEL);
             return;
         }
@@ -117,9 +147,13 @@ public class Order extends BaseTimeEntity {
         throw new IllegalStateException(ExceptionMessageSource.UNABLE_TO_FAIL_ORDER);
     }
 
-    public void ordered() {
+    public void order(List<OrderDetail> orderDetails) {
         if (orderStatus == OrderStatus.DEPOSIT_PAYMENT_REQUIRED) {
             updateStatus(DepositStatus.PAID, OrderStatus.ORDERED);
+
+            orderDetails.forEach(orderDetail ->
+                    orderDetail.getArduino().decreaseStock(orderDetail.getOrderArduinoCount()));
+
             return;
         }
 

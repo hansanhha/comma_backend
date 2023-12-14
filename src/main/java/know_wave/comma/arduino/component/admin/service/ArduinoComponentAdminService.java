@@ -5,7 +5,7 @@ import know_wave.comma.arduino.component.admin.dto.ArduinoCreateForm;
 import know_wave.comma.arduino.component.admin.dto.ArduinoUpdateForm;
 import know_wave.comma.arduino.component.dto.ArduinoDetailResponse;
 import know_wave.comma.arduino.component.entity.Arduino;
-import know_wave.comma.arduino.component.entity.ArduinoCategory;
+import know_wave.comma.arduino.component.entity.Category;
 import know_wave.comma.arduino.component.entity.ArduinoPhoto;
 import know_wave.comma.arduino.component.entity.ArduinoStockStatus;
 import know_wave.comma.arduino.component.repository.ArduinoCategoryRepository;
@@ -40,7 +40,7 @@ public class ArduinoComponentAdminService {
                     throw new EntityAlreadyExistException(ExceptionMessageSource.ALREADY_EXIST_VALUE);
                 },
 
-                () -> categoryRepository.save(new ArduinoCategory(categoryName)));
+                () -> categoryRepository.save(new Category(categoryName)));
     }
 
     public void updateCategory(Long id, String dest) {
@@ -89,7 +89,7 @@ public class ArduinoComponentAdminService {
 
     public void updateArduino(ArduinoUpdateForm form) {
         Arduino arduino = arduinoRepository.findById(form.getUpdatedArduinoId()).orElseThrow(() -> new EntityNotFoundException(ExceptionMessageSource.NOT_FOUND_VALUE));
-        arduino.update(form.getUpdatedArduinoName(), form.getUpdatedCount(), form.getUpdatedDescription(), form.getUpdatedCategories().stream().map(ArduinoCategory::new).toList());
+        arduino.update(form.getUpdatedArduinoName(), form.getUpdatedCount(), form.getUpdatedDescription(), form.getUpdatedCategories().stream().map(Category::new).toList());
 
         if (isPresent(form.getDeletedPhotoFiles())) {
             List<ArduinoPhoto> photos = arduinoPhotoRepository.findAllByUuid(form.getDeletedPhotoFiles());

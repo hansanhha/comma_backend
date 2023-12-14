@@ -3,6 +3,7 @@ package know_wave.comma.arduino.order.service;
 import jakarta.transaction.Transactional;
 import know_wave.comma.account.entity.Account;
 import know_wave.comma.account.service.system.AccountQueryService;
+import know_wave.comma.arduino.basket.dto.BasketValidateStatus;
 import know_wave.comma.arduino.basket.entity.Basket;
 import know_wave.comma.arduino.basket.exception.BasketException;
 import know_wave.comma.arduino.basket.service.BasketService;
@@ -21,6 +22,7 @@ import know_wave.comma.payment.entity.PaymentFeature;
 import know_wave.comma.payment.entity.PaymentType;
 import know_wave.comma.payment.service.PaymentGateway;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,10 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+
+/* TODO
+    * 주문 수령 이후 보증금 결제 환불 처리
+ */
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -42,6 +48,8 @@ public class OrderService {
     private final DepositRepository depositRepository;
     private static final int DEPOSIT_AMOUNT = 3000;
     private static final int PAYMENT_QUANTITY = 1;
+    @Value("${arduino.max-order-quantity}")
+    private int ORDER_MAX_QUANTITY;
 
     /* 0. 멱등성 검증 (컨트롤러에서 처리)
      * 1. 장바구니, 수량 및 재고 상태 검증
@@ -56,14 +64,19 @@ public class OrderService {
      */
     public preProcessOrderResponse preProcessOrder(OrderRequest orderRequest) {
         List<Basket> basketList = basketService.findBasketList();
-        boolean invalidArduino = basketList.stream().anyMatch(basket -> !basket.getArduino().isValid(basket.getStoredCount()));
 
         if (basketList.isEmpty()) {
             throw new BasketException(ExceptionMessageSource.EMPTY_BASKET);
         }
 
-        if (invalidArduino) {
-            throw new OrderException(ExceptionMessageSource.INVALID_ARDUINO);
+        BasketValidateStatus basketValidateStatus = Basket.validateList(basketList, ORDER_MAX_QUANTITY);
+
+        if (basketValidateStatus.isOverMaxQuantity()) {
+            throw new OrderException(ExceptionMessageSource.OVER_MAX_ARDUINO_QUANTITY);
+        } else if (basketValidateStatus.isBadArduinoStatus()) {
+            throw new OrderException(ExceptionMessageSource.BAD_ARDUINO_STOCK_STATUS);
+        } else if (basketValidateStatus.isNotEnoughStock()) {
+            throw new OrderException(ExceptionMessageSource.NOT_ENOUGH_ARDUINO_STOCK);
         }
 
         Account account = accountQueryService.findAccount();
@@ -97,7 +110,7 @@ public class OrderService {
 
         if (freeCancel) {
             PaymentGatewayRefundResponse refund = paymentGateway.refund(order.getDeposit().getPayment().getPaymentRequestId());
-            order.cancelOrder();
+            order.freeCancelOrder();
         } else {
             order.cancelOrder();
         }
@@ -126,12 +139,12 @@ public class OrderService {
         return OrderDetailResponse.to(order, orderDetails);
     }
 
-    Order findOrderByOrderNumber(String orderNumber) {
+    private Order findOrderByOrderNumber(String orderNumber) {
         return orderRepository.findFetchByOrderNumber(orderNumber)
                 .orElseThrow(() -> new OrderException(ExceptionMessageSource.INVALID_ORDER_NUMBER));
     }
 
-    List<OrderDetail> findOrderDetails(Order order) {
+    private List<OrderDetail> findOrderDetails(Order order) {
         return orderDetailRepository.findFetchAllByOrder(order);
     }
 

@@ -2,7 +2,7 @@ package know_wave.comma.arduino.component.admin.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import know_wave.comma.arduino.component.entity.Arduino;
-import know_wave.comma.arduino.component.entity.ArduinoCategory;
+import know_wave.comma.arduino.component.entity.Category;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,7 +33,7 @@ public class ArduinoCreateForm {
                 .name(form.getArduinoName())
                 .count(form.getCount())
                 .description(form.getDescription())
-                .categories(form.getCategories().stream().map(ArduinoCategory::new).toList())
+                .categories(form.getCategories().stream().map(Category::new).toList())
                 .build();
     }
 

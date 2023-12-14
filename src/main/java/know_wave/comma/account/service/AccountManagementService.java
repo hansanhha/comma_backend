@@ -21,7 +21,7 @@ public class AccountManagementService {
     public AccountResponse getAccount() {
         Account account = accountQueryService.findAccount();
 
-        return AccountResponse.of(account);
+        return AccountResponse.to(account);
     }
 
     public boolean checkMatchPassword(String password) {

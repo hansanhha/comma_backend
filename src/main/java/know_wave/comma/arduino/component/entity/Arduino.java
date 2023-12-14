@@ -2,8 +2,10 @@ package know_wave.comma.arduino.component.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
+import know_wave.comma.arduino.order.entity.OrderDetail;
 import know_wave.comma.common.entity.BaseTimeEntity;
 import know_wave.comma.common.entity.DeleteEntity;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -12,6 +14,7 @@ import java.util.List;
 @Entity
 @Getter
 @Builder
+@AllArgsConstructor
 public class Arduino extends BaseTimeEntity {
 
     protected Arduino() {}
@@ -38,7 +41,7 @@ public class Arduino extends BaseTimeEntity {
     @JoinTable(name = "arduino_category",
             joinColumns = @JoinColumn(name = "arduino_id"),
             inverseJoinColumns = @JoinColumn(name = "arduino_category_id"))
-    private List<ArduinoCategory> categories;
+    private List<Category> categories;
 
     @OneToMany(mappedBy = "arduino", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ArduinoPhoto> photos;
@@ -46,7 +49,7 @@ public class Arduino extends BaseTimeEntity {
     @Embedded
     private DeleteEntity delete;
 
-    public void update(String updatedArduinoName, int updatedCount, String updatedDescription, List<ArduinoCategory> updatedCategories) {
+    public void update(String updatedArduinoName, int updatedCount, String updatedDescription, List<Category> updatedCategories) {
         this.name = updatedArduinoName;
         this.count = updatedCount;
         this.description = updatedDescription;
@@ -78,15 +81,6 @@ public class Arduino extends BaseTimeEntity {
                 this.stockStatus = ArduinoStockStatus.LESS_THAN_10;
             }
         }
-    }
-
-    public boolean isValid(int addCount) {
-        if (stockStatus == ArduinoStockStatus.NONE || stockStatus == ArduinoStockStatus.UPCOMMING) {
-            return false;
-        } else if (addCount > count) {
-            return false;
-        } else
-            return addCount <= ArduinoMaxCount.MAX_COUNT;
     }
 
     public void decreaseStock(int orderArduinoCount) {

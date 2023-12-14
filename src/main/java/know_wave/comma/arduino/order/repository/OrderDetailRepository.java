@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> {
 
-    @Query("select od from OrderDetail od join fetch od.order o, od.arduino oa where o = :order")
+    @Query("select od from OrderDetail od join fetch od.arduino oa where od.order = :order")
     List<OrderDetail> findFetchAllByOrder(Order order);
 }

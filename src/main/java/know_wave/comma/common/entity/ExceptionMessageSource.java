@@ -39,17 +39,17 @@ public class ExceptionMessageSource {
     public static final String DELETED_ACCOUNT = "탈퇴된 계정입니다";
     public static final String INACTIVE_ACCOUNT = "비활성화된 계정입니다";
     public static final String NOT_WRITER = "작성자가 아닙니다";
-    public static final String NOT_EXSIT_COMMENT = "존재하지 않는 댓글입니다";
-    public static final String ARDUINO_EXCEED_MAXIMUM_COUNT = "최대 신청 가능 수량을 초과했습니다";
-    public static final String ARDUINO_EXCEED_AVAILABLE_COUNT = "부품 잔여 수량을 초과했습니다";
-    public static final String ARDUINO_STOCK_STATUS = "부품 재고 상태가 부족합니다";
+    public static final String NOT_EXIST_COMMENT = "존재하지 않는 댓글입니다";
+    public static final String OVER_MAX_ARDUINO_QUANTITY = "최대 신청 가능 수량을 초과했습니다";
+    public static final String NOT_ENOUGH_ARDUINO_STOCK = "부품 잔여 수량을 초과했습니다";
+    public static final String BAD_ARDUINO_STOCK_STATUS = "부품 재고 상태가 유효하지 않습니다";
     public static final String EMPTY_BASKET = "장바구니가 비어있습니다";
     public static final String IDEMPOTENCY_UNPROCESSABLE_EXCEPTION = "멱등하지 않은 요청입니다";
-    public static final String INVALID_IDEMPOENT_RESPONSE = "잘못된 형식의 멱등 응답입니다";
+    public static final String INVALID_IDEMPOTENT_RESPONSE = "잘못된 형식의 멱등 응답입니다";
     public static final String NOT_EXIST_PAYMENT_INFO = "결제 정보가 존재하지 않습니다";
     public static final String NOT_SUPPORTED_PAYMENT_FEATURE = "지원하지 않는 결제 기능입니다";
-    public static final String INVALID_ARDUINO = "유효하지 않은 아두이노입니다";
     public static final String INVALID_ORDER_NUMBER = "유효하지 않은 주문번호입니다";
+    public static final String UNABLE_TO_BASKET = "장바구니에 담을 수 없습니다";
     public static final String UNABLE_TO_ORDER = "주문을 수행할 수 없습니다";
     public static final String UNABLE_TO_PREPARE_ORDER = "주문 준비를 수행할 수 없습니다";
     public static final String UNABLE_TO_REJECT_ORDER = "주문 거부를 수행할 수 없습니다";
@@ -57,5 +57,5 @@ public class ExceptionMessageSource {
     public static final String UNABLE_TO_FAIL_ORDER = "주문 실패를 수행할 수 없습니다";
     public static final String UNABLE_TO_BE_READY_ORDER = "주문 준비 완료를 수행할 수 없습니다";
     public static final String UNABLE_TO_RECEIVE_ORDER = "주문 수령을 수행할 수 없습니다";
-    public static final String FAILED_REFUND = "환불에 실패했습니다";
+    public static final String FAILED_DEPOSIT_RETURN = "보증금 반환에 실패했습니다";
 }

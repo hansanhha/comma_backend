@@ -7,7 +7,8 @@ import know_wave.comma.account.entity.token.Token;
 import know_wave.comma.arduino.order.entity.Order;
 import know_wave.comma.common.config.security.auth.SecurityAccount;
 import know_wave.comma.common.entity.BaseTimeEntity;
-import know_wave.comma.notification.push.entity.PushNotificationOption;
+import know_wave.comma.common.notification.push.entity.PushNotificationOption;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.domain.Persistable;
@@ -18,6 +19,7 @@ import java.util.List;
 @Entity
 @Getter
 @Builder
+@AllArgsConstructor
 public class Account extends BaseTimeEntity implements Persistable<String> {
 
     protected Account() {}

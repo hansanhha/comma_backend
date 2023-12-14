@@ -3,12 +3,12 @@ package know_wave.comma.account.service;
 import know_wave.comma.account.entity.AccountEmailVerify;
 import know_wave.comma.account.repository.AccountVerifyRepository;
 import know_wave.comma.common.entity.ExceptionMessageSource;
-import know_wave.comma.notification.push.dto.PushNotificationRequest;
-import know_wave.comma.notification.base.entity.NotificationFeature;
-import know_wave.comma.notification.push.entity.PushNotificationType;
+import know_wave.comma.common.notification.push.dto.PushNotificationRequest;
+import know_wave.comma.common.notification.push.entity.NotificationFeature;
+import know_wave.comma.common.notification.push.entity.PushNotificationType;
 import know_wave.comma.account.exception.EmailVerifiedException;
 import know_wave.comma.account.exception.NotFoundEmailException;
-import know_wave.comma.notification.base.service.NotificationGateway;
+import know_wave.comma.common.notification.push.service.PushNotificationGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +22,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class AuthenticationService {
 
     private final AccountVerifyRepository accountVerifyRepository;
-    private final NotificationGateway notificationGateway;
+    private final PushNotificationGateway notificationGateway;
 
     public static final String AUTH_CODE_TITLE = "컴마 인증 코드";
 

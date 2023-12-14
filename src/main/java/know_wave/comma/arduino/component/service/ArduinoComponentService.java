@@ -3,7 +3,7 @@ package know_wave.comma.arduino.component.service;
 import know_wave.comma.common.entity.ExceptionMessageSource;
 import know_wave.comma.arduino.component.dto.ArduinoCategoriesResponse;
 import know_wave.comma.arduino.component.entity.Arduino;
-import know_wave.comma.arduino.component.entity.ArduinoCategory;
+import know_wave.comma.arduino.component.entity.Category;
 import know_wave.comma.arduino.component.repository.ArduinoCategoryRepository;
 import know_wave.comma.arduino.component.repository.ArduinoRepository;
 import know_wave.comma.arduino.component.dto.ArduinoDetailResponse;
@@ -31,7 +31,7 @@ public class ArduinoComponentService {
 
 
     public ArduinoCategoriesResponse getCategories() {
-        var categories = (List<ArduinoCategory>) categoryRepository.findAll();
+        var categories = (List<Category>) categoryRepository.findAll();
         return ArduinoCategoriesResponse.to(categories);
     }
 

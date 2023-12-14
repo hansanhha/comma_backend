@@ -70,7 +70,7 @@ public class OrderAdminService {
         PaymentGatewayRefundResponse refund = paymentGateway.refund(paymentRequestId);
 
         if (refund.getPaymentStatus() != PaymentStatus.REFUND) {
-            throw new AdminOrderException(ExceptionMessageSource.FAILED_REFUND);
+            throw new AdminOrderException(ExceptionMessageSource.FAILED_DEPOSIT_RETURN);
         }
 
         order.rejectOrder();

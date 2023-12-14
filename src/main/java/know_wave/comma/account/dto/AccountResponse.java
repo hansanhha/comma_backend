@@ -4,13 +4,13 @@ import know_wave.comma.account.entity.Account;
 
 public class AccountResponse {
 
-    public static AccountResponse of(Account account) {
+    public static AccountResponse to(Account account) {
         return new AccountResponse(
                 account.getName(),
                 account.getEmail(),
                 account.getAcademicNumber(),
-                account.getAcademicStatus(),
-                account.getAcademicMajor(),
+                account.getAcademicStatus().getStatus(),
+                account.getAcademicMajor().getMajor(),
                 account.getRole().getGrade()
         );
     }

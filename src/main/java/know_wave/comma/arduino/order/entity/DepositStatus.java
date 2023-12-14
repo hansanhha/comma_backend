@@ -9,8 +9,9 @@ public enum DepositStatus {
     
     REQUIRED("보증금 결제 필요"),
     PAID("보증금 결제"),
-    REFUND("보증금 반환"),
-    COLLECT("보증금 회수");
+    RETURN("보증금 반환"),
+    RETURN_SCHEDULED("보증금 반환 예정"),
+    RECLAIMED("보증금 회수");
 
     private final String status;
 }

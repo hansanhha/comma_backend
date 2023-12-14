@@ -54,7 +54,7 @@ public class IdempotencyService {
                 T response = mapper.readValue(idempotent.getResponse(), type);
                 return Optional.of(IdempotentResponse.of(idempotent.getResponseStatus(), response));
             } catch (JsonProcessingException e) {
-                throw new IdempotencyJacksonException(ExceptionMessageSource.INVALID_IDEMPOENT_RESPONSE);
+                throw new IdempotencyJacksonException(ExceptionMessageSource.INVALID_IDEMPOTENT_RESPONSE);
             }
         }
 
@@ -77,7 +77,7 @@ public class IdempotencyService {
             idempotencyRepository.save(idempotent);
 
         } catch (JsonProcessingException e) {
-            throw new IdempotencyJacksonException(ExceptionMessageSource.INVALID_IDEMPOENT_RESPONSE);
+            throw new IdempotencyJacksonException(ExceptionMessageSource.INVALID_IDEMPOTENT_RESPONSE);
         }
 
     }

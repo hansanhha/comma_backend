@@ -63,6 +63,8 @@ payment:
 # paymentRequestId : 결제 식별, 멱등키(idempotentKey), 외부 api 주문번호 id로도 사용
 # orderNumber : 결제 기능을 요청한 도메인의 주문번호
 
+arduino:
+  max-order-quantity: 4
 
 #server:
 #  http2:

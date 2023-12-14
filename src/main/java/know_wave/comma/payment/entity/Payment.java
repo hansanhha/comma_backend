@@ -54,9 +54,9 @@ public class Payment {
         try {
             String originalString = accountId + orderNumber;
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hashbytes = digest.digest(originalString.getBytes(StandardCharsets.UTF_8));
+            byte[] hashBytes = digest.digest(originalString.getBytes(StandardCharsets.UTF_8));
             StringBuilder stringBuilder = new StringBuilder();
-            for (byte b : hashbytes) {
+            for (byte b : hashBytes) {
                 stringBuilder.append(String.format("%02x", b));
             }
             return stringBuilder.toString();

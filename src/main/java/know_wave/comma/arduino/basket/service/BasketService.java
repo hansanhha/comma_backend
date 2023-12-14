@@ -2,16 +2,18 @@ package know_wave.comma.arduino.basket.service;
 
 import know_wave.comma.account.entity.Account;
 import know_wave.comma.account.service.system.AccountQueryService;
-import know_wave.comma.common.entity.ExceptionMessageSource;
 import know_wave.comma.arduino.basket.dto.BasketAddRequest;
 import know_wave.comma.arduino.basket.dto.BasketResponse;
 import know_wave.comma.arduino.basket.dto.BasketUpdateRequest;
+import know_wave.comma.arduino.basket.dto.BasketValidateStatus;
+import know_wave.comma.arduino.basket.entity.Basket;
 import know_wave.comma.arduino.basket.exception.BasketException;
 import know_wave.comma.arduino.basket.repository.BasketRepository;
 import know_wave.comma.arduino.component.entity.Arduino;
-import know_wave.comma.arduino.basket.entity.Basket;
 import know_wave.comma.arduino.component.service.ArduinoComponentService;
+import know_wave.comma.common.entity.ExceptionMessageSource;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,9 @@ public class BasketService {
     private final AccountQueryService accountQueryService;
     private final ArduinoComponentService arduinoInfoService;
     private final BasketRepository basketRepository;
+
+    @Value("${arduino.max-order-quantity}")
+    private int BASKET_MAX_QUANTITY;
 
     public BasketResponse getBasket() {
         Account account = accountQueryService.findAccount();
@@ -48,8 +53,10 @@ public class BasketService {
             throw new BasketException(ExceptionMessageSource.ALREADY_IN_BASKET);
         }
 
-        if (!arduino.isValid(containCount)) {
-            throw new BasketException(ExceptionMessageSource.INVALID_ARDUINO);
+        BasketValidateStatus basketValidateStatus = Basket.validate(arduino, containCount, BASKET_MAX_QUANTITY);
+
+        if (basketValidateStatus.isNotValid()) {
+            throw new BasketException(ExceptionMessageSource.UNABLE_TO_BASKET);
         }
 
         Basket basket = Basket.create(account, arduino, containCount);
@@ -62,8 +69,10 @@ public class BasketService {
         Arduino arduino = basket.getArduino();
         final int updatedCount = updateRequest.getUpdatedCount();
 
-        if (!(arduino.isValid(updatedCount))) {
-            throw new BasketException(ExceptionMessageSource.INVALID_ARDUINO);
+        BasketValidateStatus basketValidateStatus = Basket.validate(arduino, updatedCount, BASKET_MAX_QUANTITY);
+
+        if (basketValidateStatus.isNotValid()) {
+            throw new BasketException(ExceptionMessageSource.UNABLE_TO_BASKET);
         }
 
         basket.update(updatedCount);
