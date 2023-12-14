@@ -7,7 +7,8 @@ import know_wave.comma.arduino.order.entity.Order;
 import know_wave.comma.arduino.order.entity.OrderDetail;
 import know_wave.comma.arduino.order.entity.OrderStatus;
 import know_wave.comma.arduino.order.exception.OrderException;
-import know_wave.comma.notification.alarm.util.ExceptionMessageSource;
+import know_wave.comma.common.entity.ExceptionMessageSource;
+import know_wave.comma.notification.base.service.NotificationGateway;
 import know_wave.comma.payment.dto.gateway.*;
 import know_wave.comma.payment.entity.Payment;
 import know_wave.comma.payment.entity.PaymentFeature;
@@ -25,7 +26,9 @@ import java.util.Map;
 public class DepositPaymentCallbackService implements PaymentCallbackService {
 
     private final PaymentGateway paymentGateway;
+    private final NotificationGateway notificationGateway;
     private final OrderService orderService;
+
     private static final PaymentFeature PAYMENT_FEATURE = PaymentFeature.ARDUINO_DEPOSIT;
     private static final String ORDER_STATUS = "orderStatus";
     private static final String DEPOSIT_STATUS = "depositStatus";
@@ -98,14 +101,15 @@ public class DepositPaymentCallbackService implements PaymentCallbackService {
 
             order.refundFailOrder(OrderStatus.FAILURE_CAUSE_ARDUINO_STOCK);
 
-            return OrderCallbackResponse.of(order.getOrderStatus().getStatus(), order.getDeposit().getDepositStatus().getStatus());
+
+            return OrderCallbackResponse.to(order.getOrderStatus().getStatus(), order.getDeposit().getDepositStatus().getStatus());
         }
 
         order.ordered();
         orderDetails.forEach(orderDetail ->
                 orderDetail.getArduino().decreaseStock(orderDetail.getOrderArduinoCount()));
 
-        return OrderCallbackResponse.of(order.getOrderStatus().getStatus(), order.getDeposit().getDepositStatus().getStatus());
+        return OrderCallbackResponse.to(order.getOrderStatus().getStatus(), order.getDeposit().getDepositStatus().getStatus());
     }
 
     private OrderCallbackResponse failOrder(String orderNumber, OrderStatus orderStatus) {
@@ -113,6 +117,6 @@ public class DepositPaymentCallbackService implements PaymentCallbackService {
 
         order.notRefundFailOrder(orderStatus);
 
-        return OrderCallbackResponse.of(DepositStatus.REQUIRED.getStatus(), orderStatus.getStatus());
+        return OrderCallbackResponse.to(DepositStatus.REQUIRED.getStatus(), orderStatus.getStatus());
     }
 }

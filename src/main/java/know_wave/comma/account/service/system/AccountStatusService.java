@@ -4,7 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import know_wave.comma.account.entity.AccountStatus;
 import know_wave.comma.account.exception.AccountStatusException;
 import know_wave.comma.account.repository.AccountRepository;
-import know_wave.comma.notification.alarm.util.ExceptionMessageSource;
+import know_wave.comma.common.entity.ExceptionMessageSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

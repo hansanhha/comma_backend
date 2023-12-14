@@ -3,7 +3,7 @@ package know_wave.comma.arduino.order.entity;
 import jakarta.persistence.*;
 import know_wave.comma.account.entity.Account;
 import know_wave.comma.common.entity.BaseTimeEntity;
-import know_wave.comma.notification.alarm.util.ExceptionMessageSource;
+import know_wave.comma.common.entity.ExceptionMessageSource;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

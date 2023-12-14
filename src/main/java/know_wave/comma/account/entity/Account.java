@@ -1,13 +1,13 @@
 package know_wave.comma.account.entity;
 
+import jakarta.persistence.*;
 import know_wave.comma.account.entity.auth.Authority;
-import know_wave.comma.notification.alarm.entity.AlarmOption;
-import know_wave.comma.order_.entity.OrderInfo;
-import know_wave.comma.common.entity.BaseTimeEntity;
 import know_wave.comma.account.entity.auth.Role;
 import know_wave.comma.account.entity.token.Token;
+import know_wave.comma.arduino.order.entity.Order;
 import know_wave.comma.common.config.security.auth.SecurityAccount;
-import jakarta.persistence.*;
+import know_wave.comma.common.entity.BaseTimeEntity;
+import know_wave.comma.notification.push.entity.PushNotificationOption;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.domain.Persistable;
@@ -81,13 +81,13 @@ public class Account extends BaseTimeEntity implements Persistable<String> {
     private String profileImage;
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private AlarmOption alarmOption;
+    private PushNotificationOption alarmOption;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Token> tokenList;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderInfo> orderList;
+    private List<Order> orderList;
     
     public UserDetails toUserDetails() {
         return new SecurityAccount(this);

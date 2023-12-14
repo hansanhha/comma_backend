@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class ArduinoDetailResponse {
 
-    public static ArduinoDetailResponse of(Arduino arduino, Page<Comment> comments) {
+    public static ArduinoDetailResponse to(Arduino arduino, Page<Comment> comments) {
         return new ArduinoDetailResponse(
                 arduino.getId(),
                 arduino.getName(),
@@ -28,11 +28,11 @@ public class ArduinoDetailResponse {
                 arduino.getCategories().stream()
                         .map(category -> category.getName())
                         .toList(),
-                ArduinoPhotosResponse.of(arduino.getPhotos()),
-                CommentPageResponse.of(comments));
+                ArduinoPhotosResponse.to(arduino.getPhotos()),
+                CommentPageResponse.to(comments));
     }
 
-    public static ArduinoDetailResponse of(Arduino arduino) {
+    public static ArduinoDetailResponse to(Arduino arduino) {
         return new ArduinoDetailResponse(
                 arduino.getId(),
                 arduino.getName(),
@@ -42,7 +42,7 @@ public class ArduinoDetailResponse {
                 arduino.getCategories().stream()
                         .map(category -> category.getName())
                         .toList(),
-                ArduinoPhotosResponse.of(arduino.getPhotos()),
+                ArduinoPhotosResponse.to(arduino.getPhotos()),
                 null);
     }
 

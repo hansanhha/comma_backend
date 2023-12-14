@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 
-import static know_wave.comma.notification.alarm.util.regexPattern.emailRegex;
+import static know_wave.comma.common.entity.regexPattern.emailRegex;
 
 public class EmailVerifyRequest {
 

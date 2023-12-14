@@ -11,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class ArduinoCategoriesResponse {
 
-    public static ArduinoCategoriesResponse of(List<ArduinoCategory> arduinoCategoryList) {
+    public static ArduinoCategoriesResponse to(List<ArduinoCategory> arduinoCategoryList) {
         return new ArduinoCategoriesResponse(
                 arduinoCategoryList.stream()
                 .map(ArduinoCategoryResponse::of)

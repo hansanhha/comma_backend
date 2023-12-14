@@ -10,7 +10,7 @@ import java.util.List;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class OrderPageResponse {
 
-    public static OrderPageResponse of(List<OrderResponse> orders, boolean isFirst, boolean isLast, boolean hasNext, int size) {
+    public static OrderPageResponse to(List<OrderResponse> orders, boolean isFirst, boolean isLast, boolean hasNext, int size) {
         return new OrderPageResponse(orders, isFirst, isLast, hasNext, size);
     }
 

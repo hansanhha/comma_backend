@@ -4,7 +4,7 @@ import jakarta.transaction.Transactional;
 import know_wave.comma.common.idempotency.dto.IdempotentRequest;
 import know_wave.comma.common.idempotency.dto.IdempotentSaveDto;
 import know_wave.comma.common.idempotency.service.IdempotencyService;
-import know_wave.comma.notification.alarm.util.ExceptionMessageSource;
+import know_wave.comma.common.entity.ExceptionMessageSource;
 import know_wave.comma.payment.dto.client.PaymentClientApproveResponse;
 import know_wave.comma.payment.dto.client.PaymentClientReadyResponse;
 import know_wave.comma.payment.dto.client.PaymentClientRefundRequest;

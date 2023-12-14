@@ -3,7 +3,7 @@ package know_wave.comma.common.idempotency.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
-import know_wave.comma.notification.alarm.util.ExceptionMessageSource;
+import know_wave.comma.common.entity.ExceptionMessageSource;
 import know_wave.comma.common.idempotency.dto.IdempotentRequest;
 import know_wave.comma.common.idempotency.dto.IdempotentResponse;
 import know_wave.comma.common.idempotency.dto.IdempotentSaveDto;

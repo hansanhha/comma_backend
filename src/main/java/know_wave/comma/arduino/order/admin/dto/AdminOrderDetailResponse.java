@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class AdminOrderDetailResponse {
 
-    public static AdminOrderDetailResponse of(Order order, List<OrderDetail> orderDetails) {
+    public static AdminOrderDetailResponse to(Order order, List<OrderDetail> orderDetails) {
         return new AdminOrderDetailResponse(
                 orderDetails.stream().map(OrderDetailResponse::of).toList(),
                 order.getOrderNumber(),

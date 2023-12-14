@@ -12,8 +12,8 @@ import java.util.List;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class OrderDetailResponse {
 
-    public static OrderDetailResponse of(Order order, List<OrderDetail> orderDetails) {
-        return new OrderDetailResponse(OrderResponse.of(order),
+    public static OrderDetailResponse to(Order order, List<OrderDetail> orderDetails) {
+        return new OrderDetailResponse(OrderResponse.to(order),
                 orderDetails.stream().map(OrderDetailInfo::of).toList());
     }
 

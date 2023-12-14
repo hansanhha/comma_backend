@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class OrderCancelResponse {
 
-    public static OrderCancelResponse of(String orderNumber, LocalDateTime cancelDate, String orderStatus, String depositStatus, int depositAmount) {
+    public static OrderCancelResponse to(String orderNumber, LocalDateTime cancelDate, String orderStatus, String depositStatus, int depositAmount) {
         return new OrderCancelResponse(orderNumber, cancelDate, orderStatus, depositStatus, depositAmount);
     }
 

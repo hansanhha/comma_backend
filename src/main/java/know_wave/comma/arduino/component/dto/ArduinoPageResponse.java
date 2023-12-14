@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class ArduinoPageResponse {
 
-    public static ArduinoPageResponse of(Page<Arduino> slice) {
+    public static ArduinoPageResponse to(Page<Arduino> slice) {
         return new ArduinoPageResponse(
                 slice.stream().map(ArduinoResponse::of).toList(),
                 slice.isFirst(),

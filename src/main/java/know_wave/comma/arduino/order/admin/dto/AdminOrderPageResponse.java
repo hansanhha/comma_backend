@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class AdminOrderPageResponse {
 
-    public static AdminOrderPageResponse of(Page<Order> orderPage) {
+    public static AdminOrderPageResponse to(Page<Order> orderPage) {
         return new AdminOrderPageResponse(
                 orderPage.stream().map(AdminOrderResponse::of).toList(),
                 orderPage.isFirst(),

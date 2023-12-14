@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class CommentPageResponse {
 
-    public static CommentPageResponse of(Page<Comment> comments) {
+    public static CommentPageResponse to(Page<Comment> comments) {
         return new CommentPageResponse(
                 comments.stream().map(CommentResponse::of).toList(),
                 comments.getSize(),

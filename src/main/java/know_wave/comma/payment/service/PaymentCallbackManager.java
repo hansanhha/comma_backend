@@ -1,7 +1,7 @@
 package know_wave.comma.payment.service;
 
 import jakarta.transaction.Transactional;
-import know_wave.comma.notification.alarm.util.ExceptionMessageSource;
+import know_wave.comma.common.entity.ExceptionMessageSource;
 import know_wave.comma.payment.dto.gateway.*;
 import know_wave.comma.payment.entity.PaymentFeature;
 import lombok.RequiredArgsConstructor;

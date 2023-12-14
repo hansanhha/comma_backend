@@ -11,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class ArduinoPhotosResponse {
 
-    public static ArduinoPhotosResponse of(List<ArduinoPhoto> photos) {
+    public static ArduinoPhotosResponse to(List<ArduinoPhoto> photos) {
         return new ArduinoPhotosResponse(photos.stream()
                 .map(photo -> ArduinoPhotoResponse.of(photo.getFileUuid(), photo.getFileName(), photo.getFilePath(), photo.getSize(), photo.getArduino().getId()))
                 .toList());

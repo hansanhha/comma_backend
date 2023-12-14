@@ -2,14 +2,18 @@ package know_wave.comma.account.service;
 
 import know_wave.comma.account.entity.AccountEmailVerify;
 import know_wave.comma.account.repository.AccountVerifyRepository;
-import know_wave.comma.notification.alarm.exception.EmailVerifiedException;
-import know_wave.comma.notification.alarm.exception.NotFoundEmailException;
-import know_wave.comma.notification.alarm.util.ExceptionMessageSource;
-import know_wave.comma.notification.alarm.service.EmailSender;
+import know_wave.comma.common.entity.ExceptionMessageSource;
+import know_wave.comma.notification.push.dto.PushNotificationRequest;
+import know_wave.comma.notification.base.entity.NotificationFeature;
+import know_wave.comma.notification.push.entity.PushNotificationType;
+import know_wave.comma.account.exception.EmailVerifiedException;
+import know_wave.comma.account.exception.NotFoundEmailException;
+import know_wave.comma.notification.base.service.NotificationGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
@@ -18,13 +22,15 @@ import java.util.concurrent.ThreadLocalRandom;
 public class AuthenticationService {
 
     private final AccountVerifyRepository accountVerifyRepository;
-    private final EmailSender emailSender;
+    private final NotificationGateway notificationGateway;
 
     public static final String AUTH_CODE_TITLE = "컴마 인증 코드";
 
     public void sendAuthCode(String email) {
 
         final int code = generateSixRandomCode();
+
+        PushNotificationRequest notificationRequest = PushNotificationRequest.to(Map.of(PushNotificationType.EMAIL, email), AUTH_CODE_TITLE, String.valueOf(code), NotificationFeature.ACCOUNT_AUTH_CODE, null);
 
         accountVerifyRepository.findById(email).ifPresentOrElse(accountEmailVerify ->
                 {
@@ -33,12 +39,12 @@ public class AuthenticationService {
                     }
 
                     accountEmailVerify.setCode(code);
-                    emailSender.send(email, AUTH_CODE_TITLE, String.valueOf(code));
+                    notificationGateway.notify(notificationRequest);
                 },
                 () -> {
                     AccountEmailVerify emailVerify = new AccountEmailVerify(email, false, code);
                     accountVerifyRepository.save(emailVerify);
-                    emailSender.send(email, AUTH_CODE_TITLE, String.valueOf(code));
+                    notificationGateway.notify(notificationRequest);
                 });
     }
 

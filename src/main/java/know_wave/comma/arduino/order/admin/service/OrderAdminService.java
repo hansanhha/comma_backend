@@ -12,7 +12,7 @@ import know_wave.comma.arduino.order.entity.OrderDetail;
 import know_wave.comma.arduino.order.entity.OrderStatus;
 import know_wave.comma.arduino.order.repository.OrderDetailRepository;
 import know_wave.comma.arduino.order.repository.OrderRepository;
-import know_wave.comma.notification.alarm.util.ExceptionMessageSource;
+import know_wave.comma.common.entity.ExceptionMessageSource;
 import know_wave.comma.payment.dto.gateway.PaymentGatewayRefundResponse;
 import know_wave.comma.payment.entity.PaymentStatus;
 import know_wave.comma.payment.service.PaymentGateway;
@@ -37,7 +37,7 @@ public class OrderAdminService {
     public AdminOrderPageResponse getOrderedPage(Pageable pageable) {
         Page<Order> orderPage = orderRepository.findAllByOrderStatus(OrderStatus.ORDERED, pageable);
 
-        return AdminOrderPageResponse.of(orderPage);
+        return AdminOrderPageResponse.to(orderPage);
     }
 
     public AdminOrderPageResponse getOrderPageByAccount(Pageable pageable) {
@@ -45,13 +45,13 @@ public class OrderAdminService {
 
         Page<Order> orderPage = orderRepository.findAllByAccount(account, pageable);
 
-        return AdminOrderPageResponse.of(orderPage);
+        return AdminOrderPageResponse.to(orderPage);
     }
 
     public AdminOrderPageResponse getAllOrderPage(Pageable pageable) {
         Page<Order> orderPage = orderRepository.findAll(pageable);
 
-        return AdminOrderPageResponse.of(orderPage);
+        return AdminOrderPageResponse.to(orderPage);
     }
 
     public AdminOrderDetailResponse getOrderDetail(String orderNumber) {
@@ -59,7 +59,7 @@ public class OrderAdminService {
 
         List<OrderDetail> orderDetails = orderDetailRepository.findFetchAllByOrder(order);
 
-        return AdminOrderDetailResponse.of(order, orderDetails);
+        return AdminOrderDetailResponse.to(order, orderDetails);
     }
 
     public AdminOrderStatusResponse rejectOrder(String orderNumber) {
@@ -78,7 +78,7 @@ public class OrderAdminService {
         String depositStatus = order.getDeposit().getDepositStatus().getStatus();
 
         return AdminOrderStatusResponse
-                .of(orderNumber, beforeOrderStatus, afterOrderStatus, depositStatus);
+                .to(orderNumber, beforeOrderStatus, afterOrderStatus, depositStatus);
     }
 
     public AdminOrderStatusResponse prepareOrder(String orderNumber) {
@@ -91,7 +91,7 @@ public class OrderAdminService {
         String depositStatus = order.getDeposit().getDepositStatus().getStatus();
 
         return AdminOrderStatusResponse
-                .of(orderNumber, beforeOrderStatus, afterOrderStatus, depositStatus);
+                .to(orderNumber, beforeOrderStatus, afterOrderStatus, depositStatus);
     }
 
     public AdminOrderStatusResponse beReadyOrder(String orderNumber) {
@@ -104,7 +104,7 @@ public class OrderAdminService {
         String depositStatus = order.getDeposit().getDepositStatus().getStatus();
 
         return AdminOrderStatusResponse
-                .of(orderNumber, beforeOrderStatus, afterOrderStatus, depositStatus);
+                .to(orderNumber, beforeOrderStatus, afterOrderStatus, depositStatus);
     }
 
     public AdminOrderStatusResponse receivedOrder(String orderNumber) {
@@ -117,7 +117,7 @@ public class OrderAdminService {
         String depositStatus = order.getDeposit().getDepositStatus().getStatus();
 
         return AdminOrderStatusResponse
-                .of(orderNumber, beforeOrderStatus, afterOrderStatus, depositStatus);
+                .to(orderNumber, beforeOrderStatus, afterOrderStatus, depositStatus);
     }
 
     private Order getOrder(String orderNumber) {

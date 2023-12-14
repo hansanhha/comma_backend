@@ -13,7 +13,7 @@ import know_wave.comma.arduino.order.repository.DepositRepository;
 import know_wave.comma.arduino.order.repository.OrderDetailRepository;
 import know_wave.comma.arduino.order.repository.OrderRepository;
 import know_wave.comma.account.config.CheckAccountStatus;
-import know_wave.comma.notification.alarm.util.ExceptionMessageSource;
+import know_wave.comma.common.entity.ExceptionMessageSource;
 import know_wave.comma.payment.dto.gateway.PaymentGatewayCheckoutRequest;
 import know_wave.comma.payment.dto.gateway.PaymentGatewayCheckoutResponse;
 import know_wave.comma.payment.dto.gateway.PaymentGatewayRefundResponse;
@@ -27,7 +27,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Transactional
@@ -84,7 +83,7 @@ public class OrderService {
 
         saveDeposit.setPayment(checkoutResponse.getPayment());
 
-        return preProcessOrderResponse.of(orderNumber, checkoutResponse.getMobileRedirectUrl(), checkoutResponse.getPcRedirectUrl());
+        return preProcessOrderResponse.to(orderNumber, checkoutResponse.getMobileRedirectUrl(), checkoutResponse.getPcRedirectUrl());
     }
 
     // 1. 주문 상태 확인
@@ -105,7 +104,7 @@ public class OrderService {
 
         orderDetails.forEach(orderDetail -> orderDetail.getArduino().increaseStock(orderDetail.getOrderArduinoCount()));
 
-        return OrderCancelResponse.of(orderNumber, LocalDateTime.now(),
+        return OrderCancelResponse.to(orderNumber, LocalDateTime.now(),
                 order.getOrderStatus().name(), order.getDeposit().getDepositStatus().name(),
                 order.getDeposit().getAmount());
     }
@@ -114,9 +113,9 @@ public class OrderService {
         Account account = accountQueryService.findAccount();
 
         Page<Order> orders = orderRepository.findAllByAccount(account, pageable);
-        List<OrderResponse> orderResponses = orders.stream().map(OrderResponse::of).toList();
+        List<OrderResponse> orderResponses = orders.stream().map(OrderResponse::to).toList();
 
-        return OrderPageResponse.of(orderResponses,
+        return OrderPageResponse.to(orderResponses,
                 orders.isFirst(), orders.isLast(), orders.hasNext(), orders.getSize());
     }
 
@@ -124,7 +123,7 @@ public class OrderService {
         Order order = findOrderByOrderNumber(orderNumber);
         List<OrderDetail> orderDetails = findOrderDetails(order);
 
-        return OrderDetailResponse.of(order, orderDetails);
+        return OrderDetailResponse.to(order, orderDetails);
     }
 
     Order findOrderByOrderNumber(String orderNumber) {

@@ -13,8 +13,8 @@ import know_wave.comma.arduino.component.repository.ArduinoPhotoRepository;
 import know_wave.comma.arduino.component.repository.ArduinoRepository;
 import know_wave.comma.common.file.dto.FileListDto;
 import know_wave.comma.common.file.service.FileService;
-import know_wave.comma.notification.alarm.exception.EntityAlreadyExistException;
-import know_wave.comma.notification.alarm.util.ExceptionMessageSource;
+import know_wave.comma.account.exception.EntityAlreadyExistException;
+import know_wave.comma.common.entity.ExceptionMessageSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,7 +69,7 @@ public class ArduinoComponentAdminService {
 
     public ArduinoDetailResponse getArduinoDetail(Long id) {
         Arduino arduino = arduinoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(ExceptionMessageSource.NOT_FOUND_VALUE));
-        return ArduinoDetailResponse.of(arduino);
+        return ArduinoDetailResponse.to(arduino);
     }
 
     public void registerArduino(ArduinoCreateForm form) {

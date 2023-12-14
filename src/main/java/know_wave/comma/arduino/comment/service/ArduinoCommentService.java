@@ -2,7 +2,7 @@ package know_wave.comma.arduino.comment.service;
 
 import know_wave.comma.account.entity.Account;
 import know_wave.comma.account.service.system.AccountQueryService;
-import know_wave.comma.notification.alarm.util.ExceptionMessageSource;
+import know_wave.comma.common.entity.ExceptionMessageSource;
 import know_wave.comma.arduino.comment.dto.*;
 import know_wave.comma.arduino.comment.entity.Comment;
 import know_wave.comma.arduino.comment.entity.CommentLike;

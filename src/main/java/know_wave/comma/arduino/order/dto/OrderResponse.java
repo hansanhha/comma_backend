@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class OrderResponse {
 
-    public static OrderResponse of(Order order) {
+    public static OrderResponse to(Order order) {
         return new OrderResponse(order.getOrderNumber(), order.getCreatedDate(), order.getOrderStatus().getStatus(), order.getDeposit().getDepositStatus().getStatus(), order.getDeposit().getAmount());
     }
 

@@ -1,6 +1,6 @@
 package know_wave.comma.payment.service;
 
-import know_wave.comma.notification.alarm.util.ExceptionMessageSource;
+import know_wave.comma.common.entity.ExceptionMessageSource;
 import know_wave.comma.payment.dto.client.PaymentClientApproveResponse;
 import know_wave.comma.payment.dto.client.PaymentClientReadyResponse;
 import know_wave.comma.payment.dto.client.PaymentClientRefundRequest;

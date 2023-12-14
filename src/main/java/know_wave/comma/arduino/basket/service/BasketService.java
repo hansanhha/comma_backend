@@ -2,7 +2,7 @@ package know_wave.comma.arduino.basket.service;
 
 import know_wave.comma.account.entity.Account;
 import know_wave.comma.account.service.system.AccountQueryService;
-import know_wave.comma.notification.alarm.util.ExceptionMessageSource;
+import know_wave.comma.common.entity.ExceptionMessageSource;
 import know_wave.comma.arduino.basket.dto.BasketAddRequest;
 import know_wave.comma.arduino.basket.dto.BasketResponse;
 import know_wave.comma.arduino.basket.dto.BasketUpdateRequest;
@@ -31,7 +31,7 @@ public class BasketService {
         Account account = accountQueryService.findAccount();
         List<Basket> basketList = basketRepository.findAllByAccount(account);
 
-        return BasketResponse.of(basketList);
+        return BasketResponse.to(basketList);
     }
 
     public List<Basket> findBasketList() {

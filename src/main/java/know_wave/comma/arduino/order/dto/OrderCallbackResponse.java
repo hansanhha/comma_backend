@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class OrderCallbackResponse {
 
-    public static OrderCallbackResponse of(String orderStatus, String depositStatus) {
+    public static OrderCallbackResponse to(String orderStatus, String depositStatus) {
         return new OrderCallbackResponse(orderStatus, depositStatus);
     }
 

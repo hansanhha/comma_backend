@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class AdminOrderStatusResponse {
 
-    public static AdminOrderStatusResponse of(String orderNumber, String beforeOrderStatus, String afterOrderStatus, String depositStatus) {
+    public static AdminOrderStatusResponse to(String orderNumber, String beforeOrderStatus, String afterOrderStatus, String depositStatus) {
         return new AdminOrderStatusResponse(orderNumber, beforeOrderStatus, afterOrderStatus, depositStatus);
     }
 

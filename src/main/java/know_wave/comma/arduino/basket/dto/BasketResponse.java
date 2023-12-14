@@ -11,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class BasketResponse {
 
-    public static BasketResponse of(List<Basket> baskets) {
+    public static BasketResponse to(List<Basket> baskets) {
         return new BasketResponse(baskets.stream()
                 .map(basket -> new StoredArduino(basket.getId(), basket.getArduino().getId(), basket.getStoredCount()))
                 .toList());

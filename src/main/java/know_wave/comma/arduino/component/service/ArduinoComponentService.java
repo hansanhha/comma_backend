@@ -1,6 +1,6 @@
 package know_wave.comma.arduino.component.service;
 
-import know_wave.comma.notification.alarm.util.ExceptionMessageSource;
+import know_wave.comma.common.entity.ExceptionMessageSource;
 import know_wave.comma.arduino.component.dto.ArduinoCategoriesResponse;
 import know_wave.comma.arduino.component.entity.Arduino;
 import know_wave.comma.arduino.component.entity.ArduinoCategory;
@@ -32,12 +32,12 @@ public class ArduinoComponentService {
 
     public ArduinoCategoriesResponse getCategories() {
         var categories = (List<ArduinoCategory>) categoryRepository.findAll();
-        return ArduinoCategoriesResponse.of(categories);
+        return ArduinoCategoriesResponse.to(categories);
     }
 
     public ArduinoPageResponse getArduinoPage(Pageable pageable) {
         Page<Arduino> arduinoList = arduinoRepository.findAll(pageable);
-        return ArduinoPageResponse.of(arduinoList);
+        return ArduinoPageResponse.to(arduinoList);
     }
 
     public ArduinoDetailResponse getArduinoDetailWithComments(Long arduinoId) {
@@ -45,14 +45,14 @@ public class ArduinoComponentService {
         Pageable pageable = PageRequest.of(0, 10);
         Page<Comment> comments= commentRepository.findAllByArduino(arduino, pageable);
 
-        return ArduinoDetailResponse.of(arduino, comments);
+        return ArduinoDetailResponse.to(arduino, comments);
     }
 
     public CommentPageResponse getArduinoComment(Long arduinoId, Pageable pageable) {
         Arduino arduino = getArduino(arduinoId);
         Page<Comment> comments = commentRepository.findAllByArduino(arduino, pageable);
 
-        return CommentPageResponse.of(comments);
+        return CommentPageResponse.to(comments);
     }
 
     public CommentPageResponse getArduinoReplyComment(Long commentId, Pageable pageable) {
@@ -61,7 +61,7 @@ public class ArduinoComponentService {
 
         Page<Comment> replyComments = commentRepository.findAllReplyById(parentComment, pageable);
 
-        return CommentPageResponse.of(replyComments);
+        return CommentPageResponse.to(replyComments);
     }
 
     public Arduino getArduino(Long arduinoId) {
