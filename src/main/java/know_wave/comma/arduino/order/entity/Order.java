@@ -55,7 +55,7 @@ public class Order extends BaseTimeEntity {
     public static OrderStatus validate(Arduino arduino, int orderQuantity) {
         ArduinoStockStatus stockStatus = arduino.getStockStatus();
 
-        if (stockStatus == ArduinoStockStatus.NONE || stockStatus == ArduinoStockStatus.UPCOMMING) {
+        if (stockStatus == ArduinoStockStatus.NONE || stockStatus == ArduinoStockStatus.UP_COMMING) {
             return OrderStatus.FAILURE_CAUSE_ARDUINO_STOCK_STATUS;
         } else if (orderQuantity > arduino.getCount()) {
             return OrderStatus.FAILURE_CAUSE_ARDUINO_STOCK;
@@ -89,9 +89,11 @@ public class Order extends BaseTimeEntity {
     }
 
     public void freeCancelOrder() {
-        if (orderStatus == OrderStatus.ORDERED) {
-            updateStatus(DepositStatus.RETURN, OrderStatus.FREE_CANCEL);
-            return;
+        if (isAbleToFreeCancel()) {
+            if (orderStatus == OrderStatus.ORDERED) {
+                updateStatus(DepositStatus.RETURN, OrderStatus.FREE_CANCEL);
+                return;
+            }
         }
 
         throw new IllegalStateException(ExceptionMessageSource.UNABLE_TO_CANCEL_ORDER);

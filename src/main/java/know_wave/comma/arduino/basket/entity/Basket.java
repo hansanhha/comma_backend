@@ -40,7 +40,7 @@ public class Basket {
     public static BasketValidateStatus validate(Arduino arduino, int containQuantity, int maxQuantity) {
         ArduinoStockStatus stockStatus = arduino.getStockStatus();
 
-        if (stockStatus == ArduinoStockStatus.NONE || stockStatus == ArduinoStockStatus.UPCOMMING) {
+        if (stockStatus == ArduinoStockStatus.NONE || stockStatus == ArduinoStockStatus.UP_COMMING) {
             return BasketValidateStatus.BAD_ARDUINO_STATUS;
         } else if (containQuantity > maxQuantity) {
             return BasketValidateStatus.OVER_MAX_QUANTITY;

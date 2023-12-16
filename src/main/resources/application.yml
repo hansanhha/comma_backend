@@ -41,7 +41,8 @@ logging:
     root: info
     web: trace
     org.hibernate.sql: debug
-  config: classpath:logback-spring.xml
+    security: trace
+#  config: classpath:logback-spring.xml
 
 kakao:
   api:

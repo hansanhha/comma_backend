@@ -1,7 +1,7 @@
 package know_wave.comma.account.repository;
 
 import know_wave.comma.account.entity.Account;
-import know_wave.comma.account.entity.token.Token;
+import know_wave.comma.common.security.entity.Token;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

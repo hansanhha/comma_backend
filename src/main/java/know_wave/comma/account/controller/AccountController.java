@@ -4,11 +4,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import know_wave.comma.account.dto.*;
-import know_wave.comma.account.service.AuthenticationService;
-import know_wave.comma.account.service.LogoutService;
-import know_wave.comma.account.service.SignService;
+import know_wave.comma.account.service.SignUpAuthenticationService;
+import know_wave.comma.common.security.service.TokenLogoutService;
+import know_wave.comma.common.security.service.SignService;
 import know_wave.comma.account.service.AccountManagementService;
-import know_wave.comma.common.config.security.service.TokenService;
+import know_wave.comma.common.security.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +22,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AccountController {
 
-    private final AuthenticationService authenticationService;
+    private final SignUpAuthenticationService authenticationService;
     private final SignService signService;
-    private final LogoutService logoutService;
+    private final TokenLogoutService logoutService;
     private final AccountManagementService accountManager;
 
     @PostMapping("/signup")

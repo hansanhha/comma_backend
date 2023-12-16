@@ -1,17 +1,17 @@
 package know_wave.comma.account.service.admin;
 
 import know_wave.comma.account.entity.Account;
-import know_wave.comma.account.entity.auth.Role;
+import know_wave.comma.common.security.entity.Role;
 import know_wave.comma.account.repository.AccountRepository;
 import know_wave.comma.common.entity.ExceptionMessageSource;
-import know_wave.comma.common.config.security.annotation.PermissionProtection;
+import know_wave.comma.common.security.annotation.AdminPermissionProtection;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-@PermissionProtection
+@AdminPermissionProtection
 public class AccountAdminService {
 
     private final AccountRepository accountRepository;

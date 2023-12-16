@@ -1,6 +1,6 @@
 package know_wave.comma.account.dto;
 
-import know_wave.comma.account.entity.auth.Role;
+import know_wave.comma.common.security.entity.Role;
 import jakarta.validation.constraints.NotEmpty;
 
 public class RoleRequest {

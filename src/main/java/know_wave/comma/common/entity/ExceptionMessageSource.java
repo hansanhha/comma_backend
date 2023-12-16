@@ -23,7 +23,7 @@ public class ExceptionMessageSource {
     public static final String NOT_FOUND_COMMENT = "Not found comment";
     public static final String ALREADY_EXIST_ARDUINO = "Already exist arduino";
     public static final String ALREADY_EXIST_VALUE = "Already exist value";
-    public static final String PERMISSION_DENIED = "Permission denied";
+    public static final String PERMISSION_DENIED = "권한 거부됨";
     public static final String NOT_FOUND_VALUE = "Not found value";
     public static final String NOT_SUPPORTED_ARGUMENT = "Not supported argument";
     public static final String ALREADY_IN_BASKET = "Already in basket";

@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PaymentCallbackManager {
 
-    private final List<PaymentCallbackService> paymentCallbackServices;
+    private final List<PaymentCallbackHandler> paymentCallbackServices;
 
     public CompleteCallbackResponse complete(CompleteCallback completeCallback) {
         return getPaymentCallback(completeCallback.getPaymentFeature())
@@ -31,7 +31,7 @@ public class PaymentCallbackManager {
                 .fail(failCallback);
     }
 
-    private PaymentCallbackService getPaymentCallback(PaymentFeature paymentFeature) {
+    private PaymentCallbackHandler getPaymentCallback(PaymentFeature paymentFeature) {
         return paymentCallbackServices.stream()
                 .filter(paymentCallback -> paymentCallback.isSupport(paymentFeature))
                 .findFirst()

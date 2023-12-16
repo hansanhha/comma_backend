@@ -2,7 +2,6 @@ package know_wave.comma.arduino.component.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
-import know_wave.comma.arduino.order.entity.OrderDetail;
 import know_wave.comma.common.entity.BaseTimeEntity;
 import know_wave.comma.common.entity.DeleteEntity;
 import lombok.AllArgsConstructor;
@@ -74,7 +73,7 @@ public class Arduino extends BaseTimeEntity {
             this.stockStatus = stockStatus;
         } else if (this.count == 0 && this.stockStatus != ArduinoStockStatus.NONE) {
             this.stockStatus = ArduinoStockStatus.NONE;
-        } else if (this.count > 0 && this.stockStatus == ArduinoStockStatus.NONE || this.stockStatus == ArduinoStockStatus.UPCOMMING) {
+        } else if (this.count > 0 && this.stockStatus == ArduinoStockStatus.NONE || this.stockStatus == ArduinoStockStatus.UP_COMMING) {
             if (this.count >= 10) {
                 this.stockStatus = ArduinoStockStatus.MORE_THAN_10;
             } else {
