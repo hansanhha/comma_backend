@@ -1,7 +1,7 @@
-package know_wave.comma.common.security.service;
+package know_wave.comma.config.security.service;
 
 import know_wave.comma.account.entity.Account;
-import know_wave.comma.common.security.entity.Token;
+import know_wave.comma.config.security.entity.Token;
 import know_wave.comma.account.repository.TokenRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;

@@ -1,4 +1,4 @@
-package know_wave.comma.common.security.service;
+package know_wave.comma.config.security.service;
 
 import know_wave.comma.account.entity.Account;
 import know_wave.comma.account.repository.AccountRepository;

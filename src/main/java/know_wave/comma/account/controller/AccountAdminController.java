@@ -2,9 +2,9 @@ package know_wave.comma.account.controller;
 
 import know_wave.comma.account.dto.AccountIdRequest;
 import know_wave.comma.account.dto.AdminCreateForm;
-import know_wave.comma.common.security.entity.Role;
+import know_wave.comma.config.security.entity.Role;
 import know_wave.comma.account.service.admin.AccountAdminService;
-import know_wave.comma.common.security.service.SignService;
+import know_wave.comma.config.security.service.SignService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

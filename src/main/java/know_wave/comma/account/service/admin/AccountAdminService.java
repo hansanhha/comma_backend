@@ -1,7 +1,7 @@
 package know_wave.comma.account.service.admin;
 
 import know_wave.comma.account.entity.Account;
-import know_wave.comma.common.security.entity.Role;
+import know_wave.comma.config.security.entity.Role;
 import know_wave.comma.account.repository.AccountRepository;
 import know_wave.comma.common.entity.ExceptionMessageSource;
 import know_wave.comma.common.security.annotation.AdminPermissionProtection;

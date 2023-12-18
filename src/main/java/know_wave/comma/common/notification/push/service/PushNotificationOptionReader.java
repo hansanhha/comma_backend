@@ -7,7 +7,7 @@ import know_wave.comma.common.notification.push.repository.PushNotificationOptio
 import know_wave.comma.common.notification.push.entity.PushNotificationType;
 import know_wave.comma.common.notification.push.entity.NotificationFeature;
 import know_wave.comma.common.notification.push.entity.PushNotificationOption;
-import know_wave.comma.common.security.exception.NotSignInException;
+import know_wave.comma.config.security.exception.NotSignInException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

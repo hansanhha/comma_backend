@@ -1,4 +1,4 @@
-package know_wave.comma.common.security.service;
+package know_wave.comma.config.security.service;
 
 import know_wave.comma.account.dto.AccountCreateForm;
 import know_wave.comma.account.dto.AccountSignInForm;
@@ -6,14 +6,13 @@ import know_wave.comma.account.dto.AdminCreateForm;
 import know_wave.comma.account.entity.AcademicMajor;
 import know_wave.comma.account.entity.AcademicStatus;
 import know_wave.comma.account.entity.Account;
-import know_wave.comma.common.security.entity.Role;
+import know_wave.comma.config.security.entity.Role;
 import know_wave.comma.account.exception.SignInFailureException;
 import know_wave.comma.account.repository.AccountRepository;
 import know_wave.comma.account.repository.AccountVerifyRepository;
 import know_wave.comma.account.service.system.AccountQueryService;
 import know_wave.comma.account.exception.EmailVerifiedException;
 import know_wave.comma.account.exception.NotFoundEmailException;
-import know_wave.comma.common.security.service.TokenService;
 import io.jsonwebtoken.ExpiredJwtException;
 import know_wave.comma.common.entity.ExceptionMessageSource;
 import lombok.RequiredArgsConstructor;

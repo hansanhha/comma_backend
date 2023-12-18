@@ -2,10 +2,10 @@ package know_wave.comma.account.entity;
 
 import jakarta.persistence.*;
 import know_wave.comma.arduino.order.entity.Order;
-import know_wave.comma.common.security.entity.Authority;
-import know_wave.comma.common.security.entity.Role;
-import know_wave.comma.common.security.entity.SecurityAccount;
-import know_wave.comma.common.security.entity.Token;
+import know_wave.comma.config.security.entity.Authority;
+import know_wave.comma.config.security.entity.Role;
+import know_wave.comma.config.security.entity.SecurityAccount;
+import know_wave.comma.config.security.entity.Token;
 import know_wave.comma.common.entity.BaseTimeEntity;
 import know_wave.comma.common.notification.push.entity.PushNotificationOption;
 import lombok.AllArgsConstructor;

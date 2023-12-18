@@ -1,4 +1,4 @@
-package know_wave.comma.common.security.config;
+package know_wave.comma.config.security.config;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;

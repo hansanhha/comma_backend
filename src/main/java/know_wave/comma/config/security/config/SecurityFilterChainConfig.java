@@ -1,9 +1,9 @@
-package know_wave.comma.common.security.config;
+package know_wave.comma.config.security.config;
 
-import know_wave.comma.common.security.service.TokenLogoutService;
-import know_wave.comma.common.security.filter.LoggingFilter;
-import know_wave.comma.common.security.filter.JwtAuthenticationFilter;
-import know_wave.comma.common.security.entity.Role;
+import know_wave.comma.config.security.service.TokenLogoutService;
+import know_wave.comma.config.security.filter.LoggingFilter;
+import know_wave.comma.config.security.filter.JwtAuthenticationFilter;
+import know_wave.comma.config.security.entity.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

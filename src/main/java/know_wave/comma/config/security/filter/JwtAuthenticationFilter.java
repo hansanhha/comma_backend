@@ -1,9 +1,9 @@
-package know_wave.comma.common.security.filter;
+package know_wave.comma.config.security.filter;
 
 import know_wave.comma.account.entity.Account;
 import know_wave.comma.account.service.system.AccountQueryService;
-import know_wave.comma.common.security.service.TokenService;
-import know_wave.comma.common.security.config.PermitRequestMatcherConfig;
+import know_wave.comma.config.security.service.TokenService;
+import know_wave.comma.config.security.config.PermitRequestMatcherConfig;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
