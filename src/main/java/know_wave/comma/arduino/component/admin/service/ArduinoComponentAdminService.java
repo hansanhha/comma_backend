@@ -3,6 +3,7 @@ package know_wave.comma.arduino.component.admin.service;
 import jakarta.persistence.EntityNotFoundException;
 import know_wave.comma.arduino.component.admin.dto.ArduinoCreateForm;
 import know_wave.comma.arduino.component.admin.dto.ArduinoUpdateForm;
+import know_wave.comma.arduino.component.admin.exception.AlreadyCategoryException;
 import know_wave.comma.arduino.component.dto.ArduinoDetailResponse;
 import know_wave.comma.arduino.component.entity.Arduino;
 import know_wave.comma.arduino.component.entity.Category;
@@ -37,7 +38,7 @@ public class ArduinoComponentAdminService {
     public void registerCategory(String categoryName) {
         categoryRepository.findByName(categoryName).ifPresentOrElse(
                 category -> {
-                    throw new EntityAlreadyExistException(ExceptionMessageSource.ALREADY_EXIST_VALUE);
+                    throw new AlreadyCategoryException(ExceptionMessageSource.ALREADY_EXIST_VALUE);
                 },
 
                 () -> categoryRepository.save(new Category(categoryName)));

@@ -12,6 +12,6 @@ public class SseExceptionAdvice {
 
     @ExceptionHandler(SseEmitterSendException.class)
     public ResponseEntity<String> sseEmitterSendException(SseEmitterSendException ex) {
-        return ResponseEntity.badRequest().body(ex.getMessage());
+        return ResponseEntity.internalServerError().body(ex.getMessage());
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice(annotations = RestController.class)
-public class DBExceptionAdvice {
+public class DatabaseAdvice {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<String> pkOrUniqueDuplicateException(DataIntegrityViolationException ex) {

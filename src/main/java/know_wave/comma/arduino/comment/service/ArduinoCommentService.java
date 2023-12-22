@@ -8,7 +8,7 @@ import know_wave.comma.arduino.comment.entity.Comment;
 import know_wave.comma.arduino.comment.entity.CommentLike;
 import know_wave.comma.arduino.comment.repository.ArduinoCommentLikeRepository;
 import know_wave.comma.arduino.comment.repository.ArduinoCommentRepository;
-import know_wave.comma.account.config.CheckAccountStatus;
+import know_wave.comma.account.aop.CheckAccountStatus;
 import know_wave.comma.arduino.component.entity.Arduino;
 import know_wave.comma.arduino.component.service.ArduinoComponentService;
 import lombok.RequiredArgsConstructor;

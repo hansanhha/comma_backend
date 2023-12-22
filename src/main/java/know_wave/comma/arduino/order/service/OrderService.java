@@ -2,6 +2,7 @@ package know_wave.comma.arduino.order.service;
 
 import jakarta.transaction.Transactional;
 import know_wave.comma.account.entity.Account;
+import know_wave.comma.account.service.system.AccountCheckService;
 import know_wave.comma.account.service.system.AccountQueryService;
 import know_wave.comma.arduino.basket.dto.BasketValidateStatus;
 import know_wave.comma.arduino.basket.entity.Basket;
@@ -13,7 +14,7 @@ import know_wave.comma.arduino.order.exception.OrderException;
 import know_wave.comma.arduino.order.repository.DepositRepository;
 import know_wave.comma.arduino.order.repository.OrderDetailRepository;
 import know_wave.comma.arduino.order.repository.OrderRepository;
-import know_wave.comma.account.config.CheckAccountStatus;
+import know_wave.comma.account.aop.CheckAccountStatus;
 import know_wave.comma.common.entity.ExceptionMessageSource;
 import know_wave.comma.payment.dto.gateway.PaymentGatewayCheckoutRequest;
 import know_wave.comma.payment.dto.gateway.PaymentGatewayCheckoutResponse;
@@ -42,6 +43,7 @@ public class OrderService {
 
     private final BasketService basketService;
     private final AccountQueryService accountQueryService;
+    private final AccountCheckService accountCheckService;
     private final PaymentGateway paymentGateway;
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
@@ -63,6 +65,8 @@ public class OrderService {
      * 1. 알림 : 결제 콜백 서비스 -> notification 서비스 호출 후 결제 결과에 따른 주문 처리 알림
      */
     public preProcessOrderResponse preProcessOrder(OrderRequest orderRequest) {
+        accountCheckService.validateOrderAuthority();
+
         List<Basket> basketList = basketService.findBasketList();
 
         if (basketList.isEmpty()) {

@@ -18,7 +18,7 @@ public class AccountAdminController {
 
     private final AccountAdminService accountAdminService;
     private static final String MESSAGE = "msg";
-    private static final String DATA = "data";
+    private static final String DATA = "body";
 
     @PatchMapping("/{accountId}/appoint-manager")
     public Map<String, String> appointManager(@PathVariable String accountId) {

@@ -1,4 +1,4 @@
-package know_wave.comma.account.config;
+package know_wave.comma.account.aop;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -4,6 +4,7 @@ import know_wave.comma.account.dto.AccountCreateForm;
 import know_wave.comma.account.entity.AcademicMajor;
 import know_wave.comma.account.entity.Account;
 import know_wave.comma.account.entity.EmailVerify;
+import know_wave.comma.account.exception.NotVerifiedException;
 import know_wave.comma.account.repository.AccountRepository;
 import know_wave.comma.account.repository.EmailVerifyRepository;
 import know_wave.comma.common.entity.ExceptionMessageSource;
@@ -38,19 +39,19 @@ public class SignUpService {
         Optional<EmailVerify> optionalEmailVerify = accountVerifyRepository.findById(form.getEmail());
 
         if (optionalEmailVerify.isEmpty()) {
-            throw new AlreadyVerifiedException(ExceptionMessageSource.NOT_FOUND_EMAIL);
+            throw new NotVerifiedException(ExceptionMessageSource.NOT_FOUND_EMAIL);
         }
 
         EmailVerify emailVerify = optionalEmailVerify.get();
 
         if (!emailVerify.isVerified()) {
-            throw new AlreadyVerifiedException(ExceptionMessageSource.NOT_VERIFIED_EMAIL);
+            throw new NotVerifiedException(ExceptionMessageSource.NOT_VERIFIED_EMAIL);
         }
 
         Account account;
         String encodedPassword = passwordEncoder.encode(form.getPassword());
 
-        if (form.getPhone().isBlank()) {
+        if (form.getPhone() == null || form.getPhone().isBlank()) {
             account = Account.createWithoutPhone(form.getAccountId(), form.getEmail(), form.getName(), encodedPassword, form.getAcademicNumber(), AcademicMajor.valueOf(form.getMajor()));
         } else {
             account = Account.create(form.getAccountId(), form.getEmail(), form.getName(), encodedPassword, form.getPhone(), form.getAcademicNumber(), AcademicMajor.valueOf(form.getMajor()));

@@ -32,7 +32,7 @@ public class AccountController {
     private final JwtLogoutHandler logoutService;
     private final AccountManagementService accountManagementService;
     private static final String MESSAGE = "msg";
-    private static final String DATA = "data";
+    private static final String DATA = "body";
 
     @PostMapping("/signup")
     public ResponseEntity<Map<String, String>> signUp(@Valid @RequestBody AccountCreateForm form) {

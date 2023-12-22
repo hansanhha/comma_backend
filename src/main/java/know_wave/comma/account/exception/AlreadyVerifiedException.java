@@ -1,6 +1,6 @@
 package know_wave.comma.account.exception;
 
-public class AlreadyVerifiedException extends RuntimeException{
+public class AlreadyVerifiedException extends AccountException {
 
     public AlreadyVerifiedException() {
         super();
