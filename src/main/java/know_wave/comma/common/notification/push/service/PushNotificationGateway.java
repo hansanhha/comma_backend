@@ -19,8 +19,9 @@ public class PushNotificationGateway {
     private final PushNotificationLogger pushNotificationLogger;
 
     public void notify(PushNotificationRequest notificationRequest) {
-        if (notificationRequest.getNotificationFeature() == NotificationFeature.ACCOUNT_AUTH_CODE) {
+        if (notificationRequest.getNotificationFeature() == NotificationFeature.ACCOUNT_VERIFY_EMAIL) {
             authenticationNotification(notificationRequest);
+            return;
         }
 
         if (pushNotificationOptionReader.isSendableTime()
@@ -34,7 +35,7 @@ public class PushNotificationGateway {
     }
 
     private void authenticationNotification(PushNotificationRequest notificationRequest) {
-        pushNotificationManager.sendAuthMail(notificationRequest);
+        pushNotificationManager.sendVerifyEmail(notificationRequest);
         pushNotificationLogger.log();
     }
 

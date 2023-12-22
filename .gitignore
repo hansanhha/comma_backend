@@ -42,4 +42,4 @@ src/main/resources/application.properties
 src/main/resources/*.p12
 
 LOCAL_LOG*
-LOG*
+LOCAL_LOG/*

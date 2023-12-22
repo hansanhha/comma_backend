@@ -1,11 +1,12 @@
 package know_wave.comma.config.security.service;
 
 import know_wave.comma.account.entity.Account;
-import know_wave.comma.account.service.system.AccountQueryService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import know_wave.comma.account.service.system.AccountQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,18 +14,20 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class TokenLogoutService implements LogoutHandler {
+public class JwtLogoutHandler implements LogoutHandler {
 
-    private final TokenService tokenService;
-    private final AccountQueryService accountQueryService;
+    private final JwtTokenService jwtTokenService;
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        String accountId = (String) authentication.getPrincipal();
+        Object principal = authentication.getPrincipal();
 
-        if (!accountId.isEmpty()) {
-            Account account = accountQueryService.findAccount(accountId);
-            tokenService.revokeAllRefreshTokens(account);
+        // principal 설정 방식에 따라 다르게 처리
+        // (AbstractUserDetailsAuthenticationProvider - forcePrincipalAsString 참고)
+        if (principal instanceof UserDetails userDetails) {
+            jwtTokenService.revokeRefreshToken(userDetails.getUsername());
+        } else {
+            jwtTokenService.revokeRefreshToken((String) principal);
         }
     }
 }

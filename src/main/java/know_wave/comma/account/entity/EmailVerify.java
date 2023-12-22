@@ -4,29 +4,30 @@ import know_wave.comma.common.entity.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import lombok.*;
 import org.springframework.data.domain.Persistable;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 @Entity
-public class AccountEmailVerify extends BaseTimeEntity implements Persistable {
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+public class EmailVerify extends BaseTimeEntity implements Persistable {
 
-    protected AccountEmailVerify() {
-    }
-
-    public AccountEmailVerify(String email, Boolean verified, int code) {
-        this.email = email;
-        this.verified = verified;
-        this.code = code;
+    public static EmailVerify create(String email, int code) {
+        return new EmailVerify(email, false, code);
     }
 
     @Id
-    @Column(name = "auth_email", updatable = false)
+    @Column(name = "account_verify_email", updatable = false)
     private String email;
 
+    @Setter
     private Boolean verified;
 
+    @Setter
     @Column(nullable = false)
     private int code;
 
@@ -39,17 +40,7 @@ public class AccountEmailVerify extends BaseTimeEntity implements Persistable {
         return getCreatedDate() == null;
     }
 
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public void setVerified(Boolean verified) {
-        this.verified = verified;
-    }
-
-    private static final String subject = "COMMA 메일 요청";
-
-    public boolean verifyCode(int code) {
+    public boolean isValidCode(int code) {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime lastModifiedDate = getLastModifiedDate();
         long expiration = ChronoUnit.MINUTES.between(lastModifiedDate, now);

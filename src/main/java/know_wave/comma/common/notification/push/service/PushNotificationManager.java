@@ -27,7 +27,7 @@ public class PushNotificationManager {
 
     }
 
-    public void sendAuthMail(PushNotificationRequest notificationRequest) {
+    public void sendVerifyEmail(PushNotificationRequest notificationRequest) {
         notificationSenders.stream()
             .filter(sender -> sender.isSupport(PushNotificationType.EMAIL))
             .findFirst()

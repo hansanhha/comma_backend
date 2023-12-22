@@ -1,6 +1,6 @@
 package know_wave.comma.web.advice;
 
-import know_wave.comma.account.exception.EmailVerifiedException;
+import know_wave.comma.account.exception.AlreadyVerifiedException;
 import know_wave.comma.account.exception.NotFoundEmailException;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
@@ -29,7 +29,7 @@ public class EntityExceptionAdvice {
         this.messageSource = messageSource;
     }
 
-    @ExceptionHandler({NotFoundEmailException.class, EmailVerifiedException.class})
+    @ExceptionHandler({NotFoundEmailException.class, AlreadyVerifiedException.class})
     public ResponseEntity<String> EmailVerifyException(RuntimeException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }

@@ -1,4 +1,4 @@
-package know_wave.comma.account.exception;
+package know_wave.comma.config.security.exception;
 
 import org.springframework.security.core.AuthenticationException;
 

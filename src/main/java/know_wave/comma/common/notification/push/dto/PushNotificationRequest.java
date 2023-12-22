@@ -12,7 +12,7 @@ import java.util.Map;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class PushNotificationRequest {
 
-    public static PushNotificationRequest to(Map<PushNotificationType, String> destMap, String title, String content, NotificationFeature alarmFeature, Map<Object, Object> dataMap) {
+    public static PushNotificationRequest create(Map<PushNotificationType, String> destMap, String title, String content, NotificationFeature alarmFeature, Map<Object, Object> dataMap) {
         return new PushNotificationRequest(destMap, title, content, alarmFeature, dataMap);
     }
 

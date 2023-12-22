@@ -3,11 +3,10 @@ package know_wave.comma.common.notification.push.service;
 import jakarta.transaction.Transactional;
 import know_wave.comma.account.entity.Account;
 import know_wave.comma.account.service.system.AccountQueryService;
-import know_wave.comma.common.notification.push.repository.PushNotificationOptionRepository;
-import know_wave.comma.common.notification.push.entity.PushNotificationType;
 import know_wave.comma.common.notification.push.entity.NotificationFeature;
 import know_wave.comma.common.notification.push.entity.PushNotificationOption;
-import know_wave.comma.config.security.exception.NotSignInException;
+import know_wave.comma.common.notification.push.entity.PushNotificationType;
+import know_wave.comma.common.notification.push.repository.PushNotificationOptionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -80,6 +79,6 @@ public class PushNotificationOptionReader {
     }
 
     private PushNotificationOption getAlarmOption(Account account) {
-        return alarmOptionRepository.findById(account).orElseThrow(() -> new NotSignInException("로그인이 되지 않아 알람을 보낼 수 없습니다."));
+        return alarmOptionRepository.findById(account).orElseThrow(() -> new IllegalArgumentException("로그인이 되지 않아 알람을 보낼 수 없습니다."));
     }
 }

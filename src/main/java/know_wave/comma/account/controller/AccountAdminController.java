@@ -1,65 +1,66 @@
 package know_wave.comma.account.controller;
 
-import know_wave.comma.account.dto.AccountIdRequest;
-import know_wave.comma.account.dto.AdminCreateForm;
-import know_wave.comma.config.security.entity.Role;
 import know_wave.comma.account.service.admin.AccountAdminService;
-import know_wave.comma.config.security.service.SignService;
-import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import know_wave.comma.config.security.entity.Authority;
+import know_wave.comma.config.security.entity.Role;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/account")
+@RequiredArgsConstructor
 public class AccountAdminController {
 
     private final AccountAdminService accountAdminService;
-    private final SignService signService;
+    private static final String MESSAGE = "msg";
+    private static final String DATA = "data";
 
-    public AccountAdminController(AccountAdminService accountAdminService, SignService signService) {
-        this.accountAdminService = accountAdminService;
-        this.signService = signService;
+    @PatchMapping("/{accountId}/appoint-manager")
+    public Map<String, String> appointManager(@PathVariable String accountId) {
+        accountAdminService.appointManager(accountId);
+
+        return Map.of(MESSAGE, "appointed " + Role.MANAGER.name() + ", account : " + accountId);
     }
 
-    @PostMapping("/manager")
-    public ResponseEntity<String> specifyManager(@RequestBody @Valid AccountIdRequest accountDto) {
-        accountAdminService.changeAccountRole(Role.MANAGER, accountDto.getAccountId());
+    @PatchMapping("/{accountId}/unappoint-manager")
+    public Map<String, String> unAppointManager(@PathVariable String accountId) {
+        accountAdminService.unAppointManager(accountId);
 
-        return ResponseEntity.ok("Specified " + Role.MANAGER.name() + " role, account : " + accountDto.getAccountId());
+        return Map.of(MESSAGE, "unappointed " + Role.MANAGER.name() + ", account : " + accountId);
     }
 
-    @DeleteMapping("/manager")
-    public ResponseEntity<String> deSpecifyManager(@RequestBody @Valid AccountIdRequest accountDto) {
-        accountAdminService.changeAccountRole(Role.MEMBER, accountDto.getAccountId());
+    @PatchMapping("/{accountId}/grant-community-permission")
+    public Map<String, String> grantCommunityPermission(@PathVariable String accountId) {
+        accountAdminService.grantPermission(Authority.MEMBER_CREATE, accountId);
 
-        return ResponseEntity.ok("De-Specified " + Role.MANAGER.name() + " role, account : " + accountDto.getAccountId());
+        return Map.of(MESSAGE, "granted community permission, account : " + accountId);
     }
 
-    @PostMapping("/authority")
-    public ResponseEntity<String> addCommunityAuthority(@RequestBody @Valid AccountIdRequest accountDto) {
-        accountAdminService.changeAccountRole(Role.MEMBER, accountDto.getAccountId());
+    @PatchMapping("/{accountId}/remove-community-permission")
+    public Map<String, String> removeCommunityPermission(@PathVariable String accountId) {
+        accountAdminService.removePermission(Authority.MEMBER_CREATE, accountId);
 
-        return ResponseEntity.ok("Updated authority account : " + accountDto.getAccountId());
+        return Map.of(MESSAGE, "removed community permission, account : " + accountId);
     }
 
-    @DeleteMapping("/authority")
-    public ResponseEntity<String> removeCommunityAuthority(@RequestBody @Valid AccountIdRequest accountDto) {
-        accountAdminService.changeAccountRole(Role.MEMBER_EXCLUDE_ARDUINO_ORDER_COMMUNITY, accountDto.getAccountId());
+    @PatchMapping("/{accountId}/remove-arduino-order-permission")
+    public Map<String, String> removeArduinoOrderPermission(@PathVariable String accountId) {
+        accountAdminService.removePermission(Authority.MEMBER_ARDUINO_ORDER, accountId);
 
-        return ResponseEntity.ok("Updated authority account : " + accountDto.getAccountId());
+        return Map.of(MESSAGE, "removed arduino order permission, account : " + accountId);
     }
 
-    @DeleteMapping("/equipment_apply_authority")
-    public ResponseEntity<String> removeEquipmentApplyAuthority(@RequestBody @Valid AccountIdRequest accountDto) {
-        accountAdminService.changeAccountRole(Role.MEMBER_EXCLUDE_ARDUINO_ORDER, accountDto.getAccountId());
+    @PatchMapping("/{accountId}/grant-arduino-order-permission")
+    public Map<String, String> grantArduinoOrderPermission(@PathVariable String accountId) {
+        accountAdminService.grantPermission(Authority.MEMBER_ARDUINO_ORDER, accountId);
 
-        return ResponseEntity.ok("Updated authority account : " + accountDto.getAccountId());
+        return Map.of(MESSAGE, "granted arduino order permission, account : " + accountId);
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<String> signUpManager(@RequestBody @Valid AdminCreateForm form) {
-        signService.adminJoin(form);
-        return new ResponseEntity<>("Created admin account", HttpStatus.CREATED);
-    }
 }
+

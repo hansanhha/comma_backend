@@ -2,6 +2,8 @@ package know_wave.comma.config.security.service;
 
 import know_wave.comma.account.entity.Account;
 import know_wave.comma.account.repository.AccountRepository;
+import know_wave.comma.common.entity.ExceptionMessageSource;
+import know_wave.comma.config.security.entity.SecurityAccount;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,15 +20,14 @@ public class AccountUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Account> o = accountRepository.findById(username);
+        Optional<Account> optionalAccount = accountRepository.findById(username);
 
-        if (o.isPresent()) {
-            Account account = o.get();
+        if (optionalAccount.isPresent()) {
+            Account account = optionalAccount.get();
 
-            return account.toUserDetails();
-
+            return SecurityAccount.to(account);
         } else {
-            throw new UsernameNotFoundException("NotExist Account");
+            throw new UsernameNotFoundException(ExceptionMessageSource.NOT_EXIST_ACCOUNT);
         }
     }
 }

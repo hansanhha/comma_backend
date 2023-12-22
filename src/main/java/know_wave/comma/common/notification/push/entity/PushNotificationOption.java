@@ -3,22 +3,25 @@ package know_wave.comma.common.notification.push.entity;
 import jakarta.persistence.*;
 import know_wave.comma.account.entity.Account;
 import know_wave.comma.common.entity.BaseTimeEntity;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PushNotificationOption extends BaseTimeEntity {
+
+    public static PushNotificationOption create() {
+        return new PushNotificationOption();
+    }
 
     @Id
     @GeneratedValue
     @Column(name = "push_notification_option_id")
     private Long id;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_id")
-    private Account account;
 
     private boolean alarmOn = false;
 
@@ -28,21 +31,21 @@ public class PushNotificationOption extends BaseTimeEntity {
 
     private LocalDateTime alarmOffStartTime;
 
-    private boolean webAlarmOn = false;
+    private boolean webAlarmOn = true;
 
-    private boolean kakaotalkAlarmOn = false;
+    private boolean kakaotalkAlarmOn = true;
 
-    private boolean studentEmailAlarmOn = false;
+    private boolean studentEmailAlarmOn = true;
 
-    private boolean accountAlarmOn = false;
+    private boolean accountAlarmOn = true;
 
-    private boolean arduinoCommentAlarmOn = false;
+    private boolean arduinoCommentAlarmOn = true;
 
-    private boolean arduinoOrderAlarmOn = false;
+    private boolean arduinoOrderAlarmOn = true;
 
-    private boolean arduinoRestockAlarmOn = false;
+    private boolean arduinoRestockAlarmOn = true;
 
-    private boolean communityAlarmOn = false;
+    private boolean communityAlarmOn = true;
 
     public boolean isAllowFeature(NotificationFeature notificationFeature) {
         return switch (notificationFeature) {

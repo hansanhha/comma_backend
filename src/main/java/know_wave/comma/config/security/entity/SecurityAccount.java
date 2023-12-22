@@ -1,22 +1,24 @@
 package know_wave.comma.config.security.entity;
 
 import know_wave.comma.account.entity.Account;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+@RequiredArgsConstructor
 public class SecurityAccount implements UserDetails {
+
+    public static SecurityAccount to(Account account) {
+        return new SecurityAccount(account);
+    }
 
     private final Account account;
 
-    public SecurityAccount(Account account) {
-        this.account = account;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return account.getRole().getAuthorities();
+        return account.getRole().getAuthority();
     }
 
     @Override
@@ -48,4 +50,5 @@ public class SecurityAccount implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

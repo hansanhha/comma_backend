@@ -5,12 +5,11 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
 public class BasketUpdateRequest {
 
     @JsonProperty("target_basket_id")
-    private final Long basketId;
+    private Long basketId;
 
     @JsonProperty("updated_count")
-    private final int updatedCount;
+    private int updatedCount;
 }

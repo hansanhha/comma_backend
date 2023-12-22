@@ -8,9 +8,7 @@ import know_wave.comma.config.security.entity.SecurityAccount;
 import know_wave.comma.config.security.entity.Token;
 import know_wave.comma.common.entity.BaseTimeEntity;
 import know_wave.comma.common.notification.push.entity.PushNotificationOption;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 import org.springframework.data.domain.Persistable;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,33 +17,39 @@ import java.util.List;
 @Entity
 @Getter
 @Builder
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Account extends BaseTimeEntity implements Persistable<String> {
 
-    protected Account() {}
-
-    public Account(String id, String email, String name, String password, String academicNumber, AcademicMajor academicMajor, AcademicStatus academicStatus) {
-        this.id = id;
-        this.email = email;
-        this.name = name;
-        this.password = password;
-        this.academicNumber = academicNumber;
-        this.academicMajor = academicMajor;
-        this.academicStatus = academicStatus;
-        this.role = Role.MEMBER;
-        this.accountStatus = AccountStatus.ACTIVE;
+    public static Account create(String id, String email, String name, String password, String phoneNumber, String academicNumber, AcademicMajor academicMajor) {
+        return Account.builder()
+                .id(id)
+                .email(email)
+                .name(name)
+                .password(password)
+                .phoneNumber(phoneNumber)
+                .academicNumber(academicNumber)
+                .academicMajor(academicMajor)
+                .academicStatus(AcademicStatus.Enrolled)
+                .role(Role.MEMBER)
+                .accountStatus(AccountStatus.ACTIVE)
+                .notificationOption(PushNotificationOption.create())
+                .build();
     }
 
-    public Account(String id, String email, String name, String password, String academicNumber, AcademicMajor academicMajor, AcademicStatus academicStatus, Role role) {
-        this.id = id;
-        this.email = email;
-        this.name = name;
-        this.password = password;
-        this.academicNumber = academicNumber;
-        this.academicMajor = academicMajor;
-        this.academicStatus = academicStatus;
-        this.role = role;
-        this.accountStatus = AccountStatus.ACTIVE;
+    public static Account createWithoutPhone(String id, String email, String name, String password, String academicNumber, AcademicMajor academicMajor) {
+        return Account.builder()
+                .id(id)
+                .email(email)
+                .name(name)
+                .password(password)
+                .academicNumber(academicNumber)
+                .academicMajor(academicMajor)
+                .academicStatus(AcademicStatus.Enrolled)
+                .role(Role.MEMBER)
+                .accountStatus(AccountStatus.ACTIVE)
+                .notificationOption(PushNotificationOption.create())
+                .build();
     }
 
     @Id
@@ -58,8 +62,12 @@ public class Account extends BaseTimeEntity implements Persistable<String> {
     @Column(nullable = false, length = 8)
     private String name;
 
+    @Setter
     @Column(nullable = false)
     private String password;
+
+    @Column(length = 11)
+    private String phoneNumber;
 
     @Column(nullable = false)
     private String academicNumber;
@@ -72,6 +80,7 @@ public class Account extends BaseTimeEntity implements Persistable<String> {
     @Column(nullable = false)
     private AcademicStatus academicStatus;
 
+    @Setter
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
@@ -82,23 +91,13 @@ public class Account extends BaseTimeEntity implements Persistable<String> {
 
     private String profileImage;
 
-    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private PushNotificationOption alarmOption;
-
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Token> tokenList;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "push_notification_option_id")
+    private PushNotificationOption notificationOption;
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orderList;
     
-    public UserDetails toUserDetails() {
-        return new SecurityAccount(this);
-    }
-    
-    public boolean dontHaveAuthority(Authority authority) {
-        return !role.getPermissions().contains(authority);
-    }
-
     @Override
     public String getId() {
         return id;
@@ -107,14 +106,6 @@ public class Account extends BaseTimeEntity implements Persistable<String> {
     @Override
     public boolean isNew() {
         return getCreatedDate() == null;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     @Override

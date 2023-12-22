@@ -12,7 +12,7 @@ import java.io.IOException;
 import static know_wave.comma.common.entity.ExceptionMessageSource.PERMISSION_DENIED;
 
 @Service
-public class AccessDeniedHandlerService implements AccessDeniedHandler {
+public class ResponseAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {

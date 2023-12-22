@@ -163,7 +163,7 @@ public class ArduinoOrderNotification {
         }
 
         PushNotificationRequest pushNotificationRequest =
-                PushNotificationRequest.to(destMap, PUSH_NOTIFICATION_TITLE_MAP.get(orderStatus),
+                PushNotificationRequest.create(destMap, PUSH_NOTIFICATION_TITLE_MAP.get(orderStatus),
                         getContent(orderStatus, depositStatus, orderNumber), ARDUINO_ORDER, null);
 
         pushNotificationGateway.notify(pushNotificationRequest);

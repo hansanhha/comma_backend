@@ -106,7 +106,7 @@ public class ArduinoCommentService {
 
     private Comment getComment(Long commentId) {
         return commentRepository.findById(commentId)
-                .orElseThrow(() -> new IllegalArgumentException(ExceptionMessageSource.NOT_EXIST_COMMENT));
+                .orElseThrow(() -> new IllegalArgumentException(ExceptionMessageSource.NOT_FOUND_COMMENT));
     }
 
 }

@@ -5,9 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Getter
 @RequiredArgsConstructor
@@ -28,6 +26,15 @@ public enum Role {
                     Authority.MEMBER_UPDATE,
                     Authority.MEMBER_DELETE
             ), "회원(실습재료 신청 제한)"
+    ),
+    MEMBER_EXCLUDE_COMMUNITY(
+            Set.of(
+                    Authority.MEMBER_READ,
+                    Authority.MEMBER_CREATE,
+                    Authority.MEMBER_UPDATE,
+                    Authority.MEMBER_DELETE,
+                    Authority.MEMBER_ARDUINO_ORDER
+            ), "회원(커뮤니티 컨텐츠 작성 제한)"
     ),
     MEMBER_EXCLUDE_ARDUINO_ORDER_COMMUNITY(
             Set.of(
@@ -55,18 +62,22 @@ public enum Role {
     );
 
     private final Set<Authority> authorities;
-    private final String grade;
+    private final String role;
 
     public Set<Authority> getPermissions() {
         return authorities;
     }
 
-    public List<GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = getPermissions()
-                .stream()
-                .map(authority -> new SimpleGrantedAuthority(authority.getAuthority()))
-                .collect(Collectors.toList());
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
-        return authorities;
+//    public List<GrantedAuthority> getAuthorities() {
+//        List<GrantedAuthority> authorities = getPermissions()
+//                .stream()
+//                .map(authority -> new SimpleGrantedAuthority(authority.getAuthority()))
+//                .collect(Collectors.toList());
+//        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
+//        return authorities;
+//    }
+
+    public Set<GrantedAuthority> getAuthority() {
+        return Set.of(new SimpleGrantedAuthority("ROLE_" + this.name()));
     }
 }

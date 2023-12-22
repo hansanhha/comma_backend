@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum NotificationFeature {
 
-    ACCOUNT_AUTH_CODE("accountAuthCode"),
+    ACCOUNT_VERIFY_EMAIL("accountVerifyEmail"),
     ACCOUNT("account"),
     ARDUINO_ORDER("arduinoOrder"),
     ARDUINO_RESTOCK("arduinoRestock"),

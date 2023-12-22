@@ -142,7 +142,7 @@ public class PaymentGateway {
 
     private Payment getPayment(String paymentRequestId) {
         return paymentRepository.findByPaymentRequestId(paymentRequestId)
-                .orElseThrow(() -> new IllegalArgumentException(ExceptionMessageSource.NOT_EXIST_PAYMENT_INFO));
+                .orElseThrow(() -> new IllegalArgumentException(ExceptionMessageSource.NOT_FOUND_PAYMENT_INFO));
     }
 
 }
