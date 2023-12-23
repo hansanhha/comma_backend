@@ -26,7 +26,7 @@ public class AccountAdvice {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(MESSAGE, e.getMessage()));
     }
 
-    @ExceptionHandler(NotVerifiedException.class)
+    @ExceptionHandler({NotVerifiedException.class, NotFoundAccountException.class})
     public ResponseEntity<Map<String, String>> handleUnAuthenticationException(AccountException e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(MESSAGE, e.getMessage()));
     }

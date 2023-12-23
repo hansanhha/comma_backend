@@ -49,7 +49,7 @@ public enum Role {
                 Authority.ADMIN_DELETE,
                 Authority.MEMBER_ARDUINO_ORDER,
                 Authority.MANAGER_MANAGE_MEMBER
-        ), "근로 학생"
+        ), "근로학생"
     ),
     ADMIN(
         Set.of(

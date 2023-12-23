@@ -1,15 +1,18 @@
 package know_wave.comma.arduino.basket.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 public class BasketUpdateRequest {
 
-    @JsonProperty("target_basket_id")
+    @NotNull
+    @JsonProperty("update_basket_id")
     private Long basketId;
 
-    @JsonProperty("updated_count")
+    @NotNull
+    @JsonProperty("update_count")
     private int updatedCount;
 }

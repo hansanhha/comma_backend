@@ -97,8 +97,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
                 servletPath.equals("/account/email/verify/request") ||
                 servletPath.equals("/account/email/verify") ||
                 servletPath.equals("/account/refresh-token") ||
-                !servletPath.startsWith("/admin") &&
-                    !servletPath.startsWith("/account") &&
-                        request.getMethod().equals(HttpMethod.GET.name());
+                !servletPath.contains("admin") &&
+                    !servletPath.startsWith("account") &&
+                        !servletPath.contains("basket") &&
+                            request.getMethod().equals(HttpMethod.GET.name());
     }
 }
