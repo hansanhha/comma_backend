@@ -1,30 +1,49 @@
-package know_wave.comma.account.service.admin;
+package know_wave.comma.account.admin.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import know_wave.comma.account.admin.dto.PermissionChangeRequest;
 import know_wave.comma.account.entity.Account;
 import know_wave.comma.account.repository.AccountRepository;
 import know_wave.comma.common.entity.ExceptionMessageSource;
 import know_wave.comma.config.security.entity.Authority;
 import know_wave.comma.config.security.entity.Role;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class AccountAdminService {
 
     private final AccountRepository accountRepository;
 
-    public AccountAdminService(AccountRepository accountRepository) {
-        this.accountRepository = accountRepository;
+    public void upgradeRole(PermissionChangeRequest changeRequest) {
+        String role = changeRequest.getRole().toLowerCase();
+
+        switch (role) {
+            case "manager" -> appointManager(changeRequest.getAccountId());
+            case "arduino_order" -> grantPermission(Authority.MEMBER_ARDUINO_ORDER, changeRequest.getAccountId());
+            case "community" -> grantPermission(Authority.MEMBER_CREATE, changeRequest.getAccountId());
+        }
     }
 
-    public void appointManager(String accountId) {
+    public void downgradeRole(PermissionChangeRequest changeRequest) {
+        String role = changeRequest.getRole().toLowerCase();
+
+        switch (role) {
+            case "manager" -> unAppointManager(changeRequest.getAccountId());
+            case "arduino_order" -> removePermission(Authority.MEMBER_ARDUINO_ORDER, changeRequest.getAccountId());
+            case "community" -> removePermission(Authority.MEMBER_CREATE, changeRequest.getAccountId());
+        }
+    }
+
+    private void appointManager(String accountId) {
         Account account = findAccount(accountId);
         account.setRole(Role.MANAGER);
     }
 
-    public void unAppointManager(String accountId) {
+    private void unAppointManager(String accountId) {
         Account account = findAccount(accountId);
         account.setRole(Role.MEMBER);
     }
@@ -35,7 +54,7 @@ public class AccountAdminService {
                         new EntityNotFoundException(ExceptionMessageSource.NOT_EXIST_ACCOUNT));
     }
 
-    public void grantPermission(Authority authority, String accountId) {
+    private void grantPermission(Authority authority, String accountId) {
         Account account = findAccount(accountId);
 
         switch (authority) {
@@ -56,7 +75,7 @@ public class AccountAdminService {
         }
     }
 
-    public void removePermission(Authority authority, String accountId) {
+    private void removePermission(Authority authority, String accountId) {
         Account account = findAccount(accountId);
 
         switch (authority) {
