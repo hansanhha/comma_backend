@@ -10,7 +10,7 @@ import know_wave.comma.arduino.basket.entity.Basket;
 import know_wave.comma.arduino.basket.exception.BasketException;
 import know_wave.comma.arduino.basket.repository.BasketRepository;
 import know_wave.comma.arduino.component.entity.Arduino;
-import know_wave.comma.arduino.component.service.ArduinoComponentService;
+import know_wave.comma.arduino.component.service.ComponentQueryService;
 import know_wave.comma.common.entity.ExceptionMessageSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +26,7 @@ import java.util.Optional;
 public class BasketService {
 
     private final AccountQueryService accountQueryService;
-    private final ArduinoComponentService arduinoInfoService;
+    private final ComponentQueryService arduinoInfoService;
     private final BasketRepository basketRepository;
 
     @Value("${arduino.max-order-quantity}")

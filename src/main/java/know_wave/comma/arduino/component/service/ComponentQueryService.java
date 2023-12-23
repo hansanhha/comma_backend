@@ -1,16 +1,14 @@
 package know_wave.comma.arduino.component.service;
 
+import know_wave.comma.arduino.comment.dto.CommentPageResponse;
+import know_wave.comma.arduino.component.dto.*;
 import know_wave.comma.common.entity.ExceptionMessageSource;
-import know_wave.comma.arduino.component.dto.ArduinoCategoriesResponse;
 import know_wave.comma.arduino.component.entity.Arduino;
 import know_wave.comma.arduino.component.entity.Category;
 import know_wave.comma.arduino.component.repository.ArduinoCategoryRepository;
 import know_wave.comma.arduino.component.repository.ArduinoRepository;
-import know_wave.comma.arduino.component.dto.ArduinoDetailResponse;
-import know_wave.comma.arduino.component.dto.ArduinoPageResponse;
-import know_wave.comma.arduino.component.dto.CommentPageResponse;
 import know_wave.comma.arduino.comment.entity.Comment;
-import know_wave.comma.arduino.comment.repository.ArduinoCommentRepository;
+import know_wave.comma.arduino.comment.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,16 +21,16 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ArduinoComponentService {
+public class ComponentQueryService {
 
     private final ArduinoRepository arduinoRepository;
     private final ArduinoCategoryRepository categoryRepository;
-    private final ArduinoCommentRepository commentRepository;
+    private final CommentRepository commentRepository;
 
 
-    public ArduinoCategoriesResponse getCategories() {
+    public CategoriesResponse getCategories() {
         var categories = (List<Category>) categoryRepository.findAll();
-        return ArduinoCategoriesResponse.to(categories);
+        return CategoriesResponse.to(categories);
     }
 
     public ArduinoPageResponse getArduinoPage(Pageable pageable) {
@@ -46,22 +44,6 @@ public class ArduinoComponentService {
         Page<Comment> comments= commentRepository.findAllByArduino(arduino, pageable);
 
         return ArduinoDetailResponse.to(arduino, comments);
-    }
-
-    public CommentPageResponse getArduinoComment(Long arduinoId, Pageable pageable) {
-        Arduino arduino = getArduino(arduinoId);
-        Page<Comment> comments = commentRepository.findAllByArduino(arduino, pageable);
-
-        return CommentPageResponse.to(comments);
-    }
-
-    public CommentPageResponse getArduinoReplyComment(Long commentId, Pageable pageable) {
-        Comment parentComment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new IllegalArgumentException(ExceptionMessageSource.NOT_FOUND_VALUE));
-
-        Page<Comment> replyComments = commentRepository.findAllReplyById(parentComment, pageable);
-
-        return CommentPageResponse.to(replyComments);
     }
 
     public Arduino getArduino(Long arduinoId) {

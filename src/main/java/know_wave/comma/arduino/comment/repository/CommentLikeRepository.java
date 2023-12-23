@@ -8,7 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 
-public interface ArduinoCommentLikeRepository extends CrudRepository<CommentLike, Long> {
+public interface CommentLikeRepository extends CrudRepository<CommentLike, Long> {
 
     @Query("select cl from CommentLike cl where cl.comment = :comment and cl.account = :account")
     Optional<CommentLike> findByAccount(Comment comment, Account account);

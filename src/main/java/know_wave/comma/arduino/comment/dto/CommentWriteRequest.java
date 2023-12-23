@@ -1,17 +1,15 @@
 package know_wave.comma.arduino.comment.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
-public class CommentWriteForm {
+public class CommentWriteRequest {
 
-    @JsonProperty("target_arduino_id")
-    private final Long arduinoId;
-
+    @NotEmpty(message = "댓글 내용을 입력해주세요.")
     @JsonProperty("content")
-    private final String content;
+    private String content;
 
 }

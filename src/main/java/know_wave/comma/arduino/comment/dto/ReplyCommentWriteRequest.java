@@ -5,14 +5,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
-public class ReplyCommentWriteForm {
-
-    @JsonProperty("target_arduino_id")
-    private Long arduinoId;
-
-    @JsonProperty("target_comment_id")
-    private Long commentId;
+public class ReplyCommentWriteRequest {
 
     @JsonProperty("reply_content")
     private String replyContent;

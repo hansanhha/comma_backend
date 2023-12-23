@@ -1,4 +1,4 @@
-package know_wave.comma.arduino.component.dto;
+package know_wave.comma.arduino.comment.dto;
 
 import know_wave.comma.arduino.comment.entity.Comment;
 import lombok.AccessLevel;
@@ -15,7 +15,7 @@ public class CommentPageResponse {
 
     public static CommentPageResponse to(Page<Comment> comments) {
         return new CommentPageResponse(
-                comments.stream().map(CommentResponse::of).toList(),
+                comments.stream().map(CommentResponse::to).toList(),
                 comments.getSize(),
                 comments.hasNext(),
                 comments.isFirst(),
@@ -32,17 +32,16 @@ public class CommentPageResponse {
     @RequiredArgsConstructor
     private static class CommentResponse {
         private final Long commentId;
-        private final Long parentCommentId;
         private final String accountId;
         private final String content;
         private final LocalDateTime createdAt;
         private final String contentStatus;
         private final String profileImage;
 
-        private static CommentResponse of(Comment comment) {
+        private static CommentResponse to(Comment comment) {
+
             return new CommentResponse(
                     comment.getId(),
-                    comment.getParent().getId(),
                     comment.getAccount().getId(),
                     comment.getContent(),
                     comment.getCreatedDate(),

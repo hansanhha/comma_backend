@@ -5,11 +5,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
-public class ReplyCommentUpdateForm {
-
-    @JsonProperty("target_reply_comment_id")
-    private Long replyCommentId;
+public class ReplyCommentUpdateRequest {
 
     @JsonProperty("updated_reply_content")
     private String updatedReplyContent;

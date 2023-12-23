@@ -3,8 +3,8 @@ package know_wave.comma.arduino.component.entity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @Getter
+@RequiredArgsConstructor
 public enum ArduinoStockStatus {
 
     NONE("없음"),

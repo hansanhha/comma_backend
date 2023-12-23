@@ -6,11 +6,11 @@ import know_wave.comma.common.entity.ExceptionMessageSource;
 import know_wave.comma.arduino.comment.dto.*;
 import know_wave.comma.arduino.comment.entity.Comment;
 import know_wave.comma.arduino.comment.entity.CommentLike;
-import know_wave.comma.arduino.comment.repository.ArduinoCommentLikeRepository;
-import know_wave.comma.arduino.comment.repository.ArduinoCommentRepository;
+import know_wave.comma.arduino.comment.repository.CommentLikeRepository;
+import know_wave.comma.arduino.comment.repository.CommentRepository;
 import know_wave.comma.account.aop.CheckAccountStatus;
 import know_wave.comma.arduino.component.entity.Arduino;
-import know_wave.comma.arduino.component.service.ArduinoComponentService;
+import know_wave.comma.arduino.component.service.ComponentQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,24 +21,26 @@ import java.util.Optional;
 @Transactional
 @RequiredArgsConstructor
 @CheckAccountStatus
-public class ArduinoCommentService {
+public class CommentCommandService {
 
     private final AccountQueryService accountQueryService;
-    private final ArduinoComponentService arduinoInfoService;
-    private final ArduinoCommentRepository commentRepository;
-    private final ArduinoCommentLikeRepository commentLikeRepository;
+    private final ComponentQueryService componentQueryService;
 
-    public void writeComment(CommentWriteForm commentWriteForm) {
-        Arduino arduino = arduinoInfoService.getArduino(commentWriteForm.getArduinoId());
+    private final CommentRepository commentRepository;
+
+    private final CommentLikeRepository commentLikeRepository;
+
+    public void writeComment(Long arduinoId, CommentWriteRequest commentWriteForm) {
+        Arduino arduino = componentQueryService.getArduino(arduinoId);
         Account account = accountQueryService.findAccount();
         Comment comment = Comment.create(arduino, account, commentWriteForm.getContent());
 
         commentRepository.save(comment);
     }
 
-    public void updateComment(CommentUpdateForm commentUpdateForm) {
+    public void updateComment(Long commentId, CommentUpdateRequest commentUpdateForm) {
         Account account = accountQueryService.findAccount();
-        Comment comment = getComment(commentUpdateForm.getCommentId());
+        Comment comment = findComment(commentId);
 
         if (comment.isNotWriter(account)) {
             throw new IllegalArgumentException(ExceptionMessageSource.NOT_WRITER);
@@ -49,7 +51,7 @@ public class ArduinoCommentService {
 
     public void deleteComment(Long commentId) {
         Account account = accountQueryService.findAccount();
-        Comment comment = getComment(commentId);
+        Comment comment = findComment(commentId);
 
         if (comment.isNotWriter(account)) {
             throw new IllegalArgumentException(ExceptionMessageSource.NOT_WRITER);
@@ -58,9 +60,9 @@ public class ArduinoCommentService {
         comment.delete();
     }
 
-    public void writeReplyComment(ReplyCommentWriteForm replyCommentWriteForm) {
-        Comment parentComment = getComment(replyCommentWriteForm.getCommentId());
-        Arduino arduino = arduinoInfoService.getArduino(replyCommentWriteForm.getArduinoId());
+    public void writeReplyComment(Long arduinoId, Long replyCommentId, ReplyCommentWriteRequest replyCommentWriteForm) {
+        Comment parentComment = findComment(replyCommentId);
+        Arduino arduino = componentQueryService.getArduino(arduinoId);
         Account account = accountQueryService.findAccount();
 
         Comment replyComment = Comment.createReply(arduino, account, parentComment, replyCommentWriteForm.getReplyContent());
@@ -68,9 +70,9 @@ public class ArduinoCommentService {
         commentRepository.save(replyComment);
     }
 
-    public void updateReplyComment(ReplyCommentUpdateForm replyCommentUpdateForm) {
+    public void updateReplyComment(Long replayCommentId, ReplyCommentUpdateRequest replyCommentUpdateForm) {
         Account account = accountQueryService.findAccount();
-        Comment replyComment = getComment(replyCommentUpdateForm.getReplyCommentId());
+        Comment replyComment = findComment(replayCommentId);
 
         if (replyComment.isNotWriter(account)) {
             throw new IllegalArgumentException(ExceptionMessageSource.NOT_WRITER);
@@ -83,9 +85,9 @@ public class ArduinoCommentService {
         deleteComment(replyCommentId);
     }
 
-    public void likeComment(CommentLikeRequest request) {
+    public void likeComment(Long commentId) {
         Account account = accountQueryService.findAccount();
-        Comment comment = getComment(request.getCommentId());
+        Comment comment = findComment(commentId);
         Optional<CommentLike> liked = commentLikeRepository.findByAccount(comment, account);
 
         if (liked.isEmpty()) {
@@ -94,19 +96,16 @@ public class ArduinoCommentService {
         }
     }
 
-    public void unlikeComment(CommentLikeRequest request) {
+    public void unlikeComment(Long commentId) {
         Account account = accountQueryService.findAccount();
-        Comment comment = getComment(request.getCommentId());
+        Comment comment = findComment(commentId);
         Optional<CommentLike> liked = commentLikeRepository.findByAccount(comment, account);
 
-        if (liked.isPresent()) {
-            commentLikeRepository.delete(liked.get());
-        }
+        liked.ifPresent(commentLikeRepository::delete);
     }
 
-    private Comment getComment(Long commentId) {
+    private Comment findComment(Long commentId) {
         return commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException(ExceptionMessageSource.NOT_FOUND_COMMENT));
     }
-
 }
