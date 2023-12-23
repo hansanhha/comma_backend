@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ArduinoPhoto extends CreateTimeEntity {
 
-    public static ArduinoPhoto of(String fileUuid, String fileName, String filePath, Long size, Arduino arduino) {
+    public static ArduinoPhoto create(String fileUuid, String fileName, String filePath, Long size, Arduino arduino) {
         return new ArduinoPhoto(fileUuid, fileName, filePath, size, arduino);
     }
 
@@ -24,6 +24,7 @@ public class ArduinoPhoto extends CreateTimeEntity {
         this.filePath = filePath;
         this.size = size;
         this.arduino = arduino;
+        delete = DeleteEntity.notDelete();
     }
 
     @Id

@@ -37,7 +37,7 @@ public class FileService {
     }
 
     public FileListDto saveAll(List<MultipartFile> files, String uploadPath) {
-        return FileListDto.of(files.stream()
+        return FileListDto.to(files.stream()
                 .map(file -> save(file, uploadPath))
                 .toList());
     }
@@ -54,7 +54,7 @@ public class FileService {
     }
 
     public FileListDto saveAllImage(List<MultipartFile> files, String uploadPath) {
-        return FileListDto.of(files.stream()
+        return FileListDto.to(files.stream()
                 .map(file -> saveImage(file, uploadPath))
                 .toList());
     }

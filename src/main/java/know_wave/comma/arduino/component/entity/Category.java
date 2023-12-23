@@ -13,11 +13,19 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Category {
 
-    public Category(Long id) {
+    public static Category createByName(String name) {
+        return new Category(name);
+    }
+
+    public static Category createById(Long id) {
+        return new Category(id);
+    }
+
+    private Category(Long id) {
         this.id = id;
     }
 
-    public Category(String name) {
+    private Category(String name) {
         this.name = name;
     }
 

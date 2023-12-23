@@ -11,9 +11,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ArduinoUpdateForm {
 
-    @JsonProperty("target_arduino_id")
-    private final Long updatedArduinoId;
-
     @JsonProperty("updated_arduino_name")
     private final String updatedArduinoName;
 
@@ -26,9 +23,9 @@ public class ArduinoUpdateForm {
     @JsonProperty("updated_categories")
     private final List<Long> updatedCategories;
 
-    @JsonProperty("delete_photo_files")
+    @JsonProperty("deleted_photo_files")
     private final List<String> deletedPhotoFiles;
 
-    @JsonProperty("add_photo_files")
+    @JsonProperty("added_photo_files")
     private final List<MultipartFile> addedPhotoFiles;
 }

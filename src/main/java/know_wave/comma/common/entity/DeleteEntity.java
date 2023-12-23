@@ -12,8 +12,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DeleteEntity {
 
-    private LocalDateTime deletedDate = null;
-    private boolean deleted = false;
+    public static DeleteEntity notDelete() {
+        return new DeleteEntity(null, false);
+    }
+
+    private LocalDateTime deletedDate;
+
+    private boolean deleted;
 
     public static DeleteEntity delete() {
         return new DeleteEntity(LocalDateTime.now(), true);

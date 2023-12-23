@@ -1,6 +1,7 @@
 package know_wave.comma.arduino.component.admin.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.Min;
 import know_wave.comma.arduino.component.entity.Arduino;
 import know_wave.comma.arduino.component.entity.Category;
 import lombok.Getter;
@@ -22,19 +23,11 @@ public class ArduinoCreateForm {
     @JsonProperty("description")
     private final String description;
 
+    @Min(value = 1, message = "카테고리를 선택해주세요.")
     @JsonProperty("categories")
     private final List<Long> categories;
 
     @JsonProperty("photo_files")
     private final List<MultipartFile> photoFiles;
-
-    public static Arduino to(ArduinoCreateForm form) {
-        return Arduino.builder()
-                .name(form.getArduinoName())
-                .count(form.getCount())
-                .description(form.getDescription())
-                .categories(form.getCategories().stream().map(Category::new).toList())
-                .build();
-    }
 
 }

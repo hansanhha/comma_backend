@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import know_wave.comma.common.entity.BaseTimeEntity;
 import know_wave.comma.common.entity.DeleteEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.List;
 
@@ -14,9 +12,19 @@ import java.util.List;
 @Getter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Arduino extends BaseTimeEntity {
 
-    protected Arduino() {}
+    public static Arduino create(String name, int count, String description, List<Category> categories) {
+        return Arduino.builder()
+                .name(name)
+                .count(count)
+                .description(description)
+                .categories(categories)
+                .delete(DeleteEntity.notDelete())
+                .stockStatus(initializeStockStatus(count))
+                .build();
+    }
 
     @Id
     @GeneratedValue
@@ -79,6 +87,16 @@ public class Arduino extends BaseTimeEntity {
             } else {
                 this.stockStatus = ArduinoStockStatus.LESS_THAN_10;
             }
+        }
+    }
+
+    private static ArduinoStockStatus initializeStockStatus(int count) {
+        if (count == 0) {
+            return ArduinoStockStatus.NONE;
+        } else if (count >= 10) {
+            return ArduinoStockStatus.MORE_THAN_10;
+        } else {
+            return ArduinoStockStatus.LESS_THAN_10;
         }
     }
 

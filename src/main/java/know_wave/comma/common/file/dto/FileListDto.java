@@ -9,7 +9,7 @@ import java.util.List;
 @RequiredArgsConstructor(access = lombok.AccessLevel.PRIVATE)
 public class FileListDto {
 
-    public static FileListDto of(List<FileDto> files) {
+    public static FileListDto to(List<FileDto> files) {
         return new FileListDto(files);
     }
 
