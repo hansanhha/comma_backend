@@ -10,7 +10,7 @@ import java.util.Map;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class CompleteCallbackResponse {
 
-    public static CompleteCallbackResponse of(Map<String, String> completeCallbackResult) {
+    public static CompleteCallbackResponse create(Map<String, String> completeCallbackResult) {
         return new CompleteCallbackResponse(completeCallbackResult);
     }
 

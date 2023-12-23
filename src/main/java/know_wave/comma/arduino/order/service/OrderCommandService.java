@@ -4,10 +4,10 @@ import jakarta.transaction.Transactional;
 import know_wave.comma.account.entity.Account;
 import know_wave.comma.account.service.system.AccountCheckService;
 import know_wave.comma.account.service.system.AccountQueryService;
-import know_wave.comma.arduino.basket.dto.BasketValidateStatus;
-import know_wave.comma.arduino.basket.entity.Basket;
-import know_wave.comma.arduino.basket.exception.BasketException;
-import know_wave.comma.arduino.basket.service.BasketService;
+import know_wave.comma.arduino.cart.dto.CartValidateStatus;
+import know_wave.comma.arduino.cart.entity.Cart;
+import know_wave.comma.arduino.cart.exception.CartException;
+import know_wave.comma.arduino.cart.service.CartService;
 import know_wave.comma.arduino.order.dto.*;
 import know_wave.comma.arduino.order.entity.*;
 import know_wave.comma.arduino.order.exception.OrderException;
@@ -24,12 +24,11 @@ import know_wave.comma.payment.entity.PaymentType;
 import know_wave.comma.payment.service.PaymentGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 
 /* TODO
@@ -39,9 +38,9 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 @CheckAccountStatus
-public class OrderService {
+public class OrderCommandService {
 
-    private final BasketService basketService;
+    private final CartService cartService;
     private final AccountQueryService accountQueryService;
     private final AccountCheckService accountCheckService;
     private final PaymentGateway paymentGateway;
@@ -67,19 +66,19 @@ public class OrderService {
     public preProcessOrderResponse preProcessOrder(OrderRequest orderRequest) {
         accountCheckService.validateOrderAuthority();
 
-        List<Basket> basketList = basketService.findBasketList();
+        List<Cart> cartList = cartService.findBasketList();
 
-        if (basketList.isEmpty()) {
-            throw new BasketException(ExceptionMessageSource.EMPTY_BASKET);
+        if (cartList.isEmpty()) {
+            throw new CartException(ExceptionMessageSource.EMPTY_BASKET);
         }
 
-        BasketValidateStatus basketValidateStatus = Basket.validateList(basketList, ORDER_MAX_QUANTITY);
+        CartValidateStatus cartValidateStatus = Cart.validateList(cartList, ORDER_MAX_QUANTITY);
 
-        if (basketValidateStatus.isOverMaxQuantity()) {
+        if (cartValidateStatus.isOverMaxQuantity()) {
             throw new OrderException(ExceptionMessageSource.OVER_MAX_ARDUINO_QUANTITY);
-        } else if (basketValidateStatus.isBadArduinoStatus()) {
+        } else if (cartValidateStatus.isBadArduinoStatus()) {
             throw new OrderException(ExceptionMessageSource.BAD_ARDUINO_STOCK_STATUS);
-        } else if (basketValidateStatus.isNotEnoughStock()) {
+        } else if (cartValidateStatus.isNotEnoughStock()) {
             throw new OrderException(ExceptionMessageSource.NOT_ENOUGH_ARDUINO_STOCK);
         }
 
@@ -87,15 +86,15 @@ public class OrderService {
         String orderNumber = Order.generateOrderNumber();
 
         Deposit deposit = Deposit.create(account, DEPOSIT_AMOUNT, null, DepositStatus.REQUIRED);
-        Order order = Order.create(orderNumber, account, deposit, OrderStatus.DEPOSIT_PAYMENT_REQUIRED, Subject.valueOf(orderRequest.getSubject()));
-        List<OrderDetail> orderDetailList = OrderDetail.createOrderDetailList(order, basketList);
+        Order order = Order.create(orderNumber, account, deposit, OrderStatus.DEPOSIT_PAYMENT_REQUIRED, Subject.valueOf(orderRequest.getSubject().toUpperCase()));
+        List<OrderDetail> orderDetailList = OrderDetail.createOrderDetailList(order, cartList);
 
         Deposit saveDeposit = depositRepository.save(deposit);
         orderRepository.save(order);
         orderDetailRepository.saveAll(orderDetailList);
 
         PaymentGatewayCheckoutResponse checkoutResponse = paymentGateway.checkout(PaymentGatewayCheckoutRequest.of(orderNumber,
-                account, PaymentType.valueOf(orderRequest.getPaymentType()),
+                account, PaymentType.valueOf(orderRequest.getPaymentType().toUpperCase()),
                 PaymentFeature.ARDUINO_DEPOSIT, DEPOSIT_AMOUNT, PAYMENT_QUANTITY));
 
         saveDeposit.setPayment(checkoutResponse.getPayment());
@@ -107,8 +106,14 @@ public class OrderService {
     // 2. 상태에 따라 무료, 유료 취소
     // 3. 재고 증감
     public OrderCancelResponse orderCancel(String orderNumber) {
-        Order order = findOrderByOrderNumber(orderNumber);
-        List<OrderDetail> orderDetails = findOrderDetails(order);
+        Optional<Order> optionalOrder = orderRepository.findFetchByOrderNumber(orderNumber);
+
+        if (optionalOrder.isEmpty()) {
+            throw new OrderException(ExceptionMessageSource.INVALID_ORDER_NUMBER);
+        }
+
+        Order order = optionalOrder.get();
+        List<OrderDetail> orderDetails = orderDetailRepository.findFetchAllByOrder(order);
 
         boolean freeCancel = order.isAbleToFreeCancel();
 
@@ -124,32 +129,6 @@ public class OrderService {
         return OrderCancelResponse.to(orderNumber, LocalDateTime.now(),
                 order.getOrderStatus().name(), order.getDeposit().getDepositStatus().name(),
                 order.getDeposit().getAmount());
-    }
-
-    public OrderPageResponse getOrderPage(Pageable pageable) {
-        Account account = accountQueryService.findAccount();
-
-        Page<Order> orders = orderRepository.findAllByAccount(account, pageable);
-        List<OrderResponse> orderResponses = orders.stream().map(OrderResponse::to).toList();
-
-        return OrderPageResponse.to(orderResponses,
-                orders.isFirst(), orders.isLast(), orders.hasNext(), orders.getSize());
-    }
-
-    public OrderDetailResponse getOrderDetail(String orderNumber) {
-        Order order = findOrderByOrderNumber(orderNumber);
-        List<OrderDetail> orderDetails = findOrderDetails(order);
-
-        return OrderDetailResponse.to(order, orderDetails);
-    }
-
-    private Order findOrderByOrderNumber(String orderNumber) {
-        return orderRepository.findFetchByOrderNumber(orderNumber)
-                .orElseThrow(() -> new OrderException(ExceptionMessageSource.INVALID_ORDER_NUMBER));
-    }
-
-    private List<OrderDetail> findOrderDetails(Order order) {
-        return orderDetailRepository.findFetchAllByOrder(order);
     }
 
 }

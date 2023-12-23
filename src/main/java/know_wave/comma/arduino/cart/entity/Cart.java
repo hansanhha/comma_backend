@@ -1,8 +1,8 @@
-package know_wave.comma.arduino.basket.entity;
+package know_wave.comma.arduino.cart.entity;
 
 import jakarta.persistence.*;
 import know_wave.comma.account.entity.Account;
-import know_wave.comma.arduino.basket.dto.BasketValidateStatus;
+import know_wave.comma.arduino.cart.dto.CartValidateStatus;
 import know_wave.comma.arduino.component.entity.Arduino;
 import know_wave.comma.arduino.component.entity.ArduinoStockStatus;
 import lombok.AccessLevel;
@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Basket {
+public class Cart {
 
     @Id
     @GeneratedValue
@@ -33,29 +33,29 @@ public class Basket {
 
     private int storedCount;
 
-    public static Basket create(Account account, Arduino arduino, int count) {
-        return new Basket(null, arduino, account, count);
+    public static Cart create(Account account, Arduino arduino, int count) {
+        return new Cart(null, arduino, account, count);
     }
 
-    public static BasketValidateStatus validate(Arduino arduino, int containQuantity, int maxQuantity) {
+    public static CartValidateStatus validate(Arduino arduino, int containQuantity, int maxQuantity) {
         ArduinoStockStatus stockStatus = arduino.getStockStatus();
 
         if (stockStatus == ArduinoStockStatus.NONE || stockStatus == ArduinoStockStatus.UP_COMMING) {
-            return BasketValidateStatus.BAD_ARDUINO_STATUS;
+            return CartValidateStatus.BAD_ARDUINO_STATUS;
         } else if (containQuantity > maxQuantity) {
-            return BasketValidateStatus.OVER_MAX_QUANTITY;
+            return CartValidateStatus.OVER_MAX_QUANTITY;
         } else if (containQuantity > arduino.getCount()) {
-            return BasketValidateStatus.NOT_ENOUGH_ARDUINO_STOCK;
+            return CartValidateStatus.NOT_ENOUGH_ARDUINO_STOCK;
         } else
-            return BasketValidateStatus.VALID;
+            return CartValidateStatus.VALID;
     }
 
-    public static BasketValidateStatus validateList(List<Basket> basketList, int maxQuantity) {
-        return basketList.stream()
+    public static CartValidateStatus validateList(List<Cart> cartList, int maxQuantity) {
+        return cartList.stream()
                 .map(detail -> validate(detail.getArduino(), detail.getStoredCount(), maxQuantity))
-                .filter(orderStatus -> orderStatus != BasketValidateStatus.VALID)
+                .filter(orderStatus -> orderStatus != CartValidateStatus.VALID)
                 .findFirst()
-                .orElse(BasketValidateStatus.VALID);
+                .orElse(CartValidateStatus.VALID);
     }
 
     public void update(int count) {

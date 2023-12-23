@@ -23,7 +23,7 @@ public class PushNotificationOption extends BaseTimeEntity {
     @Column(name = "push_notification_option_id")
     private Long id;
 
-    private boolean alarmOn = false;
+    private boolean alarmOn = true;
 
     private boolean nightAlarmOn = false;
 

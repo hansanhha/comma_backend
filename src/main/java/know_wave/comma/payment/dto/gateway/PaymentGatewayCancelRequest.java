@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PaymentGatewayCancelRequest {
 
-    public static PaymentGatewayCancelRequest of(String paymentRequestId, String orderNumber, String accountId, String paymentType, String paymentFeature) {
+    public static PaymentGatewayCancelRequest create(String paymentRequestId, String orderNumber, String accountId, String paymentType, String paymentFeature) {
         return new PaymentGatewayCancelRequest(paymentRequestId, orderNumber, accountId, paymentType, paymentFeature);
     }
 

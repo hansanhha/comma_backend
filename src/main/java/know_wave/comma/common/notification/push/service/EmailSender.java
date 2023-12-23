@@ -1,10 +1,12 @@
 package know_wave.comma.common.notification.push.service;
 
+import jakarta.mail.internet.MimeMessage;
 import know_wave.comma.common.notification.push.entity.PushNotificationType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -19,14 +21,19 @@ class EmailSender implements PushNotificationSender {
 
     @Override
     public void send(String dest, String title, String content, Map<Object, Object> paramMap) {
-        SimpleMailMessage mail = new SimpleMailMessage();
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
 
-        mail.setFrom(properties.getUsername());
-        mail.setTo(dest);
-        mail.setSubject(title);
-        mail.setText(content);
+        try {
+            helper.setFrom(properties.getUsername());
+            helper.setTo(dest);
+            helper.setSubject(title);
+            helper.setText(content, true);
+        }  catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
-        mailSender.send(mail);
+        mailSender.send(mimeMessage);
     }
 
     @Override

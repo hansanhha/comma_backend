@@ -11,7 +11,7 @@ public class PaymentClientReadyResponse {
     private final String pcRedirectUrl;
     private final String tid;
 
-    public static PaymentClientReadyResponse of(String mobileUrl, String pcUrl, String tid) {
+    public static PaymentClientReadyResponse create(String mobileUrl, String pcUrl, String tid) {
         return new PaymentClientReadyResponse(mobileUrl, pcUrl, tid);
     }
 }

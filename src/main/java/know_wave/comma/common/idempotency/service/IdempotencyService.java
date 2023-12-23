@@ -66,9 +66,9 @@ public class IdempotencyService {
             ObjectMapper mapper = new ObjectMapper();
             String response = mapper.writeValueAsString(idempotentDto.getResponse());
 
-            Idempotent idempotent = Idempotent.of(
+            Idempotent idempotent = Idempotent.create(
                     idempotentDto.getIdempotentKey(),
-                    HttpMethod.valueOf(idempotentDto.getHttpMethod()),
+                    idempotentDto.getHttpMethod(),
                     idempotentDto.getApiPath(),
                     idempotentDto.getPayload(),
                     idempotentDto.getResponseStatus(),

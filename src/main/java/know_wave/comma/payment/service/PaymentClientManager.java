@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static know_wave.comma.payment.entity.PaymentType.KAKAO_PAY;
+
 @Service
 @RequiredArgsConstructor
 public class PaymentClientManager {
@@ -29,49 +31,59 @@ public class PaymentClientManager {
     private final Map<PaymentFeature, String> itemNameMap = new HashMap<>();
 
     public PaymentClientReadyResponse ready(PaymentGatewayCheckoutRequest checkoutDto, String paymentRequestId) {
-        PaymentType type = checkoutDto.getPaymentType();
-        PaymentClient paymentClient = getPaymentClient(type);
-
-        switch (type) {
-            case KAKAO_PAY:
-                var kakaopayReadyRequest = KakaopayReadyRequest.of(
-                        paymentCbUrl.getMap(),
-                        checkoutDto,
-                        paymentRequestId);
-                return paymentClient.ready(kakaopayReadyRequest);
-            default:
-                throw new IllegalArgumentException(ExceptionMessageSource.NOT_SUPPORTED_PAYMENT_TYPE);
-        }
-    }
-
-    public PaymentClientApproveResponse approve(PaymentGatewayApproveRequest request, String tid) {
-        PaymentType paymentType = PaymentType.valueOf(request.getPaymentType());
+        PaymentType paymentType = checkoutDto.getPaymentType();
         PaymentClient paymentClient = getPaymentClient(paymentType);
 
         switch (paymentType) {
             case KAKAO_PAY:
-                var kakaopayApproveRequest = KakaopayApproveRequest.of(paymentCbUrl.getMap().get(PaymentCbUrl.CID_KEY),
-                        request.getAccountId(),
-                        request.getPaymentRequestId(),
-                        tid,
-                        request.getPgToken());
-                return paymentClient.approve(kakaopayApproveRequest);
+                KakaoPayClient kakaoPayClient = (KakaoPayClient) paymentClient;
+
+                var kakaopayReadyRequest = KakaopayReadyRequest.create(
+                        paymentCbUrl.getMap(paymentType),
+                        checkoutDto,
+                        paymentRequestId);
+
+                return kakaoPayClient.ready(kakaopayReadyRequest);
             default:
                 throw new IllegalArgumentException(ExceptionMessageSource.NOT_SUPPORTED_PAYMENT_TYPE);
         }
     }
 
-    public PaymentClientRefundResponse refund(PaymentClientRefundRequest refundDto) {
-        PaymentType pyamentType = refundDto.getPaymentType();
-        PaymentClient paymentClient = getPaymentClient(pyamentType);
+    public PaymentClientApproveResponse approve(PaymentGatewayApproveRequest approveRequest, String tid) {
+        PaymentType paymentType = PaymentType.valueOf(approveRequest.getPaymentType());
+        PaymentClient paymentClient = getPaymentClient(paymentType);
 
-        switch (pyamentType) {
+        switch (paymentType) {
             case KAKAO_PAY:
-                var kakaopayRefundRequest = KakaopayRefundRequest.of(paymentCbUrl.getMap().get(PaymentCbUrl.CID_KEY),
-                        refundDto.getTid(),
-                        refundDto.getAmount(),
+                KakaoPayClient kakaoPayClient = (KakaoPayClient) paymentClient;
+
+                var kakaopayApproveRequest = KakaopayApproveRequest.create(
+                        paymentCbUrl.getMap(paymentType).get(PaymentCbUrl.CID_KEY),
+                        tid,
+                        approveRequest.getPaymentRequestId(),
+                        approveRequest.getAccountId(),
+                        approveRequest.getPgToken());
+
+                return kakaoPayClient.approve(kakaopayApproveRequest);
+            default:
+                throw new IllegalArgumentException(ExceptionMessageSource.NOT_SUPPORTED_PAYMENT_TYPE);
+        }
+    }
+
+    public PaymentClientRefundResponse refund(PaymentClientRefundRequest refundRequest) {
+        PaymentType paymentType = refundRequest.getPaymentType();
+        PaymentClient paymentClient = getPaymentClient(paymentType);
+
+        switch (paymentType) {
+            case KAKAO_PAY:
+                KakaoPayClient kakaoPayClient = (KakaoPayClient) paymentClient;
+
+                var kakaopayRefundRequest = KakaopayRefundRequest.create(
+                        paymentCbUrl.getMap(paymentType).get(PaymentCbUrl.CID_KEY),
+                        refundRequest.getTid(),
+                        refundRequest.getAmount(),
                         0);
-                return paymentClient.refund(kakaopayRefundRequest);
+                return kakaoPayClient.refund(kakaopayRefundRequest);
             default:
                 throw new IllegalArgumentException(ExceptionMessageSource.NOT_SUPPORTED_PAYMENT_TYPE);
         }

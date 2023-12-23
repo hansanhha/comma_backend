@@ -1,7 +1,7 @@
 package know_wave.comma.arduino.order.entity;
 
 import jakarta.persistence.*;
-import know_wave.comma.arduino.basket.entity.Basket;
+import know_wave.comma.arduino.cart.entity.Cart;
 import know_wave.comma.arduino.component.entity.Arduino;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -35,8 +35,8 @@ public class OrderDetail {
         return new OrderDetail(null, order, arduino, orderArduinoCount);
     }
 
-    public static List<OrderDetail> createOrderDetailList(Order order, List<Basket> basketList) {
-        return basketList.stream()
+    public static List<OrderDetail> createOrderDetailList(Order order, List<Cart> cartList) {
+        return cartList.stream()
                 .map(basket -> OrderDetail.create(order, basket.getArduino(), basket.getStoredCount()))
                 .toList();
     }

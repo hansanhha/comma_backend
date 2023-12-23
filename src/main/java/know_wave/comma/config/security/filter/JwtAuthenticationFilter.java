@@ -13,6 +13,7 @@ import know_wave.comma.config.security.entity.SecurityAccount;
 import know_wave.comma.config.security.service.JwtTokenService;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.buf.Utf8Encoder;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
@@ -34,7 +35,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
     private final JwtTokenService jwtTokenService;
 
-    public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String TOKEN_PREFIX = "Bearer ";
 
     @Override
@@ -72,7 +72,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
     }
 
     private Optional<String> getAccessToken(HttpServletRequest request) {
-        String authorizationHeader = request.getHeader(AUTHORIZATION_HEADER);
+        String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         if (authorizationHeader != null && authorizationHeader.startsWith(TOKEN_PREFIX)) {
             String accessToken = authorizationHeader.substring(TOKEN_PREFIX.length());
@@ -97,9 +97,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
                 servletPath.equals("/account/email/verify/request") ||
                 servletPath.equals("/account/email/verify") ||
                 servletPath.equals("/account/refresh-token") ||
-                !servletPath.contains("admin") &&
-                    !servletPath.startsWith("account") &&
-                        !servletPath.contains("basket") &&
-                            request.getMethod().equals(HttpMethod.GET.name());
+                servletPath.startsWith("/arduinos") &&
+                                request.getMethod().equals(HttpMethod.GET.name()) ||
+                servletPath.startsWith("/payment-cb");
     }
 }

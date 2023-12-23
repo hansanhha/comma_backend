@@ -32,7 +32,9 @@ spring:
       mail:
         smtp:
           auth: true
-          timeout: 5000
+          connectiontimeout: 10000
+          writetimeout: 10000
+          timeout: 10000
           starttls:
             enable: true
 
@@ -54,9 +56,9 @@ kakao:
       cancel-request-url: ${KAKAO_CANCEL_REQUEST_URL}
 
 payment:
-  success-callback-url: http://localhost:8080/payment/success/%s/%s/%s/%s/%s
-  cancel-callback-url: http://localhost:8080/payment/cancel/%s/%s/%s/%s/%s
-  fail-callback-url: http://localhost:8080/payment/fail/%s/%s/%s/%s/%s
+  success-callback-url: http://localhost:8080/payment-cb/success/%s/%s/%s/%s/%s
+  cancel-callback-url: http://localhost:8080/payment-cb/cancel/%s/%s/%s/%s/%s
+  fail-callback-url: http://localhost:8080/payment-cb/fail/%s/%s/%s/%s/%s
 
 # type : 결제 타입(카카오페이, 네이버페이 등)
 # feature : 결제 기능을 요청한 도메인(아두이노, 중고거래 등)

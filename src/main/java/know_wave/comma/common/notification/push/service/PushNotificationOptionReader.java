@@ -17,19 +17,16 @@ import java.util.Set;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class PushNotificationOptionReader {
+class PushNotificationOptionReader {
 
     private final PushNotificationOptionRepository alarmOptionRepository;
-    private final AccountQueryService accountQueryService;
 
-    public boolean isSendableTime() {
-        Account account = accountQueryService.findAccount();
-
+    public boolean isSendableTime(Account account) {
         PushNotificationOption option = getAlarmOption(account);
 
         if (isNightTime()) {
             return option.isAlarmOn()
-                    && option.isNightAlarmOn()
+                    && !option.isNightAlarmOn()
                     && isNotAlarmOffTime(option);
         }
 
@@ -37,18 +34,14 @@ public class PushNotificationOptionReader {
                 && isNotAlarmOffTime(option);
     }
 
-    public boolean isAllowFeature(NotificationFeature alarmFeature) {
-        Account account = accountQueryService.findAccount();
-
+    public boolean isAllowFeature(Account account, NotificationFeature alarmFeature) {
         PushNotificationOption option = getAlarmOption(account);
 
         return option.isAllowFeature(alarmFeature);
 
     }
 
-    public Set<PushNotificationType> getAllowedTypes() {
-        Account account = accountQueryService.findAccount();
-
+    public Set<PushNotificationType> getAllowedTypes(Account account) {
         PushNotificationOption option = getAlarmOption(account);
 
         Set<PushNotificationType> allowTypes = new HashSet<>();
@@ -69,6 +62,10 @@ public class PushNotificationOptionReader {
     private boolean isNotAlarmOffTime(PushNotificationOption option) {
         LocalDateTime now = LocalDateTime.now();
 
+        if (option.getAlarmOffStartTime() == null || option.getAlarmOffEndTime() == null) {
+            return true;
+        }
+
         return now.isBefore(option.getAlarmOffStartTime())
                 || now.isAfter(option.getAlarmOffEndTime());
     }
@@ -79,6 +76,6 @@ public class PushNotificationOptionReader {
     }
 
     private PushNotificationOption getAlarmOption(Account account) {
-        return alarmOptionRepository.findById(account).orElseThrow(() -> new IllegalArgumentException("로그인이 되지 않아 알람을 보낼 수 없습니다."));
+        return account.getNotificationOption();
     }
 }

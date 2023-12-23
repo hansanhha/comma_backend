@@ -1,5 +1,6 @@
 package know_wave.comma.common.notification.push.service;
 
+import know_wave.comma.common.notification.push.dto.AccountEmailNotificationRequest;
 import know_wave.comma.common.notification.push.dto.PushNotificationRequest;
 import know_wave.comma.common.notification.push.entity.PushNotificationType;
 import lombok.RequiredArgsConstructor;
@@ -19,20 +20,20 @@ public class PushNotificationManager {
         Map<PushNotificationType, String> destMap = notificationRequest.getDestMap();
 
         destMap.forEach((type, dest) ->
-            notificationSenders.stream()
-                .filter(sender -> sender.isSupport(type) && allowedTypes.contains(type))
-                .findFirst()
-                .ifPresent(sender ->
-                    sender.send(dest, notificationRequest.getTitle(), notificationRequest.getContent(), notificationRequest.getDataMap())));
-
+            notificationSenders
+                .forEach(sender -> {
+                    if (sender.isSupport(type) && allowedTypes.contains(type)) {
+                        sender.send(dest, notificationRequest.getTitle(), notificationRequest.getContent(), notificationRequest.getDataMap());
+                    }
+                }));
     }
 
-    public void sendVerifyEmail(PushNotificationRequest notificationRequest) {
+    public void sendVerifyEmail(AccountEmailNotificationRequest notificationRequest) {
         notificationSenders.stream()
             .filter(sender -> sender.isSupport(PushNotificationType.EMAIL))
             .findFirst()
             .ifPresent(sender ->
-                sender.send(notificationRequest.getDestMap().get(PushNotificationType.EMAIL), notificationRequest.getTitle(), notificationRequest.getContent(), null));
+                sender.send(notificationRequest.getDest(), notificationRequest.getTitle(), notificationRequest.getContent(), null));
     }
 
 }

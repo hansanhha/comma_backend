@@ -2,43 +2,38 @@ package know_wave.comma.payment.dto.kakaopay;
 
 import know_wave.comma.payment.dto.gateway.PaymentGatewayCheckoutRequest;
 import know_wave.comma.payment.entity.PaymentCbUrl;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
+import java.util.Collections;
 import java.util.Map;
 
 @Getter
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class KakaopayReadyRequest {
 
-    public static KakaopayReadyRequest of(Map<String, String> callbackUrlMap, PaymentGatewayCheckoutRequest checkoutDto, String paymentRequestId) {
+    public static KakaopayReadyRequest create(Map<String, String> paymentCbUrl, PaymentGatewayCheckoutRequest checkoutDto, String paymentRequestId) {
         String accountId = checkoutDto.getAccount().getId();
-        String paymentType = checkoutDto.getPaymentType().getType();
+        String paymentType = checkoutDto.getPaymentType().name().toLowerCase();
         String orderNumber = checkoutDto.getOrderNumber();
-        String feature = checkoutDto.getPaymentFeature().getFeature();
+        String feature = checkoutDto.getPaymentFeature().name().toLowerCase();
 
-        return new KakaopayReadyRequest(
-                callbackUrlMap.get(PaymentCbUrl.CID_KEY),
-                paymentRequestId,
-                accountId,
-                feature,
-                checkoutDto.getQuantity(),
-                checkoutDto.getAmount(),
-                0,
-                callbackUrlMap.get(PaymentCbUrl.SUCCESS_CB_URL_KEY).formatted(paymentType, feature, accountId, paymentRequestId, orderNumber),
-                callbackUrlMap.get(PaymentCbUrl.CANCEL_CB_URL_KEY).formatted(paymentType, accountId, feature, paymentRequestId, orderNumber),
-                callbackUrlMap.get(PaymentCbUrl.FAIL_CB_URL_KEY).formatted(paymentType, accountId, feature, paymentRequestId, orderNumber)
-        );
+        MultiValueMap<String, Object> requestMap = new LinkedMultiValueMap<>();
+
+        requestMap.put("cid", Collections.singletonList(paymentCbUrl.get(PaymentCbUrl.CID_KEY)));
+        requestMap.put("partner_order_id", Collections.singletonList(paymentRequestId));
+        requestMap.put("partner_user_id", Collections.singletonList(accountId));
+        requestMap.put("item_name", Collections.singletonList("컴마 실습재료 주문 보증금"));
+        requestMap.put("quantity", Collections.singletonList(String.valueOf(checkoutDto.getQuantity())));
+        requestMap.put("total_amount", Collections.singletonList(String.valueOf(checkoutDto.getAmount())));
+        requestMap.put("tax_free_amount", Collections.singletonList(0));
+        requestMap.put("approval_url", Collections.singletonList(paymentCbUrl.get(PaymentCbUrl.SUCCESS_CB_URL_KEY).formatted(paymentType, feature, accountId, paymentRequestId, orderNumber)));
+        requestMap.put("cancel_url", Collections.singletonList(paymentCbUrl.get(PaymentCbUrl.CANCEL_CB_URL_KEY).formatted(paymentType, accountId, feature, paymentRequestId, orderNumber)));
+        requestMap.put("fail_url", Collections.singletonList(paymentCbUrl.get(PaymentCbUrl.FAIL_CB_URL_KEY).formatted(paymentType, accountId, feature, paymentRequestId, orderNumber)));
+
+        return new KakaopayReadyRequest(requestMap);
     }
 
-    private final String cid;
-    private final String partnerOrderId;
-    private final String partnerUserId;
-    private final String itemName;
-    private final int quantity;
-    private final int totalAmount;
-    private final int taxFreeAmount;
-    private final String approvalUrl;
-    private final String cancelUrl;
-    private final String failUrl;
+    private final MultiValueMap<String, Object> body;
 }

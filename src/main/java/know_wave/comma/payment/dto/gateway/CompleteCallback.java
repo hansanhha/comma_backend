@@ -1,7 +1,6 @@
 package know_wave.comma.payment.dto.gateway;
 
 import know_wave.comma.payment.entity.PaymentFeature;
-import know_wave.comma.payment.entity.PaymentType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class CompleteCallback {
 
-    public static CompleteCallback of(String paymentRequestId, String orderNumber, String accountId, PaymentFeature paymentFeature) {
+    public static CompleteCallback create(String paymentRequestId, String orderNumber, String accountId, PaymentFeature paymentFeature) {
         return new CompleteCallback(paymentRequestId, orderNumber, accountId, paymentFeature);
     }
 

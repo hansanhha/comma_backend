@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PaymentGatewayFailRequest {
 
-    public static PaymentGatewayFailRequest of(String paymentRequestId, String orderNumber, String accountId, String paymentType, String paymentFeature) {
+    public static PaymentGatewayFailRequest create(String paymentRequestId, String orderNumber, String accountId, String paymentType, String paymentFeature) {
         return new PaymentGatewayFailRequest(paymentRequestId, orderNumber, accountId, paymentType, paymentFeature);
     }
 

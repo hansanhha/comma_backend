@@ -23,17 +23,13 @@ import java.util.List;
 import java.util.Map;
 
 /* TODO
-    * PaymentGateway 순환참조 해결 필요(PaymentGateway.refund())
-    * 보증금 결제를 성공하고 콜백 서비스를 통한 주문 처리 과정에서 주문 실패가 발생한 경우 보증금 반환 예정 상태로 변경
-    * 이후 보증금 결제 반환 처리 필요
-    *
-*/
+     * 1. 주문 성공 시 주문 상품들 장바구니에서 지우기
+ */
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class DepositPaymentCallbackHandler implements PaymentCallbackHandler {
 
-//    private final PaymentGateway paymentGateway;
     private final ArduinoOrderNotification orderNotification;
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
@@ -50,7 +46,7 @@ public class DepositPaymentCallbackHandler implements PaymentCallbackHandler {
         OrderCallbackResponse orderResponse = order(completeCallback.getOrderNumber());
 
         OrderNotificationRequest orderNotificationRequest =
-                OrderNotificationRequest.to(orderResponse.getOrderStatus(), orderResponse.getDepositStatus(),
+                OrderNotificationRequest.create(orderResponse.getOrderStatus(), orderResponse.getDepositStatus(),
                         completeCallback.getOrderNumber(), completeCallback.getAccountId());
 
         orderNotification.notify(orderNotificationRequest);
@@ -58,7 +54,7 @@ public class DepositPaymentCallbackHandler implements PaymentCallbackHandler {
         Map<String, String> response = Map.of(ORDER_STATUS, orderResponse.getOrderStatus().getStatus(),
                 DEPOSIT_STATUS, orderResponse.getDepositStatus().getStatus());
 
-        return CompleteCallbackResponse.of(response);
+        return CompleteCallbackResponse.create(response);
     }
 
     @Override

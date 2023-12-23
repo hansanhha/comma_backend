@@ -1,6 +1,6 @@
-package know_wave.comma.arduino.basket.dto;
+package know_wave.comma.arduino.cart.dto;
 
-import know_wave.comma.arduino.basket.entity.Basket;
+import know_wave.comma.arduino.cart.entity.Cart;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -9,10 +9,10 @@ import java.util.List;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class BasketResponse {
+public class CartResponse {
 
-    public static BasketResponse to(List<Basket> baskets) {
-        return new BasketResponse(baskets.stream()
+    public static CartResponse to(List<Cart> carts) {
+        return new CartResponse(carts.stream()
                 .map(basket -> new StoredArduino(basket.getId(), basket.getArduino().getId(), basket.getStoredCount()))
                 .toList());
     }

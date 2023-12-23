@@ -7,10 +7,13 @@ import know_wave.comma.payment.dto.kakaopay.*;
 import know_wave.comma.payment.entity.PaymentType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
-import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
+import java.util.List;
+
+import static org.springframework.http.MediaType.*;
 
 @Service
 @RequiredArgsConstructor
@@ -30,36 +33,43 @@ public class KakaoPayClient implements PaymentClient<KakaopayReadyRequest, Kakao
     @Value("${kakao.api.key}")
     private String apiKey;
 
-    private static String authHeader = "Authorization";
-    private static String authHeaderPrefix = "KakaoAK ";
+    private static final String authHeaderPrefix = "KakaoAK ";
 
     @Override
-    public PaymentClientReadyResponse ready(KakaopayReadyRequest request) {
-        RestClient restClient = RestClient.create();
+    public PaymentClientReadyResponse ready(KakaopayReadyRequest kakaopayReadyRequest) {
+        RestClient restClient = RestClient.builder()
+                .defaultHeaders(httpHeaders -> {
+                    httpHeaders.setContentType(APPLICATION_FORM_URLENCODED);
+                    httpHeaders.setAccept(List.of(APPLICATION_JSON));
+                    httpHeaders.set(HttpHeaders.AUTHORIZATION, authHeaderPrefix + apiKey);
+                })
+                .build();
 
         KakaopayReadyResponse response = restClient.post()
                 .uri(readyUrl)
-                .contentType(APPLICATION_FORM_URLENCODED)
-                .header(authHeader, authHeaderPrefix + apiKey)
-                .body(request)
+                .body(kakaopayReadyRequest.getBody())
                 .retrieve()
                 .body(KakaopayReadyResponse.class);
 
-        return PaymentClientReadyResponse.of(
+        return PaymentClientReadyResponse.create(
                 response.getNext_redirect_mobile_url(),
                 response.getNext_redirect_pc_url(),
                 response.getTid());
     }
 
     @Override
-    public PaymentClientApproveResponse approve(KakaopayApproveRequest request) {
-        RestClient restClient = RestClient.create();
+    public PaymentClientApproveResponse approve(KakaopayApproveRequest kakaopayApproveRequest) {
+        RestClient restClient = RestClient.builder()
+                .defaultHeaders(httpHeaders -> {
+                    httpHeaders.setContentType(APPLICATION_FORM_URLENCODED);
+                    httpHeaders.setAccept(List.of(APPLICATION_JSON));
+                    httpHeaders.set(HttpHeaders.AUTHORIZATION, authHeaderPrefix + apiKey);
+                })
+                .build();
 
         KakaopayApproveResponse response = restClient.post()
                 .uri(approveUrl)
-                .contentType(APPLICATION_FORM_URLENCODED)
-                .header(authHeader, authHeaderPrefix + apiKey)
-                .body(request)
+                .body(kakaopayApproveRequest.getBody())
                 .retrieve()
                 .body(KakaopayApproveResponse.class);
 
@@ -70,14 +80,18 @@ public class KakaoPayClient implements PaymentClient<KakaopayReadyRequest, Kakao
     }
 
     @Override
-    public PaymentClientRefundResponse refund(KakaopayRefundRequest request) {
-        RestClient restClient = RestClient.create();
+    public PaymentClientRefundResponse refund(KakaopayRefundRequest kakaopayRefundRequestequest) {
+        RestClient restClient = RestClient.builder()
+                .defaultHeaders(httpHeaders -> {
+                    httpHeaders.setContentType(APPLICATION_FORM_URLENCODED);
+                    httpHeaders.setAccept(List.of(APPLICATION_JSON));
+                    httpHeaders.set(HttpHeaders.AUTHORIZATION, authHeaderPrefix + apiKey);
+                })
+                .build();
 
         KakaopayRefundResponse response = restClient.post()
                 .uri(cancelUrl)
-                .contentType(APPLICATION_FORM_URLENCODED)
-                .header(authHeader, authHeaderPrefix + apiKey)
-                .body(request)
+                .body(kakaopayRefundRequestequest.getBody())
                 .retrieve()
                 .body(KakaopayRefundResponse.class);
 

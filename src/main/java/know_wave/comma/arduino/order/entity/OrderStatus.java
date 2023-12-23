@@ -17,8 +17,8 @@ public enum OrderStatus {
     FAILURE_CAUSE_ARDUINO_STOCK_STATUS("주문 실패(재고 상태)"),
     FAILURE_CAUSE_REJECTED("주문 실패(주문 거부됨)"),
     ORDERED("주문 완료"),
-    FREE_CANCEL("주문 취소"),
-    CANCEL("주문 취소"),
+    FREE_CANCEL("주문취소"),
+    CANCEL("주문취소"),
     PREPARING("주문 준비 중"),
     BE_READY("주문 준비 완료"),
     RECEIVE("주문 수령");

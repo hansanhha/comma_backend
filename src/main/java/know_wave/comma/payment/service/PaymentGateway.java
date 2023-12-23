@@ -54,13 +54,13 @@ public class PaymentGateway {
         PaymentClientReadyResponse paymentClientReadyResponse =
                 paymentClientManager.ready(checkoutRequest, paymentRequestId);
 
-        Payment payment = Payment.of(
+        Payment payment = Payment.create(
                 paymentRequestId, checkoutRequest.getPaymentType(), paymentClientReadyResponse.getTid(),
                 checkoutRequest.getPaymentFeature(), checkoutRequest.getAmount(), checkoutRequest.getAccount(),
                 checkoutRequest.getQuantity());
 
         Payment savedPayment = paymentRepository.save(payment);
-        idempotencyService.create(IdempotentSaveDto.of(paymentRequestId, null, null, null, paymentClientReadyResponse, null));
+        idempotencyService.create(IdempotentSaveDto.create(paymentRequestId, null, null, 0, paymentClientReadyResponse, null));
 
         return PaymentGatewayCheckoutResponse.of(savedPayment, paymentClientReadyResponse.getMobileRedirectUrl(), paymentClientReadyResponse.getPcRedirectUrl(), paymentRequestId);
     }
@@ -71,7 +71,7 @@ public class PaymentGateway {
         payment.setPaymentStatus(PaymentStatus.COMPLETE);
 
         CompleteCallbackResponse callbackResponse = paymentCallbackManager.complete(
-                CompleteCallback.of(approveRequest.getPaymentRequestId(), approveRequest.getOrderNumber(),
+                CompleteCallback.create(approveRequest.getPaymentRequestId(), approveRequest.getOrderNumber(),
                         approveRequest.getAccountId(), PaymentFeature.valueOf(approveRequest.getPaymentFeature())));
 
         return PaymentGatewayApproveResponse.of(
@@ -128,7 +128,7 @@ public class PaymentGateway {
     }
 
     private Optional<PaymentClientReadyResponse> getIdempotentResponse(String paymentRequestId) {
-        IdempotentRequest idempotentRequest = IdempotentRequest.of(paymentRequestId, null, null, null);
+        IdempotentRequest idempotentRequest = IdempotentRequest.create(paymentRequestId, null, null, null);
 
         if (idempotencyService.isIdempotent(idempotentRequest)) {
             var idempotentResponse = idempotencyService.get(paymentRequestId, PaymentClientReadyResponse.class);

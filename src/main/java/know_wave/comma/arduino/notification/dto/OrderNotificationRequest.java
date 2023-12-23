@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class OrderNotificationRequest {
 
-    public static OrderNotificationRequest to(OrderStatus orderStatus, DepositStatus depositStatus, String orderNumber, String accountId) {
+    public static OrderNotificationRequest create(OrderStatus orderStatus, DepositStatus depositStatus, String orderNumber, String accountId) {
         return new OrderNotificationRequest(orderStatus, depositStatus, orderNumber, accountId);
     }
 

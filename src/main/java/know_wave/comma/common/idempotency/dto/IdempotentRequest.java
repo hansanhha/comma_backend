@@ -12,7 +12,7 @@ public class IdempotentRequest {
     private final String apiPath;
     private final String payload;
 
-    public static IdempotentRequest of(String idempotentKey, String httpMethod, String apiPath, String payload) {
+    public static IdempotentRequest create(String idempotentKey, String httpMethod, String apiPath, String payload) {
         return new IdempotentRequest(idempotentKey, httpMethod, apiPath, payload);
     }
 }

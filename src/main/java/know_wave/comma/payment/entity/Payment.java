@@ -2,6 +2,7 @@ package know_wave.comma.payment.entity;
 
 import jakarta.persistence.*;
 import know_wave.comma.account.entity.Account;
+import know_wave.comma.common.entity.BaseTimeEntity;
 import lombok.*;
 
 import java.nio.charset.StandardCharsets;
@@ -12,7 +13,7 @@ import java.security.NoSuchAlgorithmException;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Payment {
+public class Payment extends BaseTimeEntity {
 
     @Id
     @GeneratedValue
@@ -46,7 +47,7 @@ public class Payment {
     @Column(updatable = false, nullable = false)
     private int quantity;
 
-    public static Payment of(String paymentRequestId, PaymentType paymentType, String transactionId,PaymentFeature paymentFeature, int amount, Account account, int quantity) {
+    public static Payment create(String paymentRequestId, PaymentType paymentType, String transactionId, PaymentFeature paymentFeature, int amount, Account account, int quantity) {
         return new Payment(null, paymentRequestId, transactionId, account, paymentType, paymentFeature, PaymentStatus.REQUEST, amount, quantity);
     }
 

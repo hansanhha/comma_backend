@@ -15,7 +15,6 @@ import org.springframework.data.domain.Persistable;
 public class Idempotent extends BaseTimeEntity implements Persistable<String> {
 
     @Id
-    @GeneratedValue
     @Column(name = "idempotent_id")
     private String idempotentKey;
 
@@ -27,12 +26,12 @@ public class Idempotent extends BaseTimeEntity implements Persistable<String> {
     @Column(columnDefinition = "TEXT")
     private String payload;
 
-    private int responseStatus;
+    private Integer responseStatus;
 
     @Column(columnDefinition = "TEXT")
     private String response;
 
-    public static Idempotent of(String idempotentKey, HttpMethod httpMethod, String apiPath, String payload, int responseStatus, String response) {
+    public static Idempotent create(String idempotentKey, HttpMethod httpMethod, String apiPath, String payload, int responseStatus, String response) {
         return new Idempotent(idempotentKey, httpMethod, apiPath, payload, responseStatus, response);
     }
 

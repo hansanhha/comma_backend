@@ -1,11 +1,11 @@
-package know_wave.comma.arduino.basket.dto;
+package know_wave.comma.arduino.cart.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum BasketValidateStatus {
+public enum CartValidateStatus {
 
     VALID("유효"),
     OVER_MAX_QUANTITY("최대 수량 초과"),

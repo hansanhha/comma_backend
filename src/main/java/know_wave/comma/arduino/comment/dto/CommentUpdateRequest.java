@@ -7,6 +7,6 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class CommentUpdateRequest {
 
-    @JsonProperty("updated_content")
+    @JsonProperty("update_content")
     private String updatedContent;
 }

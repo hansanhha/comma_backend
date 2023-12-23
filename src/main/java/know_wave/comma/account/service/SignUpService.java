@@ -8,6 +8,7 @@ import know_wave.comma.account.exception.NotVerifiedException;
 import know_wave.comma.account.repository.AccountRepository;
 import know_wave.comma.account.repository.EmailVerifyRepository;
 import know_wave.comma.common.entity.ExceptionMessageSource;
+import know_wave.comma.common.notification.push.dto.AccountEmailNotificationRequest;
 import know_wave.comma.common.notification.push.dto.PushNotificationRequest;
 import know_wave.comma.common.notification.push.entity.NotificationFeature;
 import know_wave.comma.common.notification.push.entity.PushNotificationType;
@@ -64,8 +65,8 @@ public class SignUpService {
 
         final int verifyCode = generateSixRandomCode();
 
-        PushNotificationRequest notificationRequest =
-                PushNotificationRequest.create(Map.of(PushNotificationType.EMAIL, email), AUTH_CODE_TITLE, String.valueOf(verifyCode), NotificationFeature.ACCOUNT_VERIFY_EMAIL, null);
+        AccountEmailNotificationRequest accountEmailNotificationRequest =
+                AccountEmailNotificationRequest.create(email, AUTH_CODE_TITLE, String.valueOf(verifyCode));
 
         Optional<EmailVerify> optionalEmailVerify = accountVerifyRepository.findById(email);
 
@@ -76,7 +77,7 @@ public class SignUpService {
             EmailVerify emailVerify = optionalEmailVerify.get();
             emailVerify.setCode(verifyCode);
         }
-        notificationGateway.notify(notificationRequest);
+        notificationGateway.accountEmailVerifyNotification(accountEmailNotificationRequest);
     }
 
     public boolean verifyEmailCode(String email, int code) {

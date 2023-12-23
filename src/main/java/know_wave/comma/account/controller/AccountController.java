@@ -1,6 +1,5 @@
 package know_wave.comma.account.controller;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -12,6 +11,7 @@ import know_wave.comma.config.security.dto.SignInResponse;
 import know_wave.comma.config.security.service.JwtLogoutHandler;
 import know_wave.comma.config.security.service.JwtSignInService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-import static know_wave.comma.config.security.filter.JwtAuthenticationFilter.AUTHORIZATION_HEADER;
 import static know_wave.comma.config.security.filter.JwtAuthenticationFilter.TOKEN_PREFIX;
 
 @RestController
@@ -41,12 +40,15 @@ public class AccountController {
     }
 
     @PostMapping("/signin")
-    public Map<String, Object> signIn(@Valid @RequestBody AccountSignInForm form, HttpServletResponse response) {
+    public ResponseEntity<Map<String, Object>> signIn(@Valid @RequestBody AccountSignInForm form) {
         SignInResponse signInResponse = signInService.signIn(form.getAccountId(), form.getPassword());
 
-        response.setHeader(AUTHORIZATION_HEADER, TOKEN_PREFIX + signInResponse.getAccessToken());
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setBearerAuth(signInResponse.getAccessToken());
 
-        return Map.of(MESSAGE, "authenticated", DATA, signInResponse);
+        Map<String, Object> body = Map.of(MESSAGE, "authenticated", DATA, signInResponse);
+
+        return ResponseEntity.ok().headers(httpHeaders).body(body);
     }
 
     @GetMapping("/refresh-token")
@@ -54,7 +56,7 @@ public class AccountController {
                                             HttpServletResponse response) {
         String accessToken = signInService.refreshToken(refreshRequest.getRefreshToken());
 
-        response.setHeader(AUTHORIZATION_HEADER, TOKEN_PREFIX + accessToken);
+        response.setHeader(HttpHeaders.AUTHORIZATION, TOKEN_PREFIX + accessToken);
 
         return Map.of(MESSAGE, "refreshed token", DATA, accessToken);
     }
