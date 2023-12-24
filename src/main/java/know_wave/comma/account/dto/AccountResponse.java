@@ -1,85 +1,39 @@
 package know_wave.comma.account.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import know_wave.comma.account.entity.Account;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+@Getter
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class AccountResponse {
 
-    public static AccountResponse of(Account account) {
+    public static AccountResponse to(Account account) {
         return new AccountResponse(
                 account.getName(),
+                account.getPhoneNumber(),
                 account.getEmail(),
                 account.getAcademicNumber(),
-                account.getAcademicStatus(),
-                account.getAcademicMajor(),
-                account.getRole().getGrade()
+                account.getAcademicStatus().getStatus(),
+                account.getAcademicMajor().getMajor(),
+                account.getRole().getRole()
         );
     }
-    private AccountResponse(String name, String email, String academicNumber, String academicStatus, String academicMajor, String permission) {
-        this.name = name;
-        this.email = email;
-        this.academicNumber = academicNumber;
-        this.academicStatus = academicStatus;
-        this.academicMajor = academicMajor;
-        this.permission = permission;
-    }
 
-    private String name;
-    private String email;
-    private String academicNumber;
-    private String academicStatus;
-
-    private String academicMajor;
-
-    private String permission;
-
-    public AccountResponse() {
-    }
-
-    public String getAcademicStatus() {
-        return academicStatus;
-    }
-
-    public void setAcademicStatus(String academicStatus) {
-        this.academicStatus = academicStatus;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getAcademicNumber() {
-        return academicNumber;
-    }
-
-    public void setAcademicNumber(String academicNumber) {
-        this.academicNumber = academicNumber;
-    }
-
-    public String getAcademicMajor() {
-        return academicMajor;
-    }
-
-    public void setAcademicMajor(String academicMajor) {
-        this.academicMajor = academicMajor;
-    }
-
-    public String getPermission() {
-        return permission;
-    }
-
-    public void setPermission(String permission) {
-        this.permission = permission;
-    }
+    @JsonProperty("name")
+    private final String name;
+    @JsonProperty("phone")
+    private final String phone;
+    @JsonProperty("email")
+    private final String email;
+    @JsonProperty("academic_number")
+    private final String academicNumber;
+    @JsonProperty("academic_status")
+    private final String academicStatus;
+    @JsonProperty("academic_major")
+    private final String academicMajor;
+    @JsonProperty("permission")
+    private final String permission;
 }

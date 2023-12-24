@@ -7,7 +7,7 @@
 
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.1.3'
+	id 'org.springframework.boot' version '3.2.0'
 	id 'io.spring.dependency-management' version '1.1.3'
 }
 
@@ -15,7 +15,7 @@ group = 'know_wave.comma'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '17'
+	sourceCompatibility = '21'
 }
 
 repositories {
@@ -36,6 +36,9 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+	// 이메일에서 HTML 태그 사용 시 XSS 공격 방지 목적
+	implementation 'org.apache.commons:commons-text:1.11.0'
 
 	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
 	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"

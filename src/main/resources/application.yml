@@ -32,7 +32,9 @@ spring:
       mail:
         smtp:
           auth: true
-          timeout: 5000
+          connectiontimeout: 10000
+          writetimeout: 10000
+          timeout: 10000
           starttls:
             enable: true
 
@@ -41,26 +43,39 @@ logging:
     root: info
     web: trace
     org.hibernate.sql: debug
-  config: classpath:logback-spring.xml
+    security: trace
+#  config: classpath:logback-spring.xml
 
 kakao:
   api:
     key: ${KAKAO_API_KEY}
-    customer:
-      id: ${KAKAO_CUSTOMER_ID}
+    pay:
+      cid: ${KAKAO_CUSTOMER_ID}
+      ready-request-url: ${KAKAO_READY_REQUEST_URL}
+      approve-request-url: ${KAKAO_APPROVE_REQUEST_URL}
+      cancel-request-url: ${KAKAO_CANCEL_REQUEST_URL}
 
 payment:
-  amount : 3000
-  tax-free-amount: 3000
-  product-name: 컴마 실습재료 신청 보증금
+  success-callback-url: http://localhost:8080/payment-cb/success/%s/%s/%s/%s/%s
+  cancel-callback-url: http://localhost:8080/payment-cb/cancel/%s/%s/%s/%s/%s
+  fail-callback-url: http://localhost:8080/payment-cb/fail/%s/%s/%s/%s/%s
 
-server:
-  http2:
-    enabled: false
-  port: 443
+# type : 결제 타입(카카오페이, 네이버페이 등)
+# feature : 결제 기능을 요청한 도메인(아두이노, 중고거래 등)
+# account : 결제자
+# paymentRequestId : 결제 식별, 멱등키(idempotentKey), 외부 api 주문번호 id로도 사용
+# orderNumber : 결제 기능을 요청한 도메인의 주문번호
 
-  ssl:
-    key-store: classpath:keystore.p12
-    key-store-type: PKCS12
-    key-store-password: ${KEY_STORE_PASSWORD}
-    enabled: true
+arduino:
+  max-order-quantity: 4
+
+#server:
+#  http2:
+#    enabled: false
+#  port: 443
+#
+#  ssl:
+#    key-store: classpath:keystore.p12
+#    key-store-type: PKCS12
+#    key-store-password: ${KEY_STORE_PASSWORD}
+#    enabled: true

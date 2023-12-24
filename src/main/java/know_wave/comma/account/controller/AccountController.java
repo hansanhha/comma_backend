@@ -4,12 +4,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import know_wave.comma.account.dto.*;
-import know_wave.comma.account.service.auth.LogoutService;
-import know_wave.comma.account.service.auth.SignService;
-import know_wave.comma.account.service.normal.AccountManagementService;
-import know_wave.comma.common.mail.EmailService;
-import know_wave.comma.security.service.TokenService;
+import know_wave.comma.account.service.AccountManagementService;
+import know_wave.comma.account.service.SignUpService;
+import know_wave.comma.config.security.dto.AccountSignInForm;
+import know_wave.comma.config.security.dto.SignInResponse;
+import know_wave.comma.config.security.service.JwtLogoutHandler;
+import know_wave.comma.config.security.service.JwtSignInService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -17,57 +19,64 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+import static know_wave.comma.config.security.filter.JwtAuthenticationFilter.TOKEN_PREFIX;
+
 @RestController
 @RequestMapping("/account")
 @RequiredArgsConstructor
 public class AccountController {
 
-    private final SignService signService;
-    private final LogoutService logoutService;
+    private final SignUpService signUpService;
+    private final JwtSignInService signInService;
+    private final JwtLogoutHandler logoutService;
     private final AccountManagementService accountManagementService;
-    private final EmailService emailService;
+    private static final String MESSAGE = "msg";
+    private static final String DATA = "body";
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signUp(@Valid @RequestBody AccountCreateForm form) {
-        signService.join(form);
-        return new ResponseEntity<>("Created account", HttpStatus.CREATED);
+    public ResponseEntity<Map<String, String>> signUp(@Valid @RequestBody AccountCreateForm form) {
+        signUpService.join(form);
+        return ResponseEntity.ok(Map.of(MESSAGE,"Created account"));
     }
 
     @PostMapping("/signin")
-    public Map<String, Object> signIn(@Valid @RequestBody AccountSignInForm form, HttpServletResponse response) {
-        String accessToken = signService.processAuthentication(form);
+    public ResponseEntity<Map<String, Object>> signIn(@Valid @RequestBody AccountSignInForm form) {
+        SignInResponse signInResponse = signInService.signIn(form.getAccountId(), form.getPassword());
 
-        AddHeader(response, accessToken);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setBearerAuth(signInResponse.getAccessToken());
 
-        return Map.of("msg", "Completed Authentication");
+        Map<String, Object> body = Map.of(MESSAGE, "authenticated", DATA, signInResponse);
+
+        return ResponseEntity.ok().headers(httpHeaders).body(body);
     }
 
-    @GetMapping("/{accountId}/refresh-token")
-    public ResponseEntity<String> refreshToken(@PathVariable("accountId") String accountId, HttpServletResponse response) {
-        String accessToken = signService.refreshToken(accountId);
+    @GetMapping("/refresh-token")
+    public Map<String, String> refreshToken(@Valid @RequestBody RefreshTokenRequest refreshRequest,
+                                            HttpServletResponse response) {
+        String accessToken = signInService.refreshToken(refreshRequest.getRefreshToken());
 
-        AddHeader(response, accessToken);
+        response.setHeader(HttpHeaders.AUTHORIZATION, TOKEN_PREFIX + accessToken);
 
-        return ResponseEntity.ok("Completed Issue tokens");
+        return Map.of(MESSAGE, "refreshed token", DATA, accessToken);
     }
 
-    @PostMapping("/email/r")
-    public ResponseEntity<String> emailAuthenticationRequest(@Valid @RequestBody EmailAuthRequest requestDto) {
-        emailService.sendAuthCode(requestDto.getEmail());
-        return ResponseEntity.ok("Send authentication code email");
+    @PostMapping("/email/verify/request")
+    public Map<String, String> emailAuthenticationRequest(@Valid @RequestBody EmailRequest emailRequest) {
+        signUpService.sendEmailVerifyCode(emailRequest.getEmail());
+        return Map.of(MESSAGE, "sent email code");
     }
 
     @PostMapping("/email/verify")
-    public ResponseEntity<String> emailAuthentication(@Valid @RequestBody EmailVerifyRequest requestDto) {
-        boolean result = emailService.verifyAuthCode(requestDto.getEmail(), Integer.parseInt(requestDto.getCode()));
-        if (result) return ResponseEntity.ok("Completed email authentication");
-        else return new ResponseEntity<>("Failed email authentication", HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Map<String, String>> emailAuthentication(@Valid @RequestBody EmailVerifyRequest requestDto) {
+        boolean result = signUpService.verifyEmailCode(requestDto.getEmail(), Integer.parseInt(requestDto.getCode()));
+        if (result) return ResponseEntity.ok(Map.of(MESSAGE, "authenticated email"));
+        else return new ResponseEntity<>(Map.of(MESSAGE, "failed authentication email"), HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/me")
-    public ResponseEntity<AccountResponse> getAccount() {
-        AccountResponse accountResponse = accountManagementService.getAccount();
-        return ResponseEntity.ok(accountResponse);
+    public AccountResponse getAccount() {
+        return accountManagementService.getAccount();
     }
 
     @DeleteMapping("/me")
@@ -76,27 +85,27 @@ public class AccountController {
 
         logoutService.logout(request, response, authentication);
 
-        return Map.of("msg", "deleted account");
+        return Map.of(MESSAGE, "deleted account");
     }
 
-    @PostMapping("/password")
-    public ResponseEntity<String> checkPassword(@Valid @RequestBody AccountPasswordRequest requestDto) {
-        boolean isSame = accountManagementService.checkMatchPassword(requestDto.getPassword());
+    @PostMapping("/password/check")
+    public ResponseEntity<Map<String, Boolean>> checkPassword(@Valid @RequestBody AccountPasswordChangeRequest changeRequest) {
+        boolean isSame = accountManagementService.checkMatchPassword(changeRequest.getPassword());
 
-        if (!isSame) {
-            return new ResponseEntity<>("Incorrect password", HttpStatus.BAD_REQUEST);
+        if (isSame) {
+            return ResponseEntity.ok(Map.of(DATA, true));
         }
 
-        return ResponseEntity.ok("Correct password");
+        return new ResponseEntity<>(Map.of(DATA,false), HttpStatus.BAD_REQUEST);
     }
 
     @PatchMapping("/password")
-    public ResponseEntity<String> changePassword(@Valid @RequestBody AccountPasswordRequest requestDto) {
-        accountManagementService.changePassword(requestDto.getPassword());
-        return ResponseEntity.ok("Completed change password");
+    public Map<String, String> changePassword(@Valid @RequestBody AccountPasswordChangeRequest changeRequest) {
+        accountManagementService.changePassword(changeRequest.getPassword());
+        return Map.of(MESSAGE, "changed password");
     }
 
-    private void AddHeader(HttpServletResponse response, String accessToken) {
-        response.addHeader(TokenService.AUTHORIZATION_HEADER, TokenService.TOKEN_PREFIX + accessToken);
-    }
+//    private void AddHeader(HttpServletResponse response, String accessToken) {
+//        response.addHeader(JwtTokenService.AUTHORIZATION_HEADER, JwtTokenService.TOKEN_PREFIX + accessToken);
+//    }
 }

@@ -1,146 +1,148 @@
 package know_wave.comma.payment.service;
 
-import know_wave.comma.account.entity.Account;
-import know_wave.comma.account.service.normal.AccountQueryService;
-import know_wave.comma.order.dto.OrderInfoDto;
-import know_wave.comma.order.entity.OrderInfo;
-import know_wave.comma.order.service.user.OrderInfoQueryService;
-import know_wave.comma.common.idempotency.Idempotency;
-import know_wave.comma.common.idempotency.Idempotent;
-import know_wave.comma.common.idempotency.IdempotentDto;
-import know_wave.comma.common.idempotency.IdempotentKeyRepository;
-import know_wave.comma.payment.dto.PaymentPrepareDto;
-import know_wave.comma.payment.dto.PaymentPrepareResponse;
-import know_wave.comma.payment.dto.PaymentRefundRequest;
-import know_wave.comma.payment.dto.PaymentRefundResult;
-import know_wave.comma.payment.entity.Deposit;
-import know_wave.comma.payment.entity.DepositStatus;
+import jakarta.transaction.Transactional;
+import know_wave.comma.common.idempotency.dto.IdempotentRequest;
+import know_wave.comma.common.idempotency.dto.IdempotentSaveDto;
+import know_wave.comma.common.idempotency.service.IdempotencyService;
+import know_wave.comma.common.entity.ExceptionMessageSource;
+import know_wave.comma.payment.dto.client.PaymentClientApproveResponse;
+import know_wave.comma.payment.dto.client.PaymentClientReadyResponse;
+import know_wave.comma.payment.dto.client.PaymentClientRefundRequest;
+import know_wave.comma.payment.dto.client.PaymentClientRefundResponse;
+import know_wave.comma.payment.dto.gateway.*;
+import know_wave.comma.payment.entity.Payment;
+import know_wave.comma.payment.entity.PaymentFeature;
 import know_wave.comma.payment.entity.PaymentStatus;
-import know_wave.comma.payment.entity.PaymentType;
-import know_wave.comma.payment.repository.DepositRepository;
+import know_wave.comma.payment.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
-@Idempotency
 @Transactional
 @RequiredArgsConstructor
 public class PaymentGateway {
 
-    private final AccountQueryService accountQueryService;
-    private final DepositQueryService depositQueryService;
-    private final OrderInfoQueryService orderInfoQueryService;
-    private final PaymentManager paymentManager;
-    private final DepositRepository depositRepository;
-    private final IdempotentKeyRepository idempotentKeyRepository;
-    private final CommaArduinoDepositPolicy depositPolicy;
+    private final IdempotencyService idempotencyService;
+    private final PaymentClientManager paymentClientManager;
+    private final PaymentCallbackManager paymentCallbackManager;
+    private final PaymentRepository paymentRepository;
 
-    // api/v1/payment/*/*/paymentRequestId/idempotencyKey
-    // 첫 번째 %s - paymentType : 결제 수단
-    // 두 번째 %s - paymentRequestId : PG, 간편결제에서 결제 요청(결제 준비) 후 redirect 됐을 때 해당 결제건 식별 용도
-    // 세 번째 %s - idempotencyKey : 멱등성 유지를 위한 키 값
+    /*
+     *  paymentRequestId : 결제 식별, 멱등키(idempotentKey), 외부 api 주문번호 id로도 사용
+     *  orderNumber : 결제 기능을 요청한 도메인의 주문번호
+     *  tid : 외부 결제 API 서버에서 결제를 식별하는 키 (외부 API 사용 용도)
+     *  pgToken : 결제 수단을 식별하는 키 (외부 API 사용 용도)
+     *  checkout()은 다른 도메인 서비스 계층에서 호출되므로 멱등성 검증, 생성을 메서드 내부에서 처리
+     *  이외의 메서드는 컨트롤러에서 처리
+     *  특정 도메인의 서비스 객체 -> 결제 checkout() 호출 ->
+     *  결제 콜백 api 처리 및 응답 -> 응답 결과에 따라 클라이언트에서 서비스 객체 호출(로직 재개)
+     */
+    public PaymentGatewayCheckoutResponse checkout(PaymentGatewayCheckoutRequest checkoutRequest) {
+        String paymentRequestId = Payment.generatePaymentRequestId(checkoutRequest.getAccount().getId(), checkoutRequest.getOrderNumber());
 
-    // failUrl, cancelUrl 네 번째 %s - orderNumber : 주문 번호 (결제 실패, 취소 시 로직 처리 용도)
-    // failUrl, cancelUrl 다섯 번째 %s - emitterId : SSE 통신을 위한 emitterId
+        Optional<PaymentClientReadyResponse> optionalIdempotentResponse =
+                getIdempotentResponse(paymentRequestId);
 
-    // successUrl 네 번째 %s - accountId : 사용자 계정 (결제 성공 시 주문 기능 실행 용도)
-    // successUrl 다섯 번째 %s - orderNumber : 주문 번호 (결제 성공 시 주문 기능 실행 용도)
-    // successUrl 여섯 번째 %s - subject : 주문 교과목 (결제 성공 시 주문 기능 실행 용도)
-    // successUrl 일곱 번째 %s - sseId : SSE 통신을 위한 sseId
-    public static final String successUrl = "http://localhost:8080/api/v1/payment/%s/success/%s/%s/%s/%s/%s/%s";
-    public static final String failUrl = "http://localhost:8080/api/v1/payment/%s/fail/%s/%s/%s/%s";
-    public static final String cancelUrl = "http://localhost:8080/api/v1/payment/%s/cancel/%s/%s/%s/%s";
-    
-    public PaymentPrepareResponse prepare(IdempotentDto idempotentDto, PaymentPrepareDto paymentPrepareDto, OrderInfoDto orderInfoDto) {
-        var paymentService = paymentManager.getPaymentService(paymentPrepareDto.paymentType());
-        var paymentPrepareResult = paymentService.ready(idempotentDto.idempotentKey(), paymentPrepareDto, orderInfoDto);
-        var paymentPrepareResponse = new PaymentPrepareResponse(paymentPrepareResult.redirectPcWebUrl(), paymentPrepareResult.redirectMobileWebUrl());
+        if (optionalIdempotentResponse.isPresent()) {
+            PaymentClientReadyResponse paymentReadyResponse = optionalIdempotentResponse.get();
+            Payment payment = getPayment(paymentRequestId);
+            return PaymentGatewayCheckoutResponse.of(payment, paymentReadyResponse.getMobileRedirectUrl(), paymentReadyResponse.getPcRedirectUrl(), null);
+        }
 
-        Account account = accountQueryService.findAccount(AccountQueryService.getAuthenticatedId());
-        Deposit deposit = Deposit.of(paymentPrepareDto.paymentType(), paymentPrepareResult.paymentRequestId(), paymentPrepareResult.transactionId(), account, depositPolicy.getAmount(), depositPolicy.getProductName(), true, true);
-        Idempotent idempotent = IdempotentDto.of(idempotentDto, HttpStatus.OK.value(), paymentPrepareResponse);
+        PaymentClientReadyResponse paymentClientReadyResponse =
+                paymentClientManager.ready(checkoutRequest, paymentRequestId);
 
-        depositRepository.save(deposit);
-        idempotentKeyRepository.save(idempotent);
+        Payment payment = Payment.create(
+                paymentRequestId, checkoutRequest.getPaymentType(), paymentClientReadyResponse.getTid(),
+                checkoutRequest.getPaymentFeature(), checkoutRequest.getAmount(), checkoutRequest.getAccount(),
+                checkoutRequest.getQuantity());
 
-        return paymentPrepareResponse;
+        Payment savedPayment = paymentRepository.save(payment);
+        idempotencyService.create(IdempotentSaveDto.create(paymentRequestId, null, null, 0, paymentClientReadyResponse, null));
+
+        return PaymentGatewayCheckoutResponse.of(savedPayment, paymentClientReadyResponse.getMobileRedirectUrl(), paymentClientReadyResponse.getPcRedirectUrl(), paymentRequestId);
     }
 
-    public PaymentPrepareResponse prepareWithSSE(IdempotentDto idempotentDto, PaymentPrepareDto paymentPrepareDto, OrderInfoDto orderInfoDto, String sseId) {
-        var paymentService = paymentManager.getPaymentService(paymentPrepareDto.paymentType());
-        var paymentPrepareResult = paymentService.readyWithSSE(idempotentDto.idempotentKey(), paymentPrepareDto, orderInfoDto, sseId);
-        var paymentPrepareResponse = new PaymentPrepareResponse(paymentPrepareResult.redirectPcWebUrl(), paymentPrepareResult.redirectMobileWebUrl());
+    public PaymentGatewayApproveResponse approve(PaymentGatewayApproveRequest approveRequest) {
+        Payment payment = getPayment(approveRequest.getPaymentRequestId());
+        PaymentClientApproveResponse approve = paymentClientManager.approve(approveRequest, payment.getExternalApiTransactionId());
+        payment.setPaymentStatus(PaymentStatus.COMPLETE);
 
-        Account account = accountQueryService.findAccount(AccountQueryService.getAuthenticatedId());
-        Deposit deposit = Deposit.of(paymentPrepareDto.paymentType(), paymentPrepareResult.paymentRequestId(), paymentPrepareResult.transactionId(), account, depositPolicy.getAmount(), depositPolicy.getProductName(), true, true);
-        Idempotent idempotent = IdempotentDto.of(idempotentDto, HttpStatus.OK.value(), paymentPrepareResponse);
+        CompleteCallbackResponse callbackResponse = paymentCallbackManager.complete(
+                CompleteCallback.create(approveRequest.getPaymentRequestId(), approveRequest.getOrderNumber(),
+                        approveRequest.getAccountId(), PaymentFeature.valueOf(approveRequest.getPaymentFeature())));
 
-        depositRepository.save(deposit);
-        idempotentKeyRepository.save(idempotent);
-
-        return paymentPrepareResponse;
+        return PaymentGatewayApproveResponse.of(
+                callbackResponse.getCompleteCallbackResult(), approveRequest.getPaymentRequestId(), approveRequest.getOrderNumber(),
+                approve.getPayerId(), payment.getPaymentStatus().getValue(), payment.getPaymentFeature().getFeature(),
+                payment.getPaymentType().getType(), approve.getAmount(), approve.getQuantity(),
+                approve.getPaymentReadyDate(), approve.getPaymentApproveDate());
     }
 
-    public Long approve(IdempotentDto idempotentDto, String paymentType, String paymentRequestId, String tempOrderNumber, String paymentToken) {
+    public PaymentGatewayCancelResponse cancel(PaymentGatewayCancelRequest cancelRequest) {
+        Payment payment = getPayment(cancelRequest.getPaymentRequestId());
+        payment.setPaymentStatus(PaymentStatus.CANCEL);
 
-        PaymentType paymentTypeUpperCase = PaymentType.valueOf(paymentType.toUpperCase());
-        var paymentService = paymentManager.getPaymentService(paymentTypeUpperCase);
-        Deposit deposit = depositQueryService.getDepositByRequestId(paymentRequestId);
+        CancelCallbackResponse callbackResponse = paymentCallbackManager.cancel(
+                CancelCallback.of(cancelRequest.getPaymentRequestId(), cancelRequest.getOrderNumber(),
+                        cancelRequest.getAccountId(), PaymentFeature.valueOf(cancelRequest.getPaymentFeature())));
 
-        paymentService.pay(deposit, tempOrderNumber, paymentToken);
-
-        Idempotent idempotent = IdempotentDto.of(idempotentDto, HttpStatus.OK.value(), "already paid deposit");
-        idempotentKeyRepository.save(idempotent);
-
-        deposit.setPaymentStatus(PaymentStatus.APPROVE);
-        deposit.setDepositStatus(DepositStatus.PAID);
-
-        return deposit.getId();
+        return PaymentGatewayCancelResponse.of(
+                callbackResponse.getCancelCallbackResult(), cancelRequest.getPaymentRequestId(), cancelRequest.getOrderNumber(),
+                cancelRequest.getAccountId(), payment.getAmount(), payment.getQuantity(),
+                payment.getPaymentStatus().getValue(), payment.getPaymentFeature().getFeature(), payment.getPaymentType().getType());
     }
 
-    public void refund(IdempotentDto idempotentDto, PaymentRefundRequest request) {
-        var paymentService = paymentManager.getPaymentService(request.getPaymentType());
+    public PaymentGatewayFailResponse fail(PaymentGatewayFailRequest failRequest) {
+        Payment payment = getPayment(failRequest.getPaymentRequestId());
+        payment.setPaymentStatus(PaymentStatus.FAILURE);
 
-        Deposit deposit = depositQueryService.getDepositById(request.getPaymentId());
-        Idempotent idempotent = IdempotentDto.of(idempotentDto, HttpStatus.OK.value(), "already refund deposit");
+        FailCallbackResponse callbackResponse = paymentCallbackManager.fail(
+                FailCallback.of(failRequest.getPaymentRequestId(), failRequest.getOrderNumber(),
+                        failRequest.getAccountId(), PaymentFeature.valueOf(failRequest.getPaymentFeature())));
 
-        paymentManager.checkAlreadyRefund(deposit);
-        PaymentRefundResult refund = paymentService.refund(deposit);
-
-        idempotentKeyRepository.save(idempotent);
-        deposit.setDepositStatus(DepositStatus.REFUND);
-        deposit.setRefundedDate(refund.refundedDate());
+        return PaymentGatewayFailResponse.of(
+                callbackResponse.getFailCallbackResult(), failRequest.getPaymentRequestId(), failRequest.getOrderNumber(),
+                failRequest.getAccountId(), payment.getAmount(), payment.getQuantity(),
+                payment.getPaymentStatus().getValue(), payment.getPaymentFeature().getFeature(), payment.getPaymentType().getType());
     }
 
-    public void cancel(PaymentPrepareDto request, PaymentType type) {
-        var paymentService = paymentManager.getPaymentService(type);
+    public PaymentGatewayRefundResponse refund(String paymentRequestId) {
+        Payment payment = getPayment(paymentRequestId);
 
-//        paymentService.cancel(request);
+        PaymentClientRefundRequest refundRequest = PaymentClientRefundRequest.of(payment.getExternalApiTransactionId(),
+                payment.getAmount(), payment.getPaymentType());
+
+        PaymentClientRefundResponse refund = paymentClientManager.refund(refundRequest);
+
+        payment.setPaymentStatus(PaymentStatus.REFUND);
+
+        return PaymentGatewayRefundResponse.of(
+                paymentRequestId, refund.getPayerId(), payment.getPaymentStatus(),
+                payment.getPaymentFeature(), payment.getPaymentType(), refund.getAmount(),
+                refund.getCancelAmount(), refund.getQuantity(), refund.getItemName(),
+                refund.getPaymentReadyDate(), refund.getPaymentApproveDate(), refund.getPaymentCancelDate()
+        );
     }
 
-    public void handlePaymentCancel(IdempotentDto idempotentDto, String type, String paymentRequestId) {
-        Deposit deposit = depositQueryService.getDepositByRequestId(paymentRequestId);
-        Idempotent idempotent = IdempotentDto.of(idempotentDto, HttpStatus.OK.value(), "already canceled payment process");
+    private Optional<PaymentClientReadyResponse> getIdempotentResponse(String paymentRequestId) {
+        IdempotentRequest idempotentRequest = IdempotentRequest.create(paymentRequestId, null, null, null);
 
-        deposit.setPaymentStatus(PaymentStatus.CANCEL_PROCESS);
-        idempotentKeyRepository.save(idempotent);
+        if (idempotencyService.isIdempotent(idempotentRequest)) {
+            var idempotentResponse = idempotencyService.get(paymentRequestId, PaymentClientReadyResponse.class);
+            if (idempotentResponse.isPresent()) {
+                return Optional.of(idempotentResponse.get().getResponse());
+            }
+        }
+
+        return Optional.empty();
     }
 
-    public void handlePaymentFailure(IdempotentDto idempotentDto, String type, String paymentRequestId) {
-        Deposit deposit = depositQueryService.getDepositByRequestId(paymentRequestId);
-        Idempotent idempotent = IdempotentDto.of(idempotentDto, HttpStatus.OK.value(), "already failed payment process");
-
-        deposit.setPaymentStatus(PaymentStatus.FAIL_PROCESS);
-        idempotentKeyRepository.save(idempotent);
+    private Payment getPayment(String paymentRequestId) {
+        return paymentRepository.findByPaymentRequestId(paymentRequestId)
+                .orElseThrow(() -> new IllegalArgumentException(ExceptionMessageSource.NOT_FOUND_PAYMENT_INFO));
     }
 
-    public void postProcessing(Long id, String orderNumber) {
-        Deposit deposit = depositQueryService.getDepositById(id);
-
-        OrderInfo orderInfo = orderInfoQueryService.fetchAccount(orderNumber);
-
-        deposit.setOrderInfo(orderInfo);
-    }
 }
