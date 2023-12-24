@@ -12,8 +12,11 @@ import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
-    @Query("select o from arduino_order o join fetch o.deposit d where o.orderNumber = :orderNumber")
+    @Query("select distinct o from arduino_order o join fetch o.deposit d join fetch o.account a where o.orderNumber = :orderNumber")
     Optional<Order> findFetchByOrderNumber(String orderNumber);
+
+    @Query("select distinct o from arduino_order o join fetch o.deposit d join fetch o.account a join fetch o.deposit.payment p where o.orderNumber = :orderNumber")
+    Optional<Order> findFetchAccountAndOrderNumber(String orderNumber);
 
     @Query("select o from arduino_order o join fetch o.deposit d where o.account = :account")
     Page<Order> findAllByAccount(Account account, Pageable pageable);

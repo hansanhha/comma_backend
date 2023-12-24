@@ -32,7 +32,7 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class JwtTokenService implements TokenService<Claims> {
+public class JwtTokenHandler implements TokenHandler<Claims> {
 
     private final TokenRepository tokenRepository;
     private final AccountQueryService accountQueryService;

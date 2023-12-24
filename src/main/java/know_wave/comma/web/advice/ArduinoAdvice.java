@@ -16,18 +16,9 @@ public class ArduinoAdvice {
 
     private static final String MESSAGE = "message";
 
-    @ExceptionHandler(CartException.class)
-    public ResponseEntity<Map<String, String>> orderException(CartException e) {
+    @ExceptionHandler({CartException.class, AlreadyCategoryException.class})
+    public ResponseEntity<Map<String, String>> handleBadRequestException(CartException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(MESSAGE, e.getMessage()));
     }
 
-    @ExceptionHandler(OrderException.class)
-    public ResponseEntity<Map<String, String>> orderException(OrderException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(MESSAGE, e.getMessage()));
-    }
-
-    @ExceptionHandler(AlreadyCategoryException.class)
-    public ResponseEntity<Map<String, String>> alreadyCategoryException(AlreadyCategoryException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(MESSAGE, e.getMessage()));
-    }
 }

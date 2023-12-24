@@ -9,7 +9,7 @@ import know_wave.comma.account.service.SignUpService;
 import know_wave.comma.config.security.dto.AccountSignInForm;
 import know_wave.comma.config.security.dto.SignInResponse;
 import know_wave.comma.config.security.service.JwtLogoutHandler;
-import know_wave.comma.config.security.service.JwtSignInService;
+import know_wave.comma.config.security.service.JwtSignInHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,7 +27,7 @@ import static know_wave.comma.config.security.filter.JwtAuthenticationFilter.TOK
 public class AccountController {
 
     private final SignUpService signUpService;
-    private final JwtSignInService signInService;
+    private final JwtSignInHandler signInService;
     private final JwtLogoutHandler logoutService;
     private final AccountManagementService accountManagementService;
     private static final String MESSAGE = "msg";

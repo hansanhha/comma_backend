@@ -1,5 +1,6 @@
 package know_wave.comma.arduino.cart.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import know_wave.comma.arduino.cart.entity.Cart;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -22,8 +23,13 @@ public class CartResponse {
     @Getter
     @RequiredArgsConstructor
     private static class StoredArduino {
-        private final Long basketId;
+        @JsonProperty("cart_id")
+        private final Long cartId;
+
+        @JsonProperty("arduino_id")
         private final Long arduinoId;
+
+        @JsonProperty("count")
         private final int containCount;
     }
 }

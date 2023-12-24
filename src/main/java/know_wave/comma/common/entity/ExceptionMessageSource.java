@@ -52,4 +52,5 @@ public class ExceptionMessageSource {
     public static final String NOT_FOUND_ROLE = "권한을 찾을 수 없습니다";
     public static final String EXPIRED_TOKEN = "토큰이 만료되었습니다";
     public static final String FAIL_SIGN_IN = "아이디 또는 비밀번호가 올바르지 않습니다";
+    public static final String INVALID_ORDER_STATUS = "유효하지 않은 주문 상태입니다";
 }
