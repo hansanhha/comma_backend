@@ -93,6 +93,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
                 servletPath.equals("/account/refresh-token") ||
                 servletPath.startsWith("/arduinos") &&
                                 request.getMethod().equals(HttpMethod.GET.name()) ||
-                servletPath.startsWith("/payment-cb");
+                servletPath.startsWith("/payment-cb") ||
+                request.getMethod().equals(HttpMethod.OPTIONS.name());
     }
 }
