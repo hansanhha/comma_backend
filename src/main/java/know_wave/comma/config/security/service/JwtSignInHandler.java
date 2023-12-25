@@ -41,10 +41,10 @@ public class JwtSignInHandler implements TokenSignInHandler<SignInResponse> {
     }
 
     @Override
-    public String refreshToken(String refreshToken) {
+    public String reissueAccessToken(String refreshToken) {
         Claims refreshTokenPayload = tokenService.getPayload(refreshToken);
 
-        Optional<Token> findToken = tokenService.getRefreshToken(refreshToken);
+        Optional<Token> findToken = tokenService.getToken(refreshToken);
 
         if(findToken.isEmpty()) {
             throw new NotFoundTokenException(ExceptionMessageSource.NOT_FOUND_TOKEN);

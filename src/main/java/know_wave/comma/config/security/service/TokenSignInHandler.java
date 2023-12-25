@@ -4,5 +4,5 @@ public interface TokenSignInHandler<T> {
 
     T signIn(String accountId, String password);
 
-    String refreshToken(String refreshToken);
+    String reissueAccessToken(String refreshToken);
 }

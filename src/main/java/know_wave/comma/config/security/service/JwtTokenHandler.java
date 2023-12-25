@@ -122,7 +122,7 @@ public class JwtTokenHandler implements TokenHandler<Claims> {
         return findToken.getToken().equals(token) || !findToken.isRevoked();
     }
 
-    public Optional<Token> getRefreshToken(String refreshToken) {
+    public Optional<Token> getToken(String refreshToken) {
         return tokenRepository.findByToken(refreshToken);
     }
 
