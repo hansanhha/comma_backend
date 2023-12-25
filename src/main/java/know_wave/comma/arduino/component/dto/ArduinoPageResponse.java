@@ -25,12 +25,16 @@ public class ArduinoPageResponse {
 
     @JsonProperty("arduinos")
     private final List<ArduinoResponse> arduinoList;
+
     @JsonProperty("is_first")
-    private final boolean isFirst;
+    private final Boolean isFirst;
+
     @JsonProperty("is_last")
-    private final boolean isLast;
+    private final Boolean isLast;
+
     @JsonProperty("has_next")
-    private final boolean hasNext;
+    private final Boolean hasNext;
+
     @JsonProperty("size")
     private final int size;
 
