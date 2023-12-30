@@ -1,6 +1,9 @@
 package know_wave.comma.arduino.order.service;
 
 import jakarta.transaction.Transactional;
+import know_wave.comma.account.entity.Account;
+import know_wave.comma.arduino.cart.entity.Cart;
+import know_wave.comma.arduino.cart.repository.CartRepository;
 import know_wave.comma.arduino.notification.dto.OrderNotificationRequest;
 import know_wave.comma.arduino.notification.service.ArduinoOrderNotification;
 import know_wave.comma.arduino.order.dto.OrderCallbackResponse;
@@ -33,6 +36,7 @@ public class DepositPaymentCallbackHandler implements PaymentCallbackHandler {
     private final ArduinoOrderNotification orderNotification;
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
+    private final CartRepository cartRepository;
 
     private static final PaymentFeature ARDUINO_DEPOSIT = PaymentFeature.ARDUINO_DEPOSIT;
     private static final String ORDER_STATUS = "orderStatus";
@@ -43,11 +47,13 @@ public class DepositPaymentCallbackHandler implements PaymentCallbackHandler {
 
     @Override
     public CompleteCallbackResponse complete(CompleteCallback completeCallback) {
-        OrderCallbackResponse orderResponse = order(completeCallback.getOrderNumber());
+        String orderNumber = completeCallback.getOrderNumber();
+
+        OrderCallbackResponse orderResponse = order(orderNumber);
 
         OrderNotificationRequest orderNotificationRequest =
                 OrderNotificationRequest.create(orderResponse.getOrderStatus(), orderResponse.getDepositStatus(),
-                        completeCallback.getOrderNumber(), completeCallback.getAccountId());
+                        orderNumber, completeCallback.getAccountId());
 
         orderNotification.notify(orderNotificationRequest);
 
@@ -92,6 +98,7 @@ public class DepositPaymentCallbackHandler implements PaymentCallbackHandler {
      * 4. 재고 차감
      * 5. 주문 및 보증금 상태 반환
      */
+
     private OrderCallbackResponse order(String orderNumber) {
         Order order = findOrderByOrderNumber(orderNumber);
         List<OrderDetail> orderDetails = findOrderDetails(order);
@@ -105,15 +112,28 @@ public class DepositPaymentCallbackHandler implements PaymentCallbackHandler {
 
         if (orderStatus.isFailureCauseStockStatus()) {
             order.handleFailureDuringOrderProcessing(OrderStatus.FAILURE_CAUSE_ARDUINO_STOCK_STATUS);
-            return OrderCallbackResponse.to(order.getOrderStatus(), order.getDeposit().getDepositStatus());
+            return OrderCallbackResponse.create(order.getOrderStatus(), order.getDeposit().getDepositStatus());
         } else if (orderStatus.isFailureCauseStock()) {
             order.handleFailureDuringOrderProcessing(OrderStatus.FAILURE_CAUSE_ARDUINO_STOCK);
-            return OrderCallbackResponse.to(order.getOrderStatus(), order.getDeposit().getDepositStatus());
+            return OrderCallbackResponse.create(order.getOrderStatus(), order.getDeposit().getDepositStatus());
         }
 
         order.order(orderDetails);
+        removeOrderedComponent(order, orderDetails);
 
-        return OrderCallbackResponse.to(order.getOrderStatus(), order.getDeposit().getDepositStatus());
+        return OrderCallbackResponse.create(order.getOrderStatus(), order.getDeposit().getDepositStatus());
+    }
+    private void removeOrderedComponent(Order order, List<OrderDetail> orderDetails) {
+        Account account = order.getAccount();
+        List<Cart> carts = cartRepository.findAllByAccount(account);
+
+        carts.forEach(cart -> {
+            orderDetails.forEach(orderDetail -> {
+                if (cart.getArduino().getId().equals(orderDetail.getArduino().getId())) {
+                    cartRepository.delete(cart);
+                }
+            });
+        });
     }
 
     private OrderCallbackResponse failOrder(String orderNumber, OrderStatus orderStatus) {
@@ -121,7 +141,7 @@ public class DepositPaymentCallbackHandler implements PaymentCallbackHandler {
 
         order.handleFailureCauseDepositPayment(orderStatus);
 
-        return OrderCallbackResponse.to(order.getOrderStatus(), order.getDeposit().getDepositStatus());
+        return OrderCallbackResponse.create(order.getOrderStatus(), order.getDeposit().getDepositStatus());
     }
 
     private Order findOrderByOrderNumber(String orderNumber) {

@@ -32,7 +32,7 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class JwtTokenService implements TokenService<Claims> {
+public class JwtTokenHandler implements TokenHandler<Claims> {
 
     private final TokenRepository tokenRepository;
     private final AccountQueryService accountQueryService;
@@ -122,7 +122,7 @@ public class JwtTokenService implements TokenService<Claims> {
         return findToken.getToken().equals(token) || !findToken.isRevoked();
     }
 
-    public Optional<Token> getRefreshToken(String refreshToken) {
+    public Optional<Token> getToken(String refreshToken) {
         return tokenRepository.findByToken(refreshToken);
     }
 

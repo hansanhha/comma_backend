@@ -1,24 +1,18 @@
 package know_wave.comma.config.security.filter;
 
-import com.fasterxml.jackson.core.io.UTF8Writer;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import know_wave.comma.account.entity.Account;
-import know_wave.comma.account.service.system.AccountQueryService;
 import know_wave.comma.common.entity.ExceptionMessageSource;
-import know_wave.comma.config.security.entity.SecurityAccount;
-import know_wave.comma.config.security.service.JwtTokenService;
+import know_wave.comma.config.security.service.JwtTokenHandler;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.buf.Utf8Encoder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -27,13 +21,13 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import static know_wave.comma.config.security.service.JwtTokenService.ROLE_KEY_NAME;
+import static know_wave.comma.config.security.service.JwtTokenHandler.ROLE_KEY_NAME;
 
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
-    private final JwtTokenService jwtTokenService;
+    private final JwtTokenHandler jwtTokenService;
 
     public static final String TOKEN_PREFIX = "Bearer ";
 
@@ -99,6 +93,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
                 servletPath.equals("/account/refresh-token") ||
                 servletPath.startsWith("/arduinos") &&
                                 request.getMethod().equals(HttpMethod.GET.name()) ||
-                servletPath.startsWith("/payment-cb");
+                servletPath.startsWith("/payment-cb") ||
+                request.getMethod().equals(HttpMethod.OPTIONS.name());
     }
 }

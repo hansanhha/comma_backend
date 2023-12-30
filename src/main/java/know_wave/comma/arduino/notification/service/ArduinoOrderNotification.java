@@ -72,7 +72,6 @@ public class ArduinoOrderNotification {
                 """
                 <br>    
                 주문이 완료되었습니다<br>
-                <br>
                 주문 상태가 변경되면 알림을 통해 안내드립니다<br>
                 주문 조회 페이지에서 직접 확인하실 수도 있습니다<br>
                 <br>
@@ -92,20 +91,20 @@ public class ArduinoOrderNotification {
         PUSH_NOTIFICATION_CONTENT_MAP.put(OrderStatus.FAILURE_CAUSE_ARDUINO_STOCK_STATUS,
                 """
                 <br>    
-                주문할 수 없는 부품 재고 상태로 인해 주문이 실패되었습니다<br>
+                부품 재고 상태로 인해 주문이 실패되었습니다<br>
                 * 보증금을 결제하셨다면 메일 전송일 기준 2일 이내에 반환됩니다<br>
                 <br>    
                 """);
         PUSH_NOTIFICATION_CONTENT_MAP.put(OrderStatus.FAILURE_CAUSE_ARDUINO_STOCK,
                 """
-                <br>    
+                <br>   
                 부품의 잔여 수량이 부족하여 주문이 실패되었습니다<br>
                 * 보증금을 결제하셨다면 메일 전송일 기준 2일 이내에 반환됩니다<br>
                 <br>    
                 """);
         PUSH_NOTIFICATION_CONTENT_MAP.put(OrderStatus.FAILURE_CAUSE_REJECTED,
                 """
-                <br>    
+                <br>
                 관리자에 의해 주문이 거부되었습니다<br>
                 자세한 사항은 관리자톡을 통해 문의해주세요<br>
                 <br>    
@@ -127,7 +126,7 @@ public class ArduinoOrderNotification {
         PUSH_NOTIFICATION_CONTENT_MAP.put(OrderStatus.PREPARING,
                 """
                 <br>    
-                주문이 접수되어 부품을 준비 중입니다 !!<br>
+                주문이 접수되어 부품을 준비 중입니다<br>
                 준비 완료 시 알림을 통해 안내드리겠습니다<br>
                 * 주문 취소 시 보증금 반환이 불가한 점을 참고해주세요<br>
                 <br>    
@@ -136,7 +135,8 @@ public class ArduinoOrderNotification {
                 """
                 <br>
                 부품이 준비되었습니다<br>
-                학과 사무실(3호관 210호)에 방문하여 부품을 수령해주세요.<br>
+                
+                학과 사무실(3호관 210호)에 방문하여 부품을 수령해주세요<br>
                 운영시간: 09시 ~ 18시 (점심시간: 12시~13시)<br>
                 * 주문 취소 시 보증금 반환이 불가한 점을 참고해주세요<br>
                 <br>

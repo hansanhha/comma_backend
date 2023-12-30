@@ -46,6 +46,7 @@ public class SecurityConfig {
                                 .requestMatchers("/account/signin", "/account/email/verify/request", "/account/email/verify", "/account/signup", "/account/refresh-token").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/account/**").authenticated()
                                 .requestMatchers(HttpMethod.GET).permitAll()
+                                .requestMatchers(HttpMethod.OPTIONS).permitAll()
                                 .requestMatchers("/**").authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, LogoutFilter.class)

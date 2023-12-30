@@ -8,6 +8,8 @@ import know_wave.comma.arduino.cart.dto.CartValidateStatus;
 import know_wave.comma.arduino.cart.entity.Cart;
 import know_wave.comma.arduino.cart.exception.CartException;
 import know_wave.comma.arduino.cart.service.CartService;
+import know_wave.comma.arduino.notification.dto.OrderNotificationRequest;
+import know_wave.comma.arduino.notification.service.ArduinoOrderNotification;
 import know_wave.comma.arduino.order.dto.*;
 import know_wave.comma.arduino.order.entity.*;
 import know_wave.comma.arduino.order.exception.OrderException;
@@ -31,9 +33,6 @@ import java.util.List;
 import java.util.Optional;
 
 
-/* TODO
-    * 주문 수령 이후 보증금 결제 환불 처리
- */
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -43,6 +42,7 @@ public class OrderCommandService {
     private final CartService cartService;
     private final AccountQueryService accountQueryService;
     private final AccountCheckService accountCheckService;
+    private final ArduinoOrderNotification orderNotification;
     private final PaymentGateway paymentGateway;
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
@@ -99,7 +99,7 @@ public class OrderCommandService {
 
         saveDeposit.setPayment(checkoutResponse.getPayment());
 
-        return preProcessOrderResponse.to(orderNumber, checkoutResponse.getMobileRedirectUrl(), checkoutResponse.getPcRedirectUrl());
+        return preProcessOrderResponse.create(orderNumber, checkoutResponse.getMobileRedirectUrl(), checkoutResponse.getPcRedirectUrl());
     }
 
     // 1. 주문 상태 확인
@@ -126,7 +126,12 @@ public class OrderCommandService {
 
         orderDetails.forEach(orderDetail -> orderDetail.getArduino().increaseStock(orderDetail.getOrderArduinoCount()));
 
-        return OrderCancelResponse.to(orderNumber, LocalDateTime.now(),
+        OrderNotificationRequest notificationRequest = OrderNotificationRequest.create(order.getOrderStatus(), order.getDeposit().getDepositStatus(),
+                orderNumber, order.getAccount().getId());
+
+        orderNotification.notify(notificationRequest);
+
+        return OrderCancelResponse.create(orderNumber, LocalDateTime.now(),
                 order.getOrderStatus().name(), order.getDeposit().getDepositStatus().name(),
                 order.getDeposit().getAmount());
     }

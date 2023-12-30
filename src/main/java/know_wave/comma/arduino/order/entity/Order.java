@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import know_wave.comma.account.entity.Account;
 import know_wave.comma.arduino.component.entity.Arduino;
 import know_wave.comma.arduino.component.entity.ArduinoStockStatus;
+import know_wave.comma.arduino.order.exception.UnableOrderUpdateStatus;
 import know_wave.comma.common.entity.BaseTimeEntity;
 import know_wave.comma.common.entity.ExceptionMessageSource;
 import lombok.AccessLevel;
@@ -84,7 +85,7 @@ public class Order extends BaseTimeEntity {
         deposit.setDepositStatus(depositStatus);
     }
 
-    private void updateOrderStatus(OrderStatus orderStatus) {
+    private void updateStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
 
@@ -96,7 +97,7 @@ public class Order extends BaseTimeEntity {
             }
         }
 
-        throw new IllegalStateException(ExceptionMessageSource.UNABLE_TO_CANCEL_ORDER);
+        throw new UnableOrderUpdateStatus(ExceptionMessageSource.UNABLE_TO_CANCEL_ORDER);
     }
 
     public void cancelOrder() {
@@ -105,7 +106,7 @@ public class Order extends BaseTimeEntity {
             return;
         }
 
-        throw new IllegalStateException(ExceptionMessageSource.UNABLE_TO_CANCEL_ORDER);
+        throw new UnableOrderUpdateStatus(ExceptionMessageSource.UNABLE_TO_CANCEL_ORDER);
     }
 
     public void rejectOrder() {
@@ -114,13 +115,12 @@ public class Order extends BaseTimeEntity {
             return;
         }
 
-        throw new IllegalStateException(ExceptionMessageSource.UNABLE_TO_REJECT_ORDER);
+        throw new UnableOrderUpdateStatus(ExceptionMessageSource.UNABLE_TO_REJECT_ORDER);
     }
 
     public void handleDepositReturn() {
         if (deposit.getDepositStatus() == DepositStatus.RETURN_SCHEDULED) {
             deposit.setDepositStatus(DepositStatus.RETURN);
-            return;
         }
     }
     
@@ -134,19 +134,19 @@ public class Order extends BaseTimeEntity {
             return;
         }
 
-        throw new IllegalStateException(ExceptionMessageSource.UNABLE_TO_FAIL_ORDER);
+        throw new UnableOrderUpdateStatus(ExceptionMessageSource.UNABLE_TO_FAIL_ORDER);
     }
 
     public void handleFailureCauseDepositPayment(OrderStatus cause) {
         if (cause == OrderStatus.FAILURE_CAUSE_DEPOSIT_FAILURE) {
-            updateOrderStatus(OrderStatus.FAILURE_CAUSE_DEPOSIT_FAILURE);
+            updateStatus(OrderStatus.FAILURE_CAUSE_DEPOSIT_FAILURE);
             return;
         } else if (cause == OrderStatus.FAILURE_CAUSE_DEPOSIT_CANCEL) {
-            updateOrderStatus(OrderStatus.FAILURE_CAUSE_DEPOSIT_CANCEL);
+            updateStatus(OrderStatus.FAILURE_CAUSE_DEPOSIT_CANCEL);
             return;
         }
 
-        throw new IllegalStateException(ExceptionMessageSource.UNABLE_TO_FAIL_ORDER);
+        throw new UnableOrderUpdateStatus(ExceptionMessageSource.UNABLE_TO_FAIL_ORDER);
     }
 
     public void order(List<OrderDetail> orderDetails) {
@@ -159,33 +159,33 @@ public class Order extends BaseTimeEntity {
             return;
         }
 
-        throw new IllegalStateException(ExceptionMessageSource.UNABLE_TO_ORDER);
+        throw new UnableOrderUpdateStatus(ExceptionMessageSource.UNABLE_TO_ORDER);
     }
 
     public void prepareOrder() {
         if (orderStatus == OrderStatus.ORDERED) {
-            updateOrderStatus(OrderStatus.PREPARING);
+            updateStatus(OrderStatus.PREPARING);
             return;
         }
 
-        throw new IllegalStateException(ExceptionMessageSource.UNABLE_TO_PREPARE_ORDER);
+        throw new UnableOrderUpdateStatus(ExceptionMessageSource.UNABLE_TO_PREPARE_ORDER);
     }
 
     public void beReadyOrder() {
         if (orderStatus == OrderStatus.PREPARING) {
-            updateOrderStatus(OrderStatus.BE_READY);
+            updateStatus(OrderStatus.BE_READY);
             return;
         }
 
-        throw new IllegalStateException(ExceptionMessageSource.UNABLE_TO_BE_READY_ORDER);
+        throw new UnableOrderUpdateStatus(ExceptionMessageSource.UNABLE_TO_BE_READY_ORDER);
     }
 
     public void receiveOrder() {
         if (orderStatus == OrderStatus.BE_READY) {
-            updateOrderStatus(OrderStatus.RECEIVE);
+            this.updateStatus(DepositStatus.RETURN, OrderStatus.RECEIVE);
             return;
         }
 
-        throw new IllegalStateException(ExceptionMessageSource.UNABLE_TO_RECEIVE_ORDER);
+        throw new UnableOrderUpdateStatus(ExceptionMessageSource.UNABLE_TO_RECEIVE_ORDER);
     }
 }

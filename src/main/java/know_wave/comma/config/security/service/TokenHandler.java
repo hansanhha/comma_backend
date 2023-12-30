@@ -1,12 +1,9 @@
 package know_wave.comma.config.security.service;
 
-import know_wave.comma.account.entity.Account;
-import know_wave.comma.config.security.entity.Token;
 import know_wave.comma.config.security.exception.TokenExpiredException;
 import know_wave.comma.config.security.exception.TokenTemperedException;
-import org.springframework.security.core.userdetails.UserDetails;
 
-public interface TokenService<T> {
+public interface TokenHandler<T> {
 
     String issueAccessToken(String username);
 

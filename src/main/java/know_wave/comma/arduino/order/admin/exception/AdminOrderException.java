@@ -1,12 +1,14 @@
 package know_wave.comma.arduino.order.admin.exception;
 
-public class AdminOrderException extends RuntimeException {
+import know_wave.comma.arduino.order.exception.OrderException;
 
-        public AdminOrderException(String message) {
-            super(message);
-        }
+public class AdminOrderException extends OrderException {
 
-        public AdminOrderException(String message, Throwable cause) {
-            super(message, cause);
-        }
+    public AdminOrderException() {
+        super();
+    }
+
+    public AdminOrderException(String message) {
+        super(message);
+    }
 }

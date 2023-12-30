@@ -7,14 +7,7 @@ import know_wave.comma.config.security.entity.Token;
 import know_wave.comma.config.security.exception.InvalidTokenException;
 import know_wave.comma.config.security.exception.NotFoundTokenException;
 import know_wave.comma.config.security.exception.SignInFailureException;
-import know_wave.comma.config.security.exception.TokenTemperedException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,9 +18,9 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class JwtSignInService implements TokenSignInService<SignInResponse> {
+public class JwtSignInHandler implements TokenSignInHandler<SignInResponse> {
 
-    private final JwtTokenService tokenService;
+    private final JwtTokenHandler tokenService;
     private final AccountUserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
@@ -48,10 +41,10 @@ public class JwtSignInService implements TokenSignInService<SignInResponse> {
     }
 
     @Override
-    public String refreshToken(String refreshToken) {
+    public String reissueAccessToken(String refreshToken) {
         Claims refreshTokenPayload = tokenService.getPayload(refreshToken);
 
-        Optional<Token> findToken = tokenService.getRefreshToken(refreshToken);
+        Optional<Token> findToken = tokenService.getToken(refreshToken);
 
         if(findToken.isEmpty()) {
             throw new NotFoundTokenException(ExceptionMessageSource.NOT_FOUND_TOKEN);

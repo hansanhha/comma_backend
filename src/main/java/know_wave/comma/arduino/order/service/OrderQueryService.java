@@ -35,7 +35,7 @@ public class OrderQueryService {
         Page<Order> orders = orderRepository.findAllByAccount(account, pageable);
         List<OrderResponse> orderResponses = orders.stream().map(OrderResponse::to).toList();
 
-        return OrderPageResponse.to(orderResponses,
+        return OrderPageResponse.create(orderResponses,
                 orders.isFirst(), orders.isLast(), orders.hasNext(), orders.getSize());
     }
 
@@ -49,7 +49,7 @@ public class OrderQueryService {
         Order order = optionalOrder.get();
         List<OrderDetail> orderDetails = orderDetailRepository.findFetchAllByOrder(order);
 
-        return OrderDetailResponse.to(order, orderDetails);
+        return OrderDetailResponse.create(order, orderDetails);
     }
 
 }

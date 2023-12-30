@@ -2,6 +2,7 @@ package know_wave.comma.arduino.component.admin.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import know_wave.comma.arduino.component.entity.Arduino;
 import know_wave.comma.arduino.component.entity.Category;
 import lombok.Getter;
@@ -23,7 +24,7 @@ public class ArduinoCreateForm {
     @JsonProperty("description")
     private final String description;
 
-    @Min(value = 1, message = "카테고리를 선택해주세요.")
+    @NotNull(message = "{required}")
     @JsonProperty("categories")
     private final List<Long> categories;
 
