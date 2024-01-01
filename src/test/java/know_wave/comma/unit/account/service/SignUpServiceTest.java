@@ -10,6 +10,7 @@ import know_wave.comma.account.repository.EmailVerifyRepository;
 import know_wave.comma.account.service.SignUpService;
 import know_wave.comma.common.notification.push.dto.AccountEmailNotificationRequest;
 import know_wave.comma.common.notification.push.service.PushNotificationGateway;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -26,6 +27,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 
+@DisplayName("유닛 테스트(서비스) : 계정(이메일 인증 및 회원가입)")
 @ExtendWith(MockitoExtension.class)
 class SignUpServiceTest {
 
@@ -44,6 +46,7 @@ class SignUpServiceTest {
     @InjectMocks
     private SignUpService signUpService;
 
+    @DisplayName("회원가입 성공")
     @Test
     void givenEmailVerified_whenJoin_thenSuccess() {
         //given
@@ -66,6 +69,7 @@ class SignUpServiceTest {
         assertThat(account).isEqualTo(savedAccount);
     }
 
+    @DisplayName("회원가입 실패(미인증 이메일)")
     @Test
     void givenEmailNotVerified_whenJoin_thenNotVerifiedException() {
         //given
@@ -79,6 +83,7 @@ class SignUpServiceTest {
         assertThatThrownBy(() -> signUpService.join(form)).isInstanceOf(NotVerifiedException.class);
     }
 
+    @DisplayName("회원가입 실패(찾을 수 없는 이메일)")
     @Test
     void givenEmailNotExists_whenJoin_thenNotVerifiedException() {
         //given
@@ -90,6 +95,7 @@ class SignUpServiceTest {
     }
 
 
+    @DisplayName("이메일 인증 코드 전송 성공(첫 요청)")
     @Test
     void givenFirstEmail_whenSendEmail_thenSaveEmailVerify() {
         //given
@@ -105,6 +111,7 @@ class SignUpServiceTest {
                 .accountEmailVerifyNotification(ArgumentMatchers.any(AccountEmailNotificationRequest.class));
     }
 
+    @DisplayName("이메일 인증 코드 전송 성공(이메일 존재)")
     @Test
     void givenEmailExisted_whenSendEmail_thenUpdateEmailVerify() {
         //given
@@ -121,6 +128,7 @@ class SignUpServiceTest {
                 .accountEmailVerifyNotification(ArgumentMatchers.any(AccountEmailNotificationRequest.class));
     }
 
+    @DisplayName("이메일 인증 코드 검증 성공")
     @Test
     void givenValidCode_whenVerify_thenVerified() {
         //given
@@ -137,6 +145,7 @@ class SignUpServiceTest {
         assertThat(result).isTrue();
     }
 
+    @DisplayName("이메일 인증 코드 검증 실패(틀린 코드)")
     @Test
     void givenInvalidCode_whenVerify_thenFailedVerify() {
         //given

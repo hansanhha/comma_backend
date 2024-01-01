@@ -39,6 +39,7 @@ public class SecurityConfig {
                 .sessionManagement(SessionManagementConfigurer::disable)
                 .requestCache(RequestCacheConfigurer::disable)
                 .formLogin(FormLoginConfigurer::disable)
+                .rememberMe(RememberMeConfigurer::disable)
                 .authorizeHttpRequests(authorizeHttpRequest ->
                         authorizeHttpRequest
                                 .requestMatchers("/admin/account/*").hasRole(Role.ADMIN.name())
