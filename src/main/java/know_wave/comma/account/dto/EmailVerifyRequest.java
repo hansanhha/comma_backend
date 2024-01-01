@@ -3,14 +3,23 @@ package know_wave.comma.account.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.hibernate.validator.constraints.Range;
 
 import static know_wave.comma.common.entity.regexPattern.emailRegex;
 
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class EmailVerifyRequest {
+
+    public static EmailVerifyRequest create(String email, String code) {
+        return EmailVerifyRequest.builder()
+                .email(email)
+                .code(code)
+                .build();
+    }
 
     @JsonProperty("email")
     @NotEmpty(message = "{Required}")

@@ -1,6 +1,5 @@
 package know_wave.comma.account.controller;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -14,10 +13,7 @@ import know_wave.comma.config.security.exception.NotFoundTokenException;
 import know_wave.comma.config.security.service.JwtLogoutHandler;
 import know_wave.comma.config.security.service.JwtSignInHandler;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 
 import static know_wave.comma.config.security.filter.JwtAuthenticationFilter.TOKEN_PREFIX;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping("/account")
@@ -42,7 +40,7 @@ public class AccountController {
     @PostMapping("/signup")
     public ResponseEntity<Map<String, String>> signUp(@Valid @RequestBody AccountCreateForm form) {
         signUpService.join(form);
-        return ResponseEntity.ok(Map.of(MESSAGE,"Created account"));
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(MESSAGE,"Created account"));
     }
 
     @PostMapping("/signin")
@@ -68,14 +66,14 @@ public class AccountController {
         return Map.of(MESSAGE, "reissued access token", DATA, accessToken);
     }
 
-    @PostMapping("/email/verify/request")
-    public Map<String, String> emailAuthenticationRequest(@Valid @RequestBody EmailRequest emailRequest) {
+    @PostMapping(path = "/email/verify/request")
+    public ResponseEntity<Map<String, String>> sendEmailVerifyCode(@Valid @RequestBody EmailSendRequest emailRequest) {
         signUpService.sendEmailVerifyCode(emailRequest.getEmail());
-        return Map.of(MESSAGE, "sent email code");
+        return ResponseEntity.ok().body(Map.of(MESSAGE, "sent email code"));
     }
 
     @PostMapping("/email/verify")
-    public ResponseEntity<Map<String, String>> emailAuthentication(@Valid @RequestBody EmailVerifyRequest requestDto) {
+    public ResponseEntity<Map<String, String>> emailVerify(@Valid @RequestBody EmailVerifyRequest requestDto) {
         boolean result = signUpService.verifyEmailCode(requestDto.getEmail(), Integer.parseInt(requestDto.getCode()));
         if (result) return ResponseEntity.ok(Map.of(MESSAGE, "authenticated email"));
         else return new ResponseEntity<>(Map.of(MESSAGE, "failed authentication email"), HttpStatus.BAD_REQUEST);

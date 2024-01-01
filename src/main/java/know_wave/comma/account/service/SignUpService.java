@@ -9,9 +9,6 @@ import know_wave.comma.account.repository.AccountRepository;
 import know_wave.comma.account.repository.EmailVerifyRepository;
 import know_wave.comma.common.entity.ExceptionMessageSource;
 import know_wave.comma.common.notification.push.dto.AccountEmailNotificationRequest;
-import know_wave.comma.common.notification.push.dto.PushNotificationRequest;
-import know_wave.comma.common.notification.push.entity.NotificationFeature;
-import know_wave.comma.common.notification.push.entity.PushNotificationType;
 import know_wave.comma.account.exception.AlreadyVerifiedException;
 import know_wave.comma.account.exception.NotFoundEmailException;
 import know_wave.comma.common.notification.push.service.PushNotificationGateway;
@@ -20,7 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -29,7 +25,7 @@ import java.util.concurrent.ThreadLocalRandom;
 @RequiredArgsConstructor
 public class SignUpService {
 
-    private final EmailVerifyRepository accountVerifyRepository;
+    private final EmailVerifyRepository emailVerifyRepository;
     private final PushNotificationGateway notificationGateway;
     private final PasswordEncoder passwordEncoder;
     private final AccountRepository accountRepository;
@@ -37,7 +33,7 @@ public class SignUpService {
     public static final String AUTH_CODE_TITLE = "컴마 이메일 인증 코드";
 
     public void join(AccountCreateForm form) {
-        Optional<EmailVerify> optionalEmailVerify = accountVerifyRepository.findById(form.getEmail());
+        Optional<EmailVerify> optionalEmailVerify = emailVerifyRepository.findById(form.getEmail());
 
         if (optionalEmailVerify.isEmpty()) {
             throw new NotVerifiedException(ExceptionMessageSource.NOT_FOUND_EMAIL);
@@ -68,11 +64,11 @@ public class SignUpService {
         AccountEmailNotificationRequest accountEmailNotificationRequest =
                 AccountEmailNotificationRequest.create(email, AUTH_CODE_TITLE, String.valueOf(verifyCode));
 
-        Optional<EmailVerify> optionalEmailVerify = accountVerifyRepository.findById(email);
+        Optional<EmailVerify> optionalEmailVerify = emailVerifyRepository.findById(email);
 
         if (optionalEmailVerify.isEmpty()) {
             EmailVerify emailVerify = EmailVerify.create(email, verifyCode);
-            accountVerifyRepository.save(emailVerify);
+            emailVerifyRepository.save(emailVerify);
         } else {
             EmailVerify emailVerify = optionalEmailVerify.get();
             emailVerify.setCode(verifyCode);
@@ -81,7 +77,7 @@ public class SignUpService {
     }
 
     public boolean verifyEmailCode(String email, int code) {
-        Optional<EmailVerify> optionalEmailVerify = accountVerifyRepository.findById(email);
+        Optional<EmailVerify> optionalEmailVerify = emailVerifyRepository.findById(email);
 
         if (optionalEmailVerify.isEmpty()) {
             throw new NotFoundEmailException(ExceptionMessageSource.NOT_FOUND_EMAIL);

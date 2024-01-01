@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
   * 엔드포인트 관리
   * 패키지 디렉토리 구성 변경
  */
-@EnableJpaAuditing
 @SpringBootApplication
 public class CommaBackendApplication {
 

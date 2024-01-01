@@ -6,5 +6,6 @@ public class NotVerifiedException extends AccountException {
         super();
     }
     public NotVerifiedException(String notVerifiedEmail) {
+        super(notVerifiedEmail);
     }
 }

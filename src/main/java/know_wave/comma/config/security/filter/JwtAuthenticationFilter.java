@@ -84,16 +84,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        String servletPath = request.getServletPath();
+        String requestURI = request.getRequestURI();
 
-        return servletPath.equals("/account/signin") ||
-                servletPath.equals("/account/signup") ||
-                servletPath.equals("/account/email/verify/request") ||
-                servletPath.equals("/account/email/verify") ||
-                servletPath.equals("/account/refresh-token") ||
-                servletPath.startsWith("/arduinos") &&
+        return requestURI.equals("/account/signin") ||
+                requestURI.equals("/account/signup") ||
+                requestURI.equals("/account/email/verify/request") ||
+                requestURI.equals("/account/email/verify") ||
+                requestURI.equals("/account/refresh-token") ||
+                requestURI.startsWith("/arduinos") &&
                                 request.getMethod().equals(HttpMethod.GET.name()) ||
-                servletPath.startsWith("/payment-cb") ||
+                requestURI.startsWith("/payment-cb") ||
                 request.getMethod().equals(HttpMethod.OPTIONS.name());
     }
 }
