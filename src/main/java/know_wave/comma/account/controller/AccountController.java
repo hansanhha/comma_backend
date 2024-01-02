@@ -7,7 +7,7 @@ import know_wave.comma.account.dto.*;
 import know_wave.comma.account.service.AccountManagementService;
 import know_wave.comma.account.service.SignUpService;
 import know_wave.comma.common.entity.ExceptionMessageSource;
-import know_wave.comma.config.security.dto.AccountSignInForm;
+import know_wave.comma.config.security.dto.SignInRequest;
 import know_wave.comma.config.security.dto.SignInResponse;
 import know_wave.comma.config.security.exception.NotFoundTokenException;
 import know_wave.comma.config.security.service.JwtLogoutHandler;
@@ -21,8 +21,6 @@ import java.util.List;
 import java.util.Map;
 
 import static know_wave.comma.config.security.filter.JwtAuthenticationFilter.TOKEN_PREFIX;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping("/account")
@@ -44,7 +42,7 @@ public class AccountController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<Map<String, Object>> signIn(@Valid @RequestBody AccountSignInForm form) {
+    public ResponseEntity<Map<String, Object>> signIn(@Valid @RequestBody SignInRequest form) {
         SignInResponse signInResponse = signInService.signIn(form.getAccountId(), form.getPassword());
 
         Map<String, Object> body = Map.of(MESSAGE, "authenticated", DATA, signInResponse);

@@ -2,13 +2,18 @@ package know_wave.comma.config.security.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 @Getter
-@RequiredArgsConstructor
-public class AccountSignInForm {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+public class SignInRequest {
+
+    public static SignInRequest create(String accountId, String password) {
+        return new SignInRequest(accountId, password);
+    }
 
     @JsonProperty("account_id")
     @NotEmpty(message = "{Required}")
