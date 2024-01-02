@@ -1,6 +1,6 @@
 package know_wave.comma.unit.account.service;
 
-import know_wave.comma.account.dto.AccountCreateForm;
+import know_wave.comma.account.dto.SignUpRequest;
 import know_wave.comma.account.entity.AcademicMajor;
 import know_wave.comma.account.entity.Account;
 import know_wave.comma.account.entity.EmailVerify;
@@ -50,7 +50,7 @@ class SignUpServiceTest {
     @Test
     void givenEmailVerified_whenJoin_thenSuccess() {
         //given
-        AccountCreateForm form = AccountCreateForm
+        SignUpRequest form = SignUpRequest
                 .create("test", "testpassword", "01012345678", "test", "test@test.com", "2016101234", "SoftwareEngineering");
         EmailVerify emailVerify = EmailVerify.create(form.getEmail(), 123456);
         emailVerify.setVerified(true);
@@ -73,7 +73,7 @@ class SignUpServiceTest {
     @Test
     void givenEmailNotVerified_whenJoin_thenNotVerifiedException() {
         //given
-        AccountCreateForm form = AccountCreateForm
+        SignUpRequest form = SignUpRequest
                 .create("test", "testpassword", "01012345678", "test", "test@test.com", "2016101234", "SoftwareEngineering");
         EmailVerify emailVerify = EmailVerify.create(form.getEmail(), 123456);
 
@@ -87,7 +87,7 @@ class SignUpServiceTest {
     @Test
     void givenEmailNotExists_whenJoin_thenNotVerifiedException() {
         //given
-        AccountCreateForm form = AccountCreateForm
+        SignUpRequest form = SignUpRequest
                 .create("test", "testpassword", "01012345678", "test", "test@test.com", "2016101234", "SoftwareEngineering");
 
         //when & then

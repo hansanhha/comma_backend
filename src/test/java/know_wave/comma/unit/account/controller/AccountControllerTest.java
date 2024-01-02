@@ -6,7 +6,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import know_wave.comma.account.controller.AccountController;
-import know_wave.comma.account.dto.AccountCreateForm;
+import know_wave.comma.account.dto.SignUpRequest;
 import know_wave.comma.account.dto.EmailSendRequest;
 import know_wave.comma.account.dto.EmailVerifyRequest;
 import know_wave.comma.account.exception.NotFoundAccountException;
@@ -47,7 +47,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("유닛 테스트(컨트롤러) : 계정(이메일 인증, 회원가입, JWT)")
@@ -190,7 +189,7 @@ public class AccountControllerTest {
         String phone = "01012345678";
         String academicNumber = "20151234";
         String major = "SoftwareEngineering";
-        AccountCreateForm accountCreateForm = AccountCreateForm.create(accountId, password, phone, name, email, academicNumber, major);
+        SignUpRequest accountCreateForm = SignUpRequest.create(accountId, password, phone, name, email, academicNumber, major);
         String content = mapper.writeValueAsString(accountCreateForm);
 
         doNothing().when(signUpService).join(accountCreateForm);
@@ -214,7 +213,7 @@ public class AccountControllerTest {
         String phone = "01012345678";
         String academicNumber = "20151234";
         String major = "SoftwareEngineering";
-        AccountCreateForm accountCreateForm = AccountCreateForm.create(accountId, password, phone, name, email, academicNumber, major);
+        SignUpRequest accountCreateForm = SignUpRequest.create(accountId, password, phone, name, email, academicNumber, major);
         String content = mapper.writeValueAsString(accountCreateForm);
 
         doThrow(new NotVerifiedException("Not Verified Email")).when(signUpService).join(any());
@@ -238,7 +237,7 @@ public class AccountControllerTest {
         String phone = "01012345678";
         String academicNumber = "20151234";
         String major = "SoftwareEngineering";
-        AccountCreateForm accountCreateForm = AccountCreateForm.create(accountId, password, phone, name, email, academicNumber, major);
+        SignUpRequest accountCreateForm = SignUpRequest.create(accountId, password, phone, name, email, academicNumber, major);
         String content = mapper.writeValueAsString(accountCreateForm);
 
         doThrow(new NotFoundEmailException("Not Verified Email")).when(signUpService).join(any());

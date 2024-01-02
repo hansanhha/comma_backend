@@ -36,18 +36,18 @@ public class AccountController {
     private static final String REFRESH_TOKEN = "refreshToken";
 
     @PostMapping("/signup")
-    public ResponseEntity<Map<String, String>> signUp(@Valid @RequestBody AccountCreateForm form) {
+    public ResponseEntity<Map<String, String>> signUp(@Valid @RequestBody SignUpRequest form) {
         signUpService.join(form);
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(MESSAGE,"Created account"));
     }
 
-    @PostMapping("/signin")
+    @PostMapping(path = "/signin", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, Object>> signIn(@Valid @RequestBody SignInRequest form) {
         SignInResponse signInResponse = signInService.signIn(form.getAccountId(), form.getPassword());
 
         Map<String, Object> body = Map.of(MESSAGE, "authenticated", DATA, signInResponse);
 
-        return ResponseEntity.ok().body(body);
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(body);
     }
 
     @GetMapping("/refresh-token")
