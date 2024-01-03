@@ -2,7 +2,7 @@ package know_wave.comma.arduino.component.admin.controller;
 
 import jakarta.validation.Valid;
 import know_wave.comma.arduino.component.dto.CategoriesResponse;
-import know_wave.comma.arduino.component.admin.dto.CategoryRegisterRequest;
+import know_wave.comma.arduino.component.admin.dto.CategoryCreateRequest;
 import know_wave.comma.arduino.component.admin.dto.CategoryUpdateRequest;
 import know_wave.comma.arduino.component.admin.service.CategoryAdminService;
 import lombok.RequiredArgsConstructor;
@@ -30,9 +30,9 @@ public class CategoryAdminController {
     }
 
     @PostMapping("/category")
-    public Map<String, String> registerCategory(@Valid @RequestBody CategoryRegisterRequest request) {
-        componentAdminService.registerCategory(request.getCategoryName());
-        return Map.of(MESSAGE, "registered category", DATA, request.getCategoryName());
+    public Map<String, String> createCategory(@Valid @RequestBody CategoryCreateRequest request) {
+        String category = componentAdminService.createCategory(request.getCategoryName());
+        return Map.of(MESSAGE, "registered category", DATA, category);
     }
 
     @PatchMapping("/categories/{id}")
