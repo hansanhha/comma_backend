@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FileDto {
 
-    public static FileDto of(String uuid, String fileName, String filePath, String fileType, long size) {
+    public static FileDto create(String uuid, String fileName, String filePath, String fileType, long size) {
         return new FileDto(uuid, fileName, filePath, fileType, size);
     }
 

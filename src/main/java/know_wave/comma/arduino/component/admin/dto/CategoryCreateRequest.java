@@ -6,17 +6,14 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
 @Getter
+@RequiredArgsConstructor(onConstructor_ = {@JsonCreator})
 public class CategoryCreateRequest {
 
     public static CategoryCreateRequest create(String name) {
         return new CategoryCreateRequest(name);
     }
 
-    @JsonCreator
-    public CategoryCreateRequest(@JsonProperty("category_name") String categoryName) {
-        this.categoryName = categoryName;
-    }
-
+    @JsonProperty("category_name")
     @NotEmpty(message = "{required}")
     private final String categoryName;
 }
