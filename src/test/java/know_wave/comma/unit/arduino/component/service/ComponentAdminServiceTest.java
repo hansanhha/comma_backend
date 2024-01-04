@@ -1,4 +1,4 @@
-package know_wave.comma.unit.arduino.component;
+package know_wave.comma.unit.arduino.component.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import know_wave.comma.arduino.component.admin.dto.ArduinoCreateForm;
@@ -301,5 +301,5 @@ public class ComponentAdminServiceTest {
         //then
         assertThat(arduinos.getFirst().getDelete().isDeleted()).isTrue();
     }
-    
+
 }

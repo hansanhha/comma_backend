@@ -53,7 +53,7 @@ public class ArduinoPageResponse {
 
             String thumbnail;
 
-            if (arduino.getPhotos().isEmpty()) {
+            if (arduino.getPhotos() == null || arduino.getPhotos().isEmpty()) {
                 thumbnail = null;
             } else {
                 thumbnail = arduino.getPhotos().getFirst().getFilePath();
