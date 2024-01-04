@@ -66,7 +66,7 @@ public class OrderCommandService {
     public preProcessOrderResponse preProcessOrder(OrderRequest orderRequest) {
         accountCheckService.validateOrderAuthority();
 
-        List<Cart> cartList = cartService.findBasketList();
+        List<Cart> cartList = cartService.findCartList();
 
         if (cartList.isEmpty()) {
             throw new CartException(ExceptionMessageSource.EMPTY_BASKET);

@@ -18,7 +18,7 @@ public class CartResponse {
                 .toList());
     }
 
-    private final List<StoredArduino> baskets;
+    private final List<StoredArduino> carts;
 
     @Getter
     @RequiredArgsConstructor

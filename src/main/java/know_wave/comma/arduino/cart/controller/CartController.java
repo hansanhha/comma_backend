@@ -19,7 +19,7 @@ public class CartController {
 
     @GetMapping("/cart")
     public Map<String, Object> getBasket() {
-        return Map.of(MESSAGE, "basket", DATA, cartService.getBasket());
+        return Map.of(MESSAGE, "basket", DATA, cartService.getCart());
     }
 
     @PostMapping("/cart/arduinos/{arduinoId}")
