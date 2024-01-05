@@ -9,6 +9,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OrderRequest {
 
+    public static OrderRequest create(String subject, String paymentType) {
+        return new OrderRequest(subject, paymentType);
+    }
+
     @NotEmpty(message = "과목을 입력해주세요")
     @JsonProperty("subject")
     private final String subject;

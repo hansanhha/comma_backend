@@ -52,6 +52,10 @@ public class OrderCommandService {
     @Value("${arduino.max-order-quantity}")
     private int ORDER_MAX_QUANTITY;
 
+    {
+        ORDER_MAX_QUANTITY = 4;
+    }
+
     /* 0. 멱등성 검증 (컨트롤러에서 처리)
      * 1. 장바구니, 수량 및 재고 상태 검증
      * 2. 주문 및 보증금 정보 생성

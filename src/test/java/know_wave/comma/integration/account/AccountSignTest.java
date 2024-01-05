@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -38,7 +39,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     TODO : 독립된 테스트 구현 및 토큰 발급 관련 로직 수정 필요
  */
 @DisplayName("통합 테스트 : 계정(회원가입, 로그인, 로그아웃, JWT)")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"spring.config.location=classpath:application-test.yml"})
+//@PropertySource("classpath:application-test.yml")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AccountSignTest {
 

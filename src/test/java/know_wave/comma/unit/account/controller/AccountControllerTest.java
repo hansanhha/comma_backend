@@ -50,7 +50,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("유닛 테스트(컨트롤러) : 계정(이메일 인증, 회원가입, JWT)")
-@WebMvcTest(controllers = {AccountController.class})
+@WebMvcTest(controllers = {AccountController.class}, properties = {"spring.config.location=classpath:application-test.yml"})
 @Import({SecurityConfig.class})
 public class AccountControllerTest {
 

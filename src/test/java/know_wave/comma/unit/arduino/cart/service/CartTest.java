@@ -1,4 +1,4 @@
-package know_wave.comma.unit.arduino.basket.service;
+package know_wave.comma.unit.arduino.cart.service;
 
 import know_wave.comma.account.entity.AcademicMajor;
 import know_wave.comma.account.entity.Account;
