@@ -20,7 +20,7 @@ public class CategoriesResponse {
 
     @Getter
     @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-    private static class CategoryResponse {
+    public static class CategoryResponse {
         private final Long categoryId;
         private final String categoryName;
 

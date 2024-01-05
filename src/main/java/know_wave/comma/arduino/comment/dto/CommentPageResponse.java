@@ -14,6 +14,10 @@ import java.util.List;
 public class CommentPageResponse {
 
     public static CommentPageResponse to(Page<Comment> comments) {
+        if (comments == null || comments.isEmpty())  {
+            return null;
+        }
+
         return new CommentPageResponse(
                 comments.stream().map(CommentResponse::to).toList(),
                 comments.getSize(),
@@ -30,7 +34,7 @@ public class CommentPageResponse {
 
     @Getter
     @RequiredArgsConstructor
-    private static class CommentResponse {
+    public static class CommentResponse {
         private final Long commentId;
         private final String accountId;
         private final String content;

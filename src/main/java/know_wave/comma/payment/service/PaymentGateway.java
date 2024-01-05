@@ -48,7 +48,7 @@ public class PaymentGateway {
         if (optionalIdempotentResponse.isPresent()) {
             PaymentClientReadyResponse paymentReadyResponse = optionalIdempotentResponse.get();
             Payment payment = getPayment(paymentRequestId);
-            return PaymentGatewayCheckoutResponse.of(payment, paymentReadyResponse.getMobileRedirectUrl(), paymentReadyResponse.getPcRedirectUrl(), null);
+            return PaymentGatewayCheckoutResponse.create(payment, paymentReadyResponse.getMobileRedirectUrl(), paymentReadyResponse.getPcRedirectUrl(), null);
         }
 
         PaymentClientReadyResponse paymentClientReadyResponse =
@@ -62,7 +62,7 @@ public class PaymentGateway {
         Payment savedPayment = paymentRepository.save(payment);
         idempotencyService.create(IdempotentSaveDto.create(paymentRequestId, null, null, 0, paymentClientReadyResponse, null));
 
-        return PaymentGatewayCheckoutResponse.of(savedPayment, paymentClientReadyResponse.getMobileRedirectUrl(), paymentClientReadyResponse.getPcRedirectUrl(), paymentRequestId);
+        return PaymentGatewayCheckoutResponse.create(savedPayment, paymentClientReadyResponse.getMobileRedirectUrl(), paymentClientReadyResponse.getPcRedirectUrl(), paymentRequestId);
     }
 
     public PaymentGatewayApproveResponse approve(PaymentGatewayApproveRequest approveRequest) {

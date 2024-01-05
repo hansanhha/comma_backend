@@ -1,6 +1,7 @@
 package know_wave.comma.config.security.service;
 
 import know_wave.comma.account.entity.Account;
+import know_wave.comma.account.exception.NotFoundAccountException;
 import know_wave.comma.account.repository.AccountRepository;
 import know_wave.comma.common.entity.ExceptionMessageSource;
 import know_wave.comma.config.security.entity.SecurityAccount;
@@ -27,7 +28,7 @@ public class AccountUserDetailsService implements UserDetailsService {
 
             return SecurityAccount.to(account);
         } else {
-            throw new UsernameNotFoundException(ExceptionMessageSource.NOT_EXIST_ACCOUNT);
+            throw new NotFoundAccountException(ExceptionMessageSource.NOT_EXIST_ACCOUNT);
         }
     }
 }

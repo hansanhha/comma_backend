@@ -20,7 +20,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class JwtSignInHandler implements TokenSignInHandler<SignInResponse> {
 
-    private final JwtTokenHandler tokenService;
+    private final JwtTokenHandler tokenHandler;
     private final AccountUserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
@@ -32,30 +32,30 @@ public class JwtSignInHandler implements TokenSignInHandler<SignInResponse> {
             throw new SignInFailureException(ExceptionMessageSource.FAIL_SIGN_IN);
         }
 
-        tokenService.revokeRefreshToken(accountId);
+        tokenHandler.revokeRefreshToken(accountId);
 
-        String accessToken = tokenService.issueAccessToken(accountId);
-        String refreshToken = tokenService.issueRefreshToken(accountId);
+        String accessToken = tokenHandler.issueAccessToken(accountId);
+        String refreshToken = tokenHandler.issueRefreshToken(accountId);
 
         return SignInResponse.create(accessToken, refreshToken);
     }
 
     @Override
     public String reissueAccessToken(String refreshToken) {
-        Claims refreshTokenPayload = tokenService.getPayload(refreshToken);
+        Claims refreshTokenPayload = tokenHandler.getPayload(refreshToken);
 
-        Optional<Token> findToken = tokenService.getToken(refreshToken);
+        Optional<Token> findToken = tokenHandler.getToken(refreshToken);
 
         if(findToken.isEmpty()) {
             throw new NotFoundTokenException(ExceptionMessageSource.NOT_FOUND_TOKEN);
         }
 
-        if (!tokenService.isValidRefreshToken(refreshToken)) {
+        if (!tokenHandler.isValidRefreshToken(refreshToken)) {
             throw new InvalidTokenException(ExceptionMessageSource.INVALID_TOKEN);
         }
 
         String accountId = refreshTokenPayload.getSubject();
 
-        return tokenService.issueAccessToken(accountId);
+        return tokenHandler.issueAccessToken(accountId);
     }
 }

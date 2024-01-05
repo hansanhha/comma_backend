@@ -1,34 +1,39 @@
 package know_wave.comma.arduino.component.admin.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import know_wave.comma.arduino.component.entity.Arduino;
-import know_wave.comma.arduino.component.entity.Category;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.BindParam;
 
 import java.util.List;
 
 @Getter
-@RequiredArgsConstructor
 public class ArduinoCreateForm {
 
-    @JsonProperty("arduino_name")
+    public static ArduinoCreateForm create(String arduinoName, int count, String description, List<Long> categories) {
+        return new ArduinoCreateForm(arduinoName, count, description, categories);
+    }
+
+    public ArduinoCreateForm(@BindParam("arduino_name") String arduinoName,
+                             @BindParam("count") int count,
+                             @BindParam("description") String description,
+                             @BindParam("categories") List<Long> categories) {
+        this.arduinoName = arduinoName;
+        this.count = count;
+        this.description = description;
+        this.categories = categories;
+    }
+
+    @NotBlank(message = "{required}")
     private final String arduinoName;
 
-    @JsonProperty("count")
+    @NotNull(message = "{required}")
     private final int count;
 
-    @JsonProperty("description")
+    @NotBlank(message = "{required}")
     private final String description;
 
     @NotNull(message = "{required}")
-    @JsonProperty("categories")
     private final List<Long> categories;
-
-    @JsonProperty("photo_files")
-    private final List<MultipartFile> photoFiles;
 
 }

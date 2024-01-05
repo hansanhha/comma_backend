@@ -15,9 +15,11 @@ import know_wave.comma.common.file.service.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -30,41 +32,53 @@ public class ComponentCommandAdminService {
 
     private final String ARDUINO_IMAGE_UPLOAD_PATH = "arduino/image";
 
-    public void registerArduino(ArduinoCreateForm form) {
+    public void createArduino(ArduinoCreateForm form, List<MultipartFile> photoFiles) {
         Arduino arduino = Arduino.create(form.getArduinoName(), form.getCount(), form.getDescription(),
                 form.getCategories().stream().map(Category::createById).toList());
 
         arduinoRepository.save(arduino);
 
-        if (isPresent(form.getPhotoFiles())) {
-            FileListDto fileListDto = fileService.saveAllImage(form.getPhotoFiles(), ARDUINO_IMAGE_UPLOAD_PATH);
+        if (isPresent(photoFiles)) {
+            FileListDto fileListDto = fileService.saveAllImage(photoFiles, ARDUINO_IMAGE_UPLOAD_PATH);
             List<ArduinoPhoto> uploadPhotos = toArduinoPhoto(fileListDto, arduino);
             arduinoPhotoRepository.saveAll(uploadPhotos);
         }
     }
 
-    public void registerArduinoList(List<ArduinoCreateForm> forms) {
-        forms.forEach(this::registerArduino);
+    public void createArduinoList(List<ArduinoCreateForm> forms) {
+        forms.forEach(form -> this.createArduino(form, null));
     }
 
-    public void updateArduino(Long id, ArduinoUpdateForm form) {
-        Arduino arduino = arduinoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(ExceptionMessageSource.NOT_FOUND_VALUE));
+    public void updateArduino(Long id, ArduinoUpdateForm form, List<String> deletePhotoFiles, List<MultipartFile> addPhotoFiles) {
+        Optional<Arduino> foundArduino = arduinoRepository.findById(id);
+
+        if (foundArduino.isEmpty()) {
+            throw new EntityNotFoundException(ExceptionMessageSource.NOT_FOUND_VALUE);
+        }
+
+        Arduino arduino = foundArduino.get();
         arduino.update(form.getUpdatedArduinoName(), form.getUpdatedCount(), form.getUpdatedDescription(), form.getUpdatedCategories().stream().map(Category::createById).toList());
 
-        if (isPresent(form.getDeletedPhotoFiles())) {
-            List<ArduinoPhoto> photos = arduinoPhotoRepository.findAllByUuid(form.getDeletedPhotoFiles());
+        if (isPresent(deletePhotoFiles)) {
+            List<ArduinoPhoto> photos = arduinoPhotoRepository.findAllByUuid(deletePhotoFiles);
             ArduinoPhoto.deleteList(photos);
         }
 
-        if (isPresent(form.getAddedPhotoFiles())) {
-            FileListDto fileListDto = fileService.saveAllImage(form.getAddedPhotoFiles(), ARDUINO_IMAGE_UPLOAD_PATH);
+        if (isPresent(addPhotoFiles)) {
+            FileListDto fileListDto = fileService.saveAllImage(addPhotoFiles, ARDUINO_IMAGE_UPLOAD_PATH);
             List<ArduinoPhoto> uploadPhotos = toArduinoPhoto(fileListDto, arduino);
             arduinoPhotoRepository.saveAll(uploadPhotos);
         }
     }
 
     public void deleteArduino(Long id) {
-        Arduino arduino = arduinoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(ExceptionMessageSource.NOT_FOUND_VALUE));
+        Optional<Arduino> foundArduino = arduinoRepository.findById(id);
+
+        if(foundArduino.isEmpty()){
+            throw new EntityNotFoundException(ExceptionMessageSource.NOT_FOUND_VALUE);
+        }
+
+        Arduino arduino = foundArduino.get();
         Arduino.delete(arduino);
 
         if (isPresent(arduino.getPhotos())) {
@@ -83,12 +97,25 @@ public class ComponentCommandAdminService {
     }
 
     public void addArduinoCount(Long id, int count) {
-        Arduino arduino = arduinoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(ExceptionMessageSource.NOT_FOUND_VALUE));
+        Optional<Arduino> foundArduino = arduinoRepository.findById(id);
+
+        if (foundArduino.isEmpty()) {
+            throw new EntityNotFoundException(ExceptionMessageSource.NOT_FOUND_VALUE);
+        }
+
+        Arduino arduino = foundArduino.get();
         arduino.addCount(count);
     }
 
     public void updateArduinoStockStatus(Long id, String stockStatus) {
-        Arduino arduino = arduinoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(ExceptionMessageSource.NOT_FOUND_VALUE));
+        Optional<Arduino> foundArduino = arduinoRepository.findById(id);
+
+        if (foundArduino.isEmpty()) {
+            throw new EntityNotFoundException(ExceptionMessageSource.NOT_FOUND_VALUE);
+        }
+
+        Arduino arduino = foundArduino.get();
+
         try {
             ArduinoStockStatus updateStatus = ArduinoStockStatus.valueOf(stockStatus);
             arduino.updateStockStatus(updateStatus);

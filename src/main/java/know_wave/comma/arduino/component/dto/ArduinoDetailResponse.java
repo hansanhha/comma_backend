@@ -72,6 +72,10 @@ public class ArduinoDetailResponse {
     public static class ArduinoPhotoResponse {
 
         private static List<ArduinoPhotoResponse> to(List<ArduinoPhoto> photos){
+            if (photos == null || photos.isEmpty()) {
+                return null;
+            }
+
             return photos.stream()
                     .map(photo -> new ArduinoPhotoResponse(photo.getFileUuid(), photo.getFileName(), photo.getFilePath(), photo.getSize(), photo.getArduino().getId()))
                     .toList();

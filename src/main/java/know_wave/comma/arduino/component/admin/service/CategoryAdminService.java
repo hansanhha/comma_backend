@@ -30,29 +30,30 @@ public class CategoryAdminService {
         return CategoriesResponse.to(categories);
     }
 
-    public void registerCategory(String name) {
+    public String createCategory(String name) {
         Optional<Category> optionalCategory = categoryRepository.findByName(name);
 
         if (optionalCategory.isPresent()) {
             throw new AlreadyCategoryException(ExceptionMessageSource.ALREADY_EXIST_VALUE);
         }
 
-        categoryRepository.save(Category.createByName(name));
+        Category savedCategory = categoryRepository.save(Category.createByName(name));
+        return savedCategory.getName();
     }
 
     public void updateCategory(Long id, String dest) {
-        Optional<Category> optionalCategory = categoryRepository.findById(id);
-        Optional<Category> optionalDestCategory = categoryRepository.findByName(dest);
+        Optional<Category> foundCategory = categoryRepository.findById(id);
+        Optional<Category> exists = categoryRepository.findByName(dest);
 
-        if (optionalCategory.isEmpty()) {
+        if (foundCategory.isEmpty()) {
             throw new EntityNotFoundException(ExceptionMessageSource.NOT_FOUND_VALUE);
         }
 
-        if (optionalDestCategory.isPresent()) {
+        if (exists.isPresent()) {
             throw new AlreadyCategoryException(ExceptionMessageSource.ALREADY_EXIST_VALUE);
         }
 
-        Category category = optionalCategory.get();
+        Category category = foundCategory.get();
         category.setName(dest);
     }
 

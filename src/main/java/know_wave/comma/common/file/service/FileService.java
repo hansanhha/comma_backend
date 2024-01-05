@@ -29,7 +29,7 @@ public class FileService {
 
         try {
             file.transferTo(savePath);
-            return FileDto.of(uuid, filename, filePath, file.getContentType(), file.getSize());
+            return FileDto.create(uuid, filename, filePath, file.getContentType(), file.getSize());
         } catch (IOException e) {
             throw new UploadFileException("파일 업로드에 실패했습니다.");
         }

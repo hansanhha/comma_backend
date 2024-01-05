@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface TokenRepository extends JpaRepository<Token, Long> {
 
     @Query(value = "select t from Token t join Account a on t.account = :account" +
-            " where t.expired = false or t.revoked = false")
+            " where t.expired = false and t.revoked = false")
     List<Token> findAllByAccount(Account account);
 
     Optional<Token> findByToken(String token);

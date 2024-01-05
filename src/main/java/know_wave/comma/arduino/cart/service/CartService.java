@@ -7,7 +7,10 @@ import know_wave.comma.arduino.cart.dto.CartResponse;
 import know_wave.comma.arduino.cart.dto.CartUpdateRequest;
 import know_wave.comma.arduino.cart.dto.CartValidateStatus;
 import know_wave.comma.arduino.cart.entity.Cart;
+import know_wave.comma.arduino.cart.exception.BadArduinoStockStatusException;
 import know_wave.comma.arduino.cart.exception.CartException;
+import know_wave.comma.arduino.cart.exception.NotEnoughArduinoException;
+import know_wave.comma.arduino.cart.exception.OverMaxQuantityException;
 import know_wave.comma.arduino.cart.repository.CartRepository;
 import know_wave.comma.arduino.component.entity.Arduino;
 import know_wave.comma.arduino.component.service.ComponentQueryService;
@@ -26,27 +29,31 @@ import java.util.Optional;
 public class CartService {
 
     private final AccountQueryService accountQueryService;
-    private final ComponentQueryService arduinoInfoService;
+    private final ComponentQueryService componentQueryService;
     private final CartRepository cartRepository;
 
     @Value("${arduino.max-order-quantity}")
     private int BASKET_MAX_QUANTITY;
 
-    public CartResponse getBasket() {
+    {
+        BASKET_MAX_QUANTITY = 4;
+    }
+
+    public CartResponse getCart() {
         Account account = accountQueryService.findAccount();
         List<Cart> cartList = cartRepository.findAllByAccount(account);
 
         return CartResponse.to(cartList);
     }
 
-    public List<Cart> findBasketList() {
+    public List<Cart> findCartList() {
         Account account = accountQueryService.findAccount();
         return cartRepository.findAllByAccount(account);
     }
 
     public void addArduino(Long arduinoId, CartAddRequest addRequest) {
         Account account = accountQueryService.findAccount();
-        Arduino arduino = arduinoInfoService.getArduino(arduinoId);
+        Arduino arduino = componentQueryService.getArduino(arduinoId);
         final int containCount = addRequest.getCount();
 
         if (isAlreadyInBasket(arduino, account)) {
@@ -56,7 +63,7 @@ public class CartService {
         CartValidateStatus cartValidateStatus = Cart.validate(arduino, containCount, BASKET_MAX_QUANTITY);
 
         if (cartValidateStatus.isNotValid()) {
-            throw new CartException(ExceptionMessageSource.UNABLE_TO_BASKET);
+            throw inValidCartException(cartValidateStatus);
         }
 
         Cart cart = Cart.create(account, arduino, containCount);
@@ -72,10 +79,19 @@ public class CartService {
         CartValidateStatus cartValidateStatus = Cart.validate(arduino, updatedCount, BASKET_MAX_QUANTITY);
 
         if (cartValidateStatus.isNotValid()) {
-            throw new CartException(ExceptionMessageSource.UNABLE_TO_BASKET);
+            throw inValidCartException(cartValidateStatus);
         }
 
         cart.update(updatedCount);
+    }
+
+    private CartException inValidCartException(CartValidateStatus cartValidateStatus) {
+        return switch (cartValidateStatus) {
+            case BAD_ARDUINO_STATUS -> new BadArduinoStockStatusException(ExceptionMessageSource.BAD_ARDUINO_STOCK_STATUS);
+            case OVER_MAX_QUANTITY -> new OverMaxQuantityException(ExceptionMessageSource.OVER_MAX_ARDUINO_QUANTITY);
+            case NOT_ENOUGH_ARDUINO_STOCK -> new NotEnoughArduinoException(ExceptionMessageSource.NOT_ENOUGH_ARDUINO_STOCK);
+            default -> new CartException(ExceptionMessageSource.UNABLE_TO_BASKET);
+        };
     }
 
     public void deleteArduino(Long basketId) {

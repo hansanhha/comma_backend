@@ -37,9 +37,9 @@ out/
 .vscode/
 
 ### application config file ###
-src/main/resources/application.yml
-src/main/resources/application.properties
-src/main/resources/*.p12
+*.yml
+*.properties
+*.p12
 
 LOG*
 LOCAL*

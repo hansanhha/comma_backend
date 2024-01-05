@@ -1,6 +1,6 @@
 package know_wave.comma.account.service;
 
-import know_wave.comma.account.dto.AccountCreateForm;
+import know_wave.comma.account.dto.SignUpRequest;
 import know_wave.comma.account.entity.AcademicMajor;
 import know_wave.comma.account.entity.Account;
 import know_wave.comma.account.entity.EmailVerify;
@@ -32,7 +32,7 @@ public class SignUpService {
 
     public static final String AUTH_CODE_TITLE = "컴마 이메일 인증 코드";
 
-    public void join(AccountCreateForm form) {
+    public void join(SignUpRequest form) {
         Optional<EmailVerify> optionalEmailVerify = emailVerifyRepository.findById(form.getEmail());
 
         if (optionalEmailVerify.isEmpty()) {

@@ -13,7 +13,7 @@ public class PaymentGatewayCheckoutResponse {
     private final String pcRedirectUrl;
     private final String idempotencyKey;
 
-    public static PaymentGatewayCheckoutResponse of(Payment payment, String mobileUrl, String pcUrl, String paymentRequestId) {
+    public static PaymentGatewayCheckoutResponse create(Payment payment, String mobileUrl, String pcUrl, String paymentRequestId) {
         return new PaymentGatewayCheckoutResponse(payment, mobileUrl, pcUrl, paymentRequestId);
     }
 }

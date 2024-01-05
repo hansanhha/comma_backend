@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
@@ -16,10 +15,10 @@ import static know_wave.comma.common.entity.regexPattern.onlyPhoneNumberRegex;
 
 @Getter
 @AllArgsConstructor
-public class AccountCreateForm {
+public class SignUpRequest {
 
-    public static AccountCreateForm create(String accountId, String password, String phone, String name, String email, String academicNumber, String major) {
-        return new AccountCreateForm(accountId, password, phone, name, email, academicNumber, major);
+    public static SignUpRequest create(String accountId, String password, String phone, String name, String email, String academicNumber, String major) {
+        return new SignUpRequest(accountId, password, phone, name, email, academicNumber, major);
     }
 
     @JsonProperty("account_id")
