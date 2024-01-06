@@ -23,6 +23,7 @@ import know_wave.comma.payment.dto.gateway.PaymentGatewayCheckoutResponse;
 import know_wave.comma.payment.dto.gateway.PaymentGatewayRefundResponse;
 import know_wave.comma.payment.entity.PaymentFeature;
 import know_wave.comma.payment.entity.PaymentType;
+import know_wave.comma.payment.exception.PaymentException;
 import know_wave.comma.payment.service.PaymentGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -97,9 +98,15 @@ public class OrderCommandService {
         orderRepository.save(order);
         orderDetailRepository.saveAll(orderDetailList);
 
-        PaymentGatewayCheckoutResponse checkoutResponse = paymentGateway.checkout(PaymentGatewayCheckoutRequest.create(orderNumber,
-                account, PaymentType.valueOf(orderRequest.getPaymentType().toUpperCase()),
-                PaymentFeature.ARDUINO_DEPOSIT, DEPOSIT_AMOUNT, PAYMENT_QUANTITY));
+        PaymentGatewayCheckoutResponse checkoutResponse;
+
+        try {
+            checkoutResponse = paymentGateway.checkout(PaymentGatewayCheckoutRequest.create(orderNumber,
+                    account, PaymentType.valueOf(orderRequest.getPaymentType().toUpperCase()),
+                    PaymentFeature.ARDUINO_DEPOSIT, DEPOSIT_AMOUNT, PAYMENT_QUANTITY));
+        } catch (PaymentException exception) {
+            throw new OrderException(exception.getMessage() + "다시 한 번 시도해주세요");
+        }
 
         saveDeposit.setPayment(checkoutResponse.getPayment());
 
