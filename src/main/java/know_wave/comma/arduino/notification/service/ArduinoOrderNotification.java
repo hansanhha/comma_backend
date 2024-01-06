@@ -45,6 +45,7 @@ public class ArduinoOrderNotification {
     @PostConstruct
     public void init() {
         SSE_EVENT_NAME_MAP.put(OrderStatus.ORDERED, "order_success");
+        SSE_EVENT_NAME_MAP.put(OrderStatus.FAILURE_CAUSE_SERVER, "order_failure");
         SSE_EVENT_NAME_MAP.put(OrderStatus.FAILURE_CAUSE_DEPOSIT_FAILURE, "order_deposit_failure");
         SSE_EVENT_NAME_MAP.put(OrderStatus.FAILURE_CAUSE_DEPOSIT_CANCEL, "order_deposit_cancel");
         SSE_EVENT_NAME_MAP.put(OrderStatus.FAILURE_CAUSE_ARDUINO_STOCK_STATUS, "order_arduino_status_failure");
@@ -57,6 +58,7 @@ public class ArduinoOrderNotification {
         SSE_EVENT_NAME_MAP.put(OrderStatus.RECEIVE, "order_receive");
         
         PUSH_NOTIFICATION_TITLE_MAP.put(OrderStatus.ORDERED, "컴마 실습재료 부품 주문 완료 안내");
+        PUSH_NOTIFICATION_TITLE_MAP.put(OrderStatus.FAILURE_CAUSE_SERVER, "컴마 실습재료 부품 주문 실패 안내");
         PUSH_NOTIFICATION_TITLE_MAP.put(OrderStatus.FAILURE_CAUSE_DEPOSIT_FAILURE, "컴마 실습재료 부품 주문 실패 안내");
         PUSH_NOTIFICATION_TITLE_MAP.put(OrderStatus.FAILURE_CAUSE_DEPOSIT_CANCEL, "컴마 실습재료 부품 주문 실패 안내");
         PUSH_NOTIFICATION_TITLE_MAP.put(OrderStatus.FAILURE_CAUSE_ARDUINO_STOCK_STATUS, "컴마 실습재료 부품 주문 실패 안내");
@@ -74,6 +76,13 @@ public class ArduinoOrderNotification {
                 주문이 완료되었습니다<br>
                 주문 상태가 변경되면 알림을 통해 안내드립니다<br>
                 주문 조회 페이지에서 직접 확인하실 수도 있습니다<br>
+                <br>
+                """);
+        PUSH_NOTIFICATION_CONTENT_MAP.put(OrderStatus.FAILURE_CAUSE_SERVER,
+                """
+                <br>
+                서버 오류로 인해 주문이 실패되었습니다<br>
+                다시 시도해주시기 바랍니다<br>
                 <br>
                 """);
         PUSH_NOTIFICATION_CONTENT_MAP.put(OrderStatus.FAILURE_CAUSE_DEPOSIT_FAILURE,
