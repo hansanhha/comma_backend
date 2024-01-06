@@ -12,6 +12,10 @@ import know_wave.comma.payment.dto.client.PaymentClientRefundResponse;
 import know_wave.comma.payment.dto.gateway.*;
 import know_wave.comma.payment.entity.Payment;
 import know_wave.comma.payment.entity.PaymentStatus;
+import know_wave.comma.payment.exception.PaymentCheckoutException;
+import know_wave.comma.payment.exception.PaymentClient4xxException;
+import know_wave.comma.payment.exception.PaymentClient5xxException;
+import know_wave.comma.payment.exception.PaymentClientUnknownException;
 import know_wave.comma.payment.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -50,8 +54,17 @@ public class PaymentGateway {
             return PaymentGatewayCheckoutResponse.create(payment, paymentReadyResponse.getMobileRedirectUrl(), paymentReadyResponse.getPcRedirectUrl(), null);
         }
 
-        PaymentClientReadyResponse paymentClientReadyResponse =
-                paymentClientManager.ready(checkoutRequest, paymentRequestId);
+        PaymentClientReadyResponse paymentClientReadyResponse;
+
+        try {
+            paymentClientReadyResponse = paymentClientManager.ready(checkoutRequest, paymentRequestId);
+        } catch (PaymentClient4xxException exception4) {
+            throw new PaymentCheckoutException(ExceptionMessageSource.INVALID_PAYMENT_CHECKOUT_REQUEST);
+        } catch (PaymentClient5xxException exception5) {
+            throw new PaymentCheckoutException(ExceptionMessageSource.PAYMENT_SERVER_ERROR);
+        } catch (PaymentClientUnknownException unknownException) {
+            throw new PaymentCheckoutException(ExceptionMessageSource.RETRY_PAYMENT_CHECKOUT_REQUEST);
+        }
 
         Payment payment = Payment.create(
                 paymentRequestId, checkoutRequest.getPaymentType(), paymentClientReadyResponse.getTid(),
