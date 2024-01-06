@@ -12,4 +12,6 @@ public interface PaymentCallbackHandler {
     FailCallbackResponse fail(FailCallback failCallback);
 
     boolean isSupport(PaymentFeature paymentFeature);
+
+    void error(ErrorCallback errorCallback);
 }
