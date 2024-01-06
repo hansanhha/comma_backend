@@ -12,10 +12,7 @@ import know_wave.comma.payment.dto.client.PaymentClientRefundResponse;
 import know_wave.comma.payment.dto.gateway.*;
 import know_wave.comma.payment.entity.Payment;
 import know_wave.comma.payment.entity.PaymentStatus;
-import know_wave.comma.payment.exception.PaymentCheckoutException;
-import know_wave.comma.payment.exception.PaymentClient4xxException;
-import know_wave.comma.payment.exception.PaymentClient5xxException;
-import know_wave.comma.payment.exception.PaymentClientUnknownException;
+import know_wave.comma.payment.exception.*;
 import know_wave.comma.payment.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -79,7 +76,17 @@ public class PaymentGateway {
 
     public PaymentGatewayApproveResponse approve(PaymentGatewayApproveRequest approveRequest) {
         Payment payment = getPayment(approveRequest.getPaymentRequestId());
-        PaymentClientApproveResponse approve = paymentClientManager.approve(approveRequest, payment.getExternalApiTransactionId());
+        PaymentClientApproveResponse approve = null;
+
+        try {
+            approve = paymentClientManager.approve(approveRequest, payment.getExternalApiTransactionId());
+        } catch (PaymentClientException ex) {
+            ErrorCallback errorCallback = ErrorCallback.create(approveRequest.getPaymentRequestId(), approveRequest.getOrderNumber(),
+                    approveRequest.getAccountId(), approveRequest.getPaymentFeature(), ex.getHttpStatusCode(), ex.getErrorCode(), ex.getMessage());
+
+            paymentCallbackManager.error(errorCallback);
+        }
+
         payment.setPaymentStatus(PaymentStatus.COMPLETE);
 
         CompleteCallbackResponse callbackResponse = paymentCallbackManager.complete(

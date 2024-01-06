@@ -10,12 +10,18 @@ import know_wave.comma.payment.entity.PaymentType;
 import know_wave.comma.payment.exception.PaymentClient4xxException;
 import know_wave.comma.payment.exception.PaymentClient5xxException;
 import know_wave.comma.payment.exception.PaymentClientUnknownException;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
@@ -78,7 +84,7 @@ public class KakaoPayClient implements PaymentClient<KakaopayReadyRequest, Kakao
         return PaymentClientApproveResponse.create(
                 response.getTid(), response.getCid(), response.getPartner_order_id(),
                 response.getPartner_user_id(), response.getAmount(), response.getQuantity(),
-                response.getItem_name(), response.getCreated_at(), response.getApproved_at());
+                response.getItem_name(), LocalDateTime.ofInstant(response.getCreated_at().toInstant(), ZoneId.systemDefault()), LocalDateTime.ofInstant(response.getApproved_at().toInstant(), ZoneId.systemDefault()));
     }
 
     @Override
@@ -92,25 +98,35 @@ public class KakaoPayClient implements PaymentClient<KakaopayReadyRequest, Kakao
                 response.getTid(), response.getCid(), response.getPartner_order_id(),
                 response.getPartner_user_id(), response.getStatus(), response.getAmount(),
                 response.getApproved_cancel_amount(), response.getQuantity(), response.getItem_name(),
-                response.getCreated_at(), response.getApproved_at(), response.getCanceled_at());
+                LocalDateTime.ofInstant(response.getCreated_at().toInstant(), ZoneId.systemDefault()),
+                LocalDateTime.ofInstant(response.getApproved_at().toInstant(), ZoneId.systemDefault()),
+                LocalDateTime.ofInstant(response.getCanceled_at().toInstant(), ZoneId.systemDefault()));
     }
 
     private <T> RestClient.RequestHeadersSpec.ExchangeFunction<T> exchangeCallback(Class<T> clazz) {
         return (request, response) -> {
             if (response.getStatusCode().is2xxSuccessful()) {
-                return convertValue(response.getBody(), clazz);
+                return convertResponse(response.getBody(), clazz);
             } else if (response.getStatusCode().is4xxClientError()) {
-                throw new PaymentClient4xxException(response.getStatusText());
+                PaymentErrorResponse paymentErrorResponse = convertResponse(response.getBody(), PaymentErrorResponse.class);
+                throw new PaymentClient4xxException(paymentErrorResponse.getMsg(), response.getStatusCode(), paymentErrorResponse.getCode());
             } else if (response.getStatusCode().is5xxServerError()) {
-                throw new PaymentClient5xxException(response.getStatusText());
+                PaymentErrorResponse paymentErrorResponse = convertResponse(response.getBody(), PaymentErrorResponse.class);
+                throw new PaymentClient5xxException(paymentErrorResponse.getMsg(), response.getStatusCode(), paymentErrorResponse.getCode());
             } else {
                 throw new PaymentClientUnknownException();
             }
         };
     }
 
-    private <T> T convertValue(Object object, Class<T> clazz) {
-        return objectMapper.convertValue(object, clazz);
+    @Getter
+    private static class PaymentErrorResponse {
+        private String msg;
+        private int code;
+    }
+
+    private <T> T convertResponse(InputStream object, Class<T> clazz) throws IOException {
+        return objectMapper.readValue(object, clazz);
     }
 
     @Override
