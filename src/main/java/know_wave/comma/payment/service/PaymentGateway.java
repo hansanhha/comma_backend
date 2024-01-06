@@ -11,7 +11,6 @@ import know_wave.comma.payment.dto.client.PaymentClientRefundRequest;
 import know_wave.comma.payment.dto.client.PaymentClientRefundResponse;
 import know_wave.comma.payment.dto.gateway.*;
 import know_wave.comma.payment.entity.Payment;
-import know_wave.comma.payment.entity.PaymentFeature;
 import know_wave.comma.payment.entity.PaymentStatus;
 import know_wave.comma.payment.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
@@ -72,9 +71,9 @@ public class PaymentGateway {
 
         CompleteCallbackResponse callbackResponse = paymentCallbackManager.complete(
                 CompleteCallback.create(approveRequest.getPaymentRequestId(), approveRequest.getOrderNumber(),
-                        approveRequest.getAccountId(), PaymentFeature.valueOf(approveRequest.getPaymentFeature())));
+                        approveRequest.getAccountId(), approveRequest.getPaymentFeature()));
 
-        return PaymentGatewayApproveResponse.of(
+        return PaymentGatewayApproveResponse.create(
                 callbackResponse.getCompleteCallbackResult(), approveRequest.getPaymentRequestId(), approveRequest.getOrderNumber(),
                 approve.getPayerId(), payment.getPaymentStatus().getValue(), payment.getPaymentFeature().getFeature(),
                 payment.getPaymentType().getType(), approve.getAmount(), approve.getQuantity(),
@@ -87,9 +86,9 @@ public class PaymentGateway {
 
         CancelCallbackResponse callbackResponse = paymentCallbackManager.cancel(
                 CancelCallback.of(cancelRequest.getPaymentRequestId(), cancelRequest.getOrderNumber(),
-                        cancelRequest.getAccountId(), PaymentFeature.valueOf(cancelRequest.getPaymentFeature())));
+                        cancelRequest.getAccountId(), cancelRequest.getPaymentFeature()));
 
-        return PaymentGatewayCancelResponse.of(
+        return PaymentGatewayCancelResponse.create(
                 callbackResponse.getCancelCallbackResult(), cancelRequest.getPaymentRequestId(), cancelRequest.getOrderNumber(),
                 cancelRequest.getAccountId(), payment.getAmount(), payment.getQuantity(),
                 payment.getPaymentStatus().getValue(), payment.getPaymentFeature().getFeature(), payment.getPaymentType().getType());
@@ -101,9 +100,9 @@ public class PaymentGateway {
 
         FailCallbackResponse callbackResponse = paymentCallbackManager.fail(
                 FailCallback.of(failRequest.getPaymentRequestId(), failRequest.getOrderNumber(),
-                        failRequest.getAccountId(), PaymentFeature.valueOf(failRequest.getPaymentFeature())));
+                        failRequest.getAccountId(), failRequest.getPaymentFeature()));
 
-        return PaymentGatewayFailResponse.of(
+        return PaymentGatewayFailResponse.create(
                 callbackResponse.getFailCallbackResult(), failRequest.getPaymentRequestId(), failRequest.getOrderNumber(),
                 failRequest.getAccountId(), payment.getAmount(), payment.getQuantity(),
                 payment.getPaymentStatus().getValue(), payment.getPaymentFeature().getFeature(), payment.getPaymentType().getType());
@@ -112,14 +111,14 @@ public class PaymentGateway {
     public PaymentGatewayRefundResponse refund(String paymentRequestId) {
         Payment payment = getPayment(paymentRequestId);
 
-        PaymentClientRefundRequest refundRequest = PaymentClientRefundRequest.of(payment.getExternalApiTransactionId(),
+        PaymentClientRefundRequest refundRequest = PaymentClientRefundRequest.create(payment.getExternalApiTransactionId(),
                 payment.getAmount(), payment.getPaymentType());
 
         PaymentClientRefundResponse refund = paymentClientManager.refund(refundRequest);
 
         payment.setPaymentStatus(PaymentStatus.REFUND);
 
-        return PaymentGatewayRefundResponse.of(
+        return PaymentGatewayRefundResponse.create(
                 paymentRequestId, refund.getPayerId(), payment.getPaymentStatus(),
                 payment.getPaymentFeature(), payment.getPaymentType(), refund.getAmount(),
                 refund.getCancelAmount(), refund.getQuantity(), refund.getItemName(),

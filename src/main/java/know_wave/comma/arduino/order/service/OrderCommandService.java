@@ -97,7 +97,7 @@ public class OrderCommandService {
         orderRepository.save(order);
         orderDetailRepository.saveAll(orderDetailList);
 
-        PaymentGatewayCheckoutResponse checkoutResponse = paymentGateway.checkout(PaymentGatewayCheckoutRequest.of(orderNumber,
+        PaymentGatewayCheckoutResponse checkoutResponse = paymentGateway.checkout(PaymentGatewayCheckoutRequest.create(orderNumber,
                 account, PaymentType.valueOf(orderRequest.getPaymentType().toUpperCase()),
                 PaymentFeature.ARDUINO_DEPOSIT, DEPOSIT_AMOUNT, PAYMENT_QUANTITY));
 

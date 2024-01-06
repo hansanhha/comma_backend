@@ -10,7 +10,7 @@ import java.util.Map;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class FailCallbackResponse {
 
-    public static FailCallbackResponse of(Map<String, String> cancelCallbackResult) {
+    public static FailCallbackResponse create(Map<String, String> cancelCallbackResult) {
         return new FailCallbackResponse(cancelCallbackResult);
     }
 

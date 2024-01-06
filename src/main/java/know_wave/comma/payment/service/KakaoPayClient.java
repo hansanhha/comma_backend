@@ -73,7 +73,7 @@ public class KakaoPayClient implements PaymentClient<KakaopayReadyRequest, Kakao
                 .retrieve()
                 .body(KakaopayApproveResponse.class);
 
-        return PaymentClientApproveResponse.of(
+        return PaymentClientApproveResponse.create(
                 response.getTid(), response.getCid(), response.getPartner_order_id(),
                 response.getPartner_user_id(), response.getAmount(), response.getQuantity(),
                 response.getItem_name(), response.getCreated_at(), response.getApproved_at());
@@ -95,7 +95,7 @@ public class KakaoPayClient implements PaymentClient<KakaopayReadyRequest, Kakao
                 .retrieve()
                 .body(KakaopayRefundResponse.class);
 
-        return PaymentClientRefundResponse.of(
+        return PaymentClientRefundResponse.create(
                 response.getTid(), response.getCid(), response.getPartner_order_id(),
                 response.getPartner_user_id(), response.getStatus(), response.getAmount(),
                 response.getApproved_cancel_amount(), response.getQuantity(), response.getItem_name(),

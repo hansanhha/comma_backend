@@ -9,7 +9,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PaymentGatewayCancelResponse {
 
-    public static PaymentGatewayCancelResponse of(Map<String, String> transactionResult, String paymentRequestId, String orderNumber, String accountId, int amount, int quantity, String paymentStatus, String paymentFeature, String paymentType) {
+    public static PaymentGatewayCancelResponse create(Map<String, String> transactionResult, String paymentRequestId, String orderNumber, String accountId, int amount, int quantity, String paymentStatus, String paymentFeature, String paymentType) {
         return new PaymentGatewayCancelResponse(transactionResult, paymentRequestId, orderNumber, accountId, amount, quantity, paymentStatus, paymentFeature, paymentType);
     }
 

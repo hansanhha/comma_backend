@@ -71,7 +71,7 @@ public class DepositPaymentCallbackHandler implements PaymentCallbackHandler {
         Map<String, String> response = Map.of(ORDER_STATUS, orderResponse.getOrderStatus().getStatus(),
                 DEPOSIT_STATUS, orderResponse.getDepositStatus().getStatus());
 
-        return CancelCallbackResponse.of(response);
+        return CancelCallbackResponse.create(response);
     }
 
     @Override
@@ -82,7 +82,7 @@ public class DepositPaymentCallbackHandler implements PaymentCallbackHandler {
         Map<String, String> response = Map.of(ORDER_STATUS, orderResponse.getOrderStatus().getStatus(),
                 DEPOSIT_STATUS, orderResponse.getDepositStatus().getStatus());
 
-        return FailCallbackResponse.of(response);
+        return FailCallbackResponse.create(response);
     }
 
     @Override
