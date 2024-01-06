@@ -31,6 +31,11 @@ public class PaymentCallbackManager {
                 .fail(failCallback);
     }
 
+    public void error(ErrorCallback errorCallback) {
+        getPaymentCallback(errorCallback.getPaymentFeature())
+                .error(errorCallback);
+    }
+
     private PaymentCallbackHandler getPaymentCallback(PaymentFeature paymentFeature) {
         return paymentCallbackServices.stream()
                 .filter(paymentCallback -> paymentCallback.isSupport(paymentFeature))

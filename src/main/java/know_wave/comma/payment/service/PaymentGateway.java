@@ -11,8 +11,8 @@ import know_wave.comma.payment.dto.client.PaymentClientRefundRequest;
 import know_wave.comma.payment.dto.client.PaymentClientRefundResponse;
 import know_wave.comma.payment.dto.gateway.*;
 import know_wave.comma.payment.entity.Payment;
-import know_wave.comma.payment.entity.PaymentFeature;
 import know_wave.comma.payment.entity.PaymentStatus;
+import know_wave.comma.payment.exception.*;
 import know_wave.comma.payment.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -51,8 +51,17 @@ public class PaymentGateway {
             return PaymentGatewayCheckoutResponse.create(payment, paymentReadyResponse.getMobileRedirectUrl(), paymentReadyResponse.getPcRedirectUrl(), null);
         }
 
-        PaymentClientReadyResponse paymentClientReadyResponse =
-                paymentClientManager.ready(checkoutRequest, paymentRequestId);
+        PaymentClientReadyResponse paymentClientReadyResponse;
+
+        try {
+            paymentClientReadyResponse = paymentClientManager.ready(checkoutRequest, paymentRequestId);
+        } catch (PaymentClient4xxException exception4) {
+            throw new PaymentCheckoutException(ExceptionMessageSource.INVALID_PAYMENT_CHECKOUT_REQUEST);
+        } catch (PaymentClient5xxException exception5) {
+            throw new PaymentCheckoutException(ExceptionMessageSource.PAYMENT_SERVER_ERROR);
+        } catch (PaymentClientUnknownException unknownException) {
+            throw new PaymentCheckoutException(ExceptionMessageSource.RETRY_PAYMENT_CHECKOUT_REQUEST);
+        }
 
         Payment payment = Payment.create(
                 paymentRequestId, checkoutRequest.getPaymentType(), paymentClientReadyResponse.getTid(),
@@ -67,14 +76,24 @@ public class PaymentGateway {
 
     public PaymentGatewayApproveResponse approve(PaymentGatewayApproveRequest approveRequest) {
         Payment payment = getPayment(approveRequest.getPaymentRequestId());
-        PaymentClientApproveResponse approve = paymentClientManager.approve(approveRequest, payment.getExternalApiTransactionId());
+        PaymentClientApproveResponse approve = null;
+
+        try {
+            approve = paymentClientManager.approve(approveRequest, payment.getExternalApiTransactionId());
+        } catch (PaymentClientException ex) {
+            ErrorCallback errorCallback = ErrorCallback.create(approveRequest.getPaymentRequestId(), approveRequest.getOrderNumber(),
+                    approveRequest.getAccountId(), approveRequest.getPaymentFeature(), ex.getHttpStatusCode(), ex.getErrorCode(), ex.getMessage());
+
+            paymentCallbackManager.error(errorCallback);
+        }
+
         payment.setPaymentStatus(PaymentStatus.COMPLETE);
 
         CompleteCallbackResponse callbackResponse = paymentCallbackManager.complete(
                 CompleteCallback.create(approveRequest.getPaymentRequestId(), approveRequest.getOrderNumber(),
-                        approveRequest.getAccountId(), PaymentFeature.valueOf(approveRequest.getPaymentFeature())));
+                        approveRequest.getAccountId(), approveRequest.getPaymentFeature()));
 
-        return PaymentGatewayApproveResponse.of(
+        return PaymentGatewayApproveResponse.create(
                 callbackResponse.getCompleteCallbackResult(), approveRequest.getPaymentRequestId(), approveRequest.getOrderNumber(),
                 approve.getPayerId(), payment.getPaymentStatus().getValue(), payment.getPaymentFeature().getFeature(),
                 payment.getPaymentType().getType(), approve.getAmount(), approve.getQuantity(),
@@ -87,9 +106,9 @@ public class PaymentGateway {
 
         CancelCallbackResponse callbackResponse = paymentCallbackManager.cancel(
                 CancelCallback.of(cancelRequest.getPaymentRequestId(), cancelRequest.getOrderNumber(),
-                        cancelRequest.getAccountId(), PaymentFeature.valueOf(cancelRequest.getPaymentFeature())));
+                        cancelRequest.getAccountId(), cancelRequest.getPaymentFeature()));
 
-        return PaymentGatewayCancelResponse.of(
+        return PaymentGatewayCancelResponse.create(
                 callbackResponse.getCancelCallbackResult(), cancelRequest.getPaymentRequestId(), cancelRequest.getOrderNumber(),
                 cancelRequest.getAccountId(), payment.getAmount(), payment.getQuantity(),
                 payment.getPaymentStatus().getValue(), payment.getPaymentFeature().getFeature(), payment.getPaymentType().getType());
@@ -101,9 +120,9 @@ public class PaymentGateway {
 
         FailCallbackResponse callbackResponse = paymentCallbackManager.fail(
                 FailCallback.of(failRequest.getPaymentRequestId(), failRequest.getOrderNumber(),
-                        failRequest.getAccountId(), PaymentFeature.valueOf(failRequest.getPaymentFeature())));
+                        failRequest.getAccountId(), failRequest.getPaymentFeature()));
 
-        return PaymentGatewayFailResponse.of(
+        return PaymentGatewayFailResponse.create(
                 callbackResponse.getFailCallbackResult(), failRequest.getPaymentRequestId(), failRequest.getOrderNumber(),
                 failRequest.getAccountId(), payment.getAmount(), payment.getQuantity(),
                 payment.getPaymentStatus().getValue(), payment.getPaymentFeature().getFeature(), payment.getPaymentType().getType());
@@ -112,14 +131,14 @@ public class PaymentGateway {
     public PaymentGatewayRefundResponse refund(String paymentRequestId) {
         Payment payment = getPayment(paymentRequestId);
 
-        PaymentClientRefundRequest refundRequest = PaymentClientRefundRequest.of(payment.getExternalApiTransactionId(),
+        PaymentClientRefundRequest refundRequest = PaymentClientRefundRequest.create(payment.getExternalApiTransactionId(),
                 payment.getAmount(), payment.getPaymentType());
 
         PaymentClientRefundResponse refund = paymentClientManager.refund(refundRequest);
 
         payment.setPaymentStatus(PaymentStatus.REFUND);
 
-        return PaymentGatewayRefundResponse.of(
+        return PaymentGatewayRefundResponse.create(
                 paymentRequestId, refund.getPayerId(), payment.getPaymentStatus(),
                 payment.getPaymentFeature(), payment.getPaymentType(), refund.getAmount(),
                 refund.getCancelAmount(), refund.getQuantity(), refund.getItemName(),

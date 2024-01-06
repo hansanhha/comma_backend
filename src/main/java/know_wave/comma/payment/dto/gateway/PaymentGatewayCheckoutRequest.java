@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PaymentGatewayCheckoutRequest {
 
-    public static PaymentGatewayCheckoutRequest of(String orderNumber, Account account, PaymentType paymentType, PaymentFeature feature, int amount, int quantity) {
+    public static PaymentGatewayCheckoutRequest create(String orderNumber, Account account, PaymentType paymentType, PaymentFeature feature, int amount, int quantity) {
         return new PaymentGatewayCheckoutRequest(orderNumber, account, paymentType, feature, amount, quantity);
     }
 

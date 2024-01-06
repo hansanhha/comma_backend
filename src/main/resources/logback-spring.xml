@@ -61,10 +61,10 @@
 <!--        </rollingPolicy>-->
 <!--    </appender>-->
 
-    <logger name="com.know_wave" level="${LOG_LEVEL}">
-        <appender-ref ref="FILE"/>
-        <appender-ref ref="ERROR"/>
-    </logger>
+<!--    <logger name="com.know_wave" level="${LOG_LEVEL}">-->
+<!--        <appender-ref ref="FILE"/>-->
+<!--        <appender-ref ref="ERROR"/>-->
+<!--    </logger>-->
 
     <root level="${LOG_LEVEL}">
         <appender-ref ref="CONSOLE"/>

@@ -3,6 +3,8 @@ package know_wave.comma.payment.controller;
 import know_wave.comma.payment.dto.gateway.PaymentGatewayApproveRequest;
 import know_wave.comma.payment.dto.gateway.PaymentGatewayCancelRequest;
 import know_wave.comma.payment.dto.gateway.PaymentGatewayFailRequest;
+import know_wave.comma.payment.entity.PaymentFeature;
+import know_wave.comma.payment.entity.PaymentType;
 import know_wave.comma.payment.service.PaymentGateway;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +21,7 @@ public class PaymentCallbackController {
                         @PathVariable String accountId, @PathVariable String paymentRequestId,
                         @PathVariable String orderNumber,
                         @RequestParam(value = "pg_token") String pgToken) {
-        var paymentGatewayApproveRequest = PaymentGatewayApproveRequest.create(paymentRequestId, orderNumber, accountId, paymentType.toUpperCase(), paymentFeature.toUpperCase(), pgToken);
+        var paymentGatewayApproveRequest = PaymentGatewayApproveRequest.create(paymentRequestId, orderNumber, accountId, PaymentType.valueOf(paymentType.toUpperCase()), PaymentFeature.valueOf(paymentFeature.toUpperCase()), pgToken);
         paymentGateway.approve(paymentGatewayApproveRequest);
     }
 
@@ -27,7 +29,7 @@ public class PaymentCallbackController {
     public void cancel(@PathVariable String paymentType, @PathVariable String accountId,
                        @PathVariable String paymentFeature, @PathVariable String paymentRequestId,
                        @PathVariable String orderNumber) {
-        var paymentGatewayCancelRequest = PaymentGatewayCancelRequest.create(paymentRequestId, orderNumber, accountId, paymentType, paymentFeature);
+        var paymentGatewayCancelRequest = PaymentGatewayCancelRequest.create(paymentRequestId, orderNumber, accountId, PaymentType.valueOf(paymentType.toUpperCase()), PaymentFeature.valueOf(paymentFeature.toUpperCase()));
         paymentGateway.cancel(paymentGatewayCancelRequest);
     }
 
@@ -35,7 +37,7 @@ public class PaymentCallbackController {
     public void fail(@PathVariable String paymentType, @PathVariable String accountId,
                      @PathVariable String paymentFeature, @PathVariable String paymentRequestId,
                      @PathVariable String orderNumber) {
-        var paymentGatewayFailRequest = PaymentGatewayFailRequest.create(paymentRequestId, orderNumber, accountId, paymentType, paymentFeature);
+        var paymentGatewayFailRequest = PaymentGatewayFailRequest.create(paymentRequestId, orderNumber, accountId, PaymentType.valueOf(paymentType.toUpperCase()), PaymentFeature.valueOf(paymentFeature.toUpperCase()));
         paymentGateway.fail(paymentGatewayFailRequest);
     }
 }

@@ -144,6 +144,9 @@ public class Order extends BaseTimeEntity {
         } else if (cause == OrderStatus.FAILURE_CAUSE_DEPOSIT_CANCEL) {
             updateStatus(OrderStatus.FAILURE_CAUSE_DEPOSIT_CANCEL);
             return;
+        } else if (cause == OrderStatus.FAILURE_CAUSE_SERVER) {
+            updateStatus(OrderStatus.FAILURE_CAUSE_SERVER);
+            return;
         }
 
         throw new UnableOrderUpdateStatus(ExceptionMessageSource.UNABLE_TO_FAIL_ORDER);

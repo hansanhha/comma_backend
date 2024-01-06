@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class PaymentGatewayRefundResponse {
 
-    public static PaymentGatewayRefundResponse of(String paymentRequestId, String accountId, PaymentStatus paymentStatus, PaymentFeature paymentFeature, PaymentType paymentType, int amount, int cancelAmount, int quantity, String itemName, LocalDateTime paymentReadyDate, LocalDateTime paymentApproveDate, LocalDateTime paymentCancelDate) {
+    public static PaymentGatewayRefundResponse create(String paymentRequestId, String accountId, PaymentStatus paymentStatus, PaymentFeature paymentFeature, PaymentType paymentType, int amount, int cancelAmount, int quantity, String itemName, LocalDateTime paymentReadyDate, LocalDateTime paymentApproveDate, LocalDateTime paymentCancelDate) {
         return new PaymentGatewayRefundResponse(paymentRequestId, accountId, paymentStatus, paymentFeature, paymentType, amount, cancelAmount, quantity, itemName, paymentReadyDate, paymentApproveDate, paymentCancelDate);
     }
 

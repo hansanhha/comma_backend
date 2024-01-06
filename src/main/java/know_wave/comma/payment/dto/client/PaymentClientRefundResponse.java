@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class PaymentClientRefundResponse {
 
-    public static PaymentClientRefundResponse of(String tid, String cid, String merchantId, String payerId, String paymentStatus, int amount, int cancelAmount, int quantity, String itemName, LocalDateTime paymentReadyDate, LocalDateTime paymentApproveDate, LocalDateTime paymentCancelDate) {
+    public static PaymentClientRefundResponse create(String tid, String cid, String merchantId, String payerId, String paymentStatus, int amount, int cancelAmount, int quantity, String itemName, LocalDateTime paymentReadyDate, LocalDateTime paymentApproveDate, LocalDateTime paymentCancelDate) {
         return new PaymentClientRefundResponse(tid, cid, merchantId, payerId, paymentStatus, amount, cancelAmount, quantity, itemName, paymentReadyDate, paymentApproveDate, paymentCancelDate);
     }
 

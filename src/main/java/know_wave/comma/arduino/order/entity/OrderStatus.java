@@ -11,6 +11,7 @@ public enum OrderStatus {
 
     VALID("유효한 주문"),
     DEPOSIT_PAYMENT_REQUIRED("보증금 결제 대기"),
+    FAILURE_CAUSE_SERVER("주문 실패(서버 오류)"),
     FAILURE_CAUSE_DEPOSIT_FAILURE("주문 실패(보증금 결제 실패)"),
     FAILURE_CAUSE_DEPOSIT_CANCEL("주문 실패(보증금 결제 취소)"),
     FAILURE_CAUSE_ARDUINO_STOCK("주문 실패(재고 부족)"),

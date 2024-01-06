@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class PaymentClientApproveResponse {
 
-    public static PaymentClientApproveResponse of(String tid, String cid, String merchantId, String payerId, int amount, int quantity, String itemName, LocalDateTime paymentReadyDate, LocalDateTime paymentApproveDate) {
+    public static PaymentClientApproveResponse create(String tid, String cid, String merchantId, String payerId, int amount, int quantity, String itemName, LocalDateTime paymentReadyDate, LocalDateTime paymentApproveDate) {
         return new PaymentClientApproveResponse(tid, cid, merchantId, payerId, amount, quantity, itemName, paymentReadyDate, paymentApproveDate);
     }
 

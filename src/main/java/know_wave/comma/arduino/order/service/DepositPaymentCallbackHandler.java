@@ -33,6 +33,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class DepositPaymentCallbackHandler implements PaymentCallbackHandler {
 
+    // 가상 번호
+    private static final int KAKAOPAY_FAILURE_CODE = -1039930293;
     private final ArduinoOrderNotification orderNotification;
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
@@ -71,7 +73,7 @@ public class DepositPaymentCallbackHandler implements PaymentCallbackHandler {
         Map<String, String> response = Map.of(ORDER_STATUS, orderResponse.getOrderStatus().getStatus(),
                 DEPOSIT_STATUS, orderResponse.getDepositStatus().getStatus());
 
-        return CancelCallbackResponse.of(response);
+        return CancelCallbackResponse.create(response);
     }
 
     @Override
@@ -82,7 +84,32 @@ public class DepositPaymentCallbackHandler implements PaymentCallbackHandler {
         Map<String, String> response = Map.of(ORDER_STATUS, orderResponse.getOrderStatus().getStatus(),
                 DEPOSIT_STATUS, orderResponse.getDepositStatus().getStatus());
 
-        return FailCallbackResponse.of(response);
+        return FailCallbackResponse.create(response);
+    }
+
+    @Override
+    public void error(ErrorCallback errorCallback) {
+        int errorCode = errorCallback.getErrorCode();
+
+        OrderCallbackResponse orderCallbackResponse;
+        OrderNotificationRequest orderNotificationRequest;
+
+        if (errorCode == KAKAOPAY_FAILURE_CODE) {
+            orderCallbackResponse = failOrder(errorCallback.getOrderNumber(), OrderStatus.FAILURE_CAUSE_DEPOSIT_FAILURE);
+
+            orderNotificationRequest = OrderNotificationRequest.create(orderCallbackResponse.getOrderStatus(), orderCallbackResponse.getDepositStatus(),
+                            errorCallback.getOrderNumber(), errorCallback.getAccountId());
+
+            orderNotification.notify(orderNotificationRequest);
+            return;
+        }
+
+        orderCallbackResponse = failOrder(errorCallback.getOrderNumber(), OrderStatus.FAILURE_CAUSE_SERVER);
+
+        orderNotificationRequest = OrderNotificationRequest.create(orderCallbackResponse.getOrderStatus(), orderCallbackResponse.getDepositStatus(),
+                        errorCallback.getOrderNumber(), errorCallback.getAccountId());
+
+        orderNotification.notify(orderNotificationRequest);
     }
 
     @Override

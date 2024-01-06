@@ -50,7 +50,7 @@ public class PaymentClientManager {
     }
 
     public PaymentClientApproveResponse approve(PaymentGatewayApproveRequest approveRequest, String tid) {
-        PaymentType paymentType = PaymentType.valueOf(approveRequest.getPaymentType());
+        PaymentType paymentType = approveRequest.getPaymentType();
         PaymentClient paymentClient = getPaymentClient(paymentType);
 
         switch (paymentType) {

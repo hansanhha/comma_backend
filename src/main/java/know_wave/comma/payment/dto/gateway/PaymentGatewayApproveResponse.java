@@ -10,7 +10,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PaymentGatewayApproveResponse {
 
-    public static PaymentGatewayApproveResponse of(Map<String, String> transactionResult, String paymentRequestId, String orderNumber, String accountId, String paymentStatus, String paymentFeature, String paymentType, int amount, int quantity, LocalDateTime paymentReadyDate, LocalDateTime paymentApproveDate) {
+    public static PaymentGatewayApproveResponse create(Map<String, String> transactionResult, String paymentRequestId, String orderNumber, String accountId, String paymentStatus, String paymentFeature, String paymentType, int amount, int quantity, LocalDateTime paymentReadyDate, LocalDateTime paymentApproveDate) {
         return new PaymentGatewayApproveResponse(transactionResult, paymentRequestId, orderNumber, accountId, paymentStatus, paymentFeature, paymentType, amount, quantity, paymentReadyDate, paymentApproveDate);
     }
 

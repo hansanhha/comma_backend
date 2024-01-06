@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PaymentClientRefundRequest {
 
-    public static PaymentClientRefundRequest of(String tid, int amount, PaymentType paymentType) {
+    public static PaymentClientRefundRequest create(String tid, int amount, PaymentType paymentType) {
         return new PaymentClientRefundRequest(tid, amount, paymentType);
     }
 
