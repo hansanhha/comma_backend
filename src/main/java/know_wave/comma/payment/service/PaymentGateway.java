@@ -1,11 +1,10 @@
 package know_wave.comma.payment.service;
 
 import jakarta.transaction.Transactional;
+import know_wave.comma.common.entity.ExceptionMessageSource;
 import know_wave.comma.common.idempotency.dto.IdempotentRequest;
 import know_wave.comma.common.idempotency.dto.IdempotentSaveDto;
 import know_wave.comma.common.idempotency.service.IdempotencyService;
-import know_wave.comma.common.entity.ExceptionMessageSource;
-import know_wave.comma.payment.dto.client.PaymentClientApproveResponse;
 import know_wave.comma.payment.dto.client.PaymentClientReadyResponse;
 import know_wave.comma.payment.dto.client.PaymentClientRefundRequest;
 import know_wave.comma.payment.dto.client.PaymentClientRefundResponse;
@@ -119,7 +118,14 @@ public class PaymentGateway {
         PaymentClientRefundRequest refundRequest = PaymentClientRefundRequest.create(payment.getExternalApiTransactionId(),
                 payment.getAmount(), payment.getPaymentType());
 
-        PaymentClientRefundResponse refund = paymentClientManager.refund(refundRequest);
+        PaymentClientRefundResponse refund;
+
+        try {
+             refund = paymentClientManager.refund(refundRequest);
+        } catch (PaymentClientException ex) {
+            payment.setPaymentStatus(PaymentStatus.REQUIRED_REFUND);
+            throw new PaymentRefundException(paymentRequestId, payment.getAccount().getId(), payment.getPaymentFeature(), ex.getHttpStatusCode(), ex.getErrorCode(), ex.getMessage());
+        }
 
         payment.setPaymentStatus(PaymentStatus.REFUND);
 
