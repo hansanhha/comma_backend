@@ -12,7 +12,6 @@ public class ErrorCallback {
     public static ErrorCallback create(String paymentRequestId, String orderNumber, String accountId, PaymentFeature paymentFeature, HttpStatusCode statusCode, int errorCode, String errorMessage) {
         return new ErrorCallback(paymentRequestId, orderNumber, accountId, paymentFeature, statusCode, errorCode, errorMessage);
     }
-
     private final String paymentRequestId;
     private final String orderNumber;
     private final String accountId;

@@ -137,6 +137,11 @@ public class Order extends BaseTimeEntity {
         throw new UnableOrderUpdateStatus(ExceptionMessageSource.UNABLE_TO_FAIL_ORDER);
     }
 
+    // 주문 수령을 완료했지만 보증금 환불 처리 과정에서 에러가 발생한 경우
+    public void handleFailureDuringDepositReturn() {
+        updateStatus(DepositStatus.RETURN_SCHEDULED, OrderStatus.RECEIVE_DEPOSIT_REFUND_FAILURE);
+    }
+
     public void handleFailureCauseDepositPayment(OrderStatus cause) {
         if (cause == OrderStatus.FAILURE_CAUSE_DEPOSIT_FAILURE) {
             updateStatus(OrderStatus.FAILURE_CAUSE_DEPOSIT_FAILURE);
@@ -185,7 +190,7 @@ public class Order extends BaseTimeEntity {
 
     public void receiveOrder() {
         if (orderStatus == OrderStatus.BE_READY) {
-            this.updateStatus(DepositStatus.RETURN, OrderStatus.RECEIVE);
+            this.updateStatus(DepositStatus.RETURN, OrderStatus.RECEIVE_DEPOSIT_REFUND_SUCCESS);
             return;
         }
 

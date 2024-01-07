@@ -56,4 +56,5 @@ public class ExceptionMessageSource {
     public static final String INVALID_PAYMENT_CHECKOUT_REQUEST = "유효하지 않은 결제 요청입니다";
     public static final String PAYMENT_SERVER_ERROR = "결제 서버 오류가 발생했습니다";
     public static final String RETRY_PAYMENT_CHECKOUT_REQUEST = "결제 요청을 실패했습니다. 잠시 후 다시 시도해주세요";
+    public static final String NOT_FOUND_DEPOSIT = "보증금을 찾을 수 없습니다";
 }
