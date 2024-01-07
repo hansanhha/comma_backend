@@ -12,7 +12,8 @@ public enum PaymentStatus {
     CANCEL("결제 취소"),
     FAILURE("결제 실패"),
     TIME_OUT("결제 시간 초과"),
-    REFUND("결제 환불");
+    REFUND("결제 환불"),
+    REQUIRED_REFUND("결제 환불 필요");
 
     private final String value;
 

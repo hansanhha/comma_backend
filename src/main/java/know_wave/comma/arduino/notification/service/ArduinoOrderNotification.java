@@ -18,7 +18,6 @@ import know_wave.comma.common.notification.push.entity.PushNotificationType;
 import know_wave.comma.common.notification.push.service.PushNotificationGateway;
 import know_wave.comma.common.notification.realtime.sse.service.SseEmitterService;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
@@ -55,8 +54,9 @@ public class ArduinoOrderNotification {
         SSE_EVENT_NAME_MAP.put(OrderStatus.CANCEL, "order_cancel");
         SSE_EVENT_NAME_MAP.put(OrderStatus.PREPARING, "order_prepare");
         SSE_EVENT_NAME_MAP.put(OrderStatus.BE_READY, "order_ready");
-        SSE_EVENT_NAME_MAP.put(OrderStatus.RECEIVE, "order_receive");
-        
+        SSE_EVENT_NAME_MAP.put(OrderStatus.RECEIVE_DEPOSIT_REFUND_SUCCESS, "order_receive");
+        SSE_EVENT_NAME_MAP.put(OrderStatus.RECEIVE_DEPOSIT_REFUND_FAILURE, "order_receive_deposit_refund_failure");
+
         PUSH_NOTIFICATION_TITLE_MAP.put(OrderStatus.ORDERED, "컴마 실습재료 부품 주문 완료 안내");
         PUSH_NOTIFICATION_TITLE_MAP.put(OrderStatus.FAILURE_CAUSE_SERVER, "컴마 실습재료 부품 주문 실패 안내");
         PUSH_NOTIFICATION_TITLE_MAP.put(OrderStatus.FAILURE_CAUSE_DEPOSIT_FAILURE, "컴마 실습재료 부품 주문 실패 안내");
@@ -68,7 +68,8 @@ public class ArduinoOrderNotification {
         PUSH_NOTIFICATION_TITLE_MAP.put(OrderStatus.CANCEL, "컴마 실습재료 부품 주문 취소 안내");
         PUSH_NOTIFICATION_TITLE_MAP.put(OrderStatus.PREPARING, "컴마 실습재료 부품 주문 준비 안내");
         PUSH_NOTIFICATION_TITLE_MAP.put(OrderStatus.BE_READY, "컴마 실습재료 부품 주문 준비완료 안내");
-        PUSH_NOTIFICATION_TITLE_MAP.put(OrderStatus.RECEIVE, "컴마 실습재료 부품 주문수령 안내");
+        PUSH_NOTIFICATION_TITLE_MAP.put(OrderStatus.RECEIVE_DEPOSIT_REFUND_SUCCESS, "컴마 실습재료 부품 주문수령 안내");
+        PUSH_NOTIFICATION_TITLE_MAP.put(OrderStatus.RECEIVE_DEPOSIT_REFUND_FAILURE, "컴마 실습재료 부품 주문수령 안내");
 
         PUSH_NOTIFICATION_CONTENT_MAP.put(OrderStatus.ORDERED,
                 """
@@ -150,11 +151,19 @@ public class ArduinoOrderNotification {
                 * 주문 취소 시 보증금 반환이 불가한 점을 참고해주세요<br>
                 <br>
                 """);
-        PUSH_NOTIFICATION_CONTENT_MAP.put(OrderStatus.RECEIVE,
+        PUSH_NOTIFICATION_CONTENT_MAP.put(OrderStatus.RECEIVE_DEPOSIT_REFUND_SUCCESS,
                 """
                 <br>    
                 부품 수령과 보증금 반환이 완료되었습니다<br>
                 컴마를 이용해주셔서 감사합니다<br>
+                <br>    
+                """);
+        PUSH_NOTIFICATION_CONTENT_MAP.put(OrderStatus.RECEIVE_DEPOSIT_REFUND_FAILURE,
+                """
+                <br>    
+                부품 수령이 완료되었지만 보증금 반환 처리에서 문제가 발생하였습니다<br>
+                매끄럽게 처리되지 않아 죄송합니다<br>
+                보증금은 메일 전송일 기준 2일 이내에 반환됩니다<br>
                 <br>    
                 """);
 

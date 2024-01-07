@@ -22,7 +22,8 @@ public enum OrderStatus {
     CANCEL("주문취소"),
     PREPARING("주문 준비 중"),
     BE_READY("주문 준비 완료"),
-    RECEIVE("주문 수령");
+    RECEIVE_DEPOSIT_REFUND_SUCCESS("주문 수령"),
+    RECEIVE_DEPOSIT_REFUND_FAILURE("주문 수령");
 
     private final String status;
 
