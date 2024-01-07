@@ -2,17 +2,23 @@ package know_wave.comma.unit.payment.service;
 
 import know_wave.comma.account.entity.AcademicMajor;
 import know_wave.comma.account.entity.Account;
+import know_wave.comma.common.entity.ExceptionMessageSource;
 import know_wave.comma.common.idempotency.dto.IdempotentRequest;
 import know_wave.comma.common.idempotency.dto.IdempotentSaveDto;
 import know_wave.comma.common.idempotency.service.IdempotencyService;
 import know_wave.comma.payment.dto.client.PaymentClientApproveResponse;
 import know_wave.comma.payment.dto.client.PaymentClientReadyResponse;
+import know_wave.comma.payment.dto.client.PaymentClientRefundRequest;
 import know_wave.comma.payment.dto.client.PaymentClientRefundResponse;
 import know_wave.comma.payment.dto.gateway.*;
 import know_wave.comma.payment.entity.Payment;
 import know_wave.comma.payment.entity.PaymentFeature;
 import know_wave.comma.payment.entity.PaymentStatus;
 import know_wave.comma.payment.entity.PaymentType;
+import know_wave.comma.payment.exception.PaymentCheckoutException;
+import know_wave.comma.payment.exception.PaymentClient4xxException;
+import know_wave.comma.payment.exception.PaymentClient5xxException;
+import know_wave.comma.payment.exception.PaymentRefundException;
 import know_wave.comma.payment.repository.PaymentRepository;
 import know_wave.comma.payment.service.PaymentCallbackManager;
 import know_wave.comma.payment.service.PaymentClientManager;
@@ -22,10 +28,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 
 
 import java.time.LocalDateTime;
@@ -135,14 +144,10 @@ public class PaymentGatewayTest {
         given(paymentCallbackManager.complete(ArgumentMatchers.any())).willReturn(completeCallbackResponse);
 
         //when
-        PaymentGatewayApproveResponse approve = paymentGateway.approve(paymentGatewayApproveRequest);
+        paymentGateway.approve(paymentGatewayApproveRequest);
 
         //then
         assertThat(payment.getPaymentStatus()).isEqualTo(PaymentStatus.COMPLETE);
-        assertThat(approve.getPaymentRequestId()).isEqualTo(paymentRequestId);
-        assertThat(approve.getOrderNumber()).isEqualTo(orderNumber);
-        assertThat(approve.getPaymentFeature()).isEqualTo(PAYMENT_FEATURE.getFeature());
-        assertThat(approve.getPaymentType()).isEqualTo(PAYMENT_TYPE.getType());
 
         verify(paymentRepository, times(1)).findByPaymentRequestId(paymentRequestId);
     }
@@ -160,15 +165,10 @@ public class PaymentGatewayTest {
         given(paymentCallbackManager.cancel(ArgumentMatchers.any())).willReturn(cancelCallbackResponse);
 
         //when
-        PaymentGatewayCancelResponse cancel = paymentGateway.cancel(paymentGatewayCancelRequest);
+        paymentGateway.cancel(paymentGatewayCancelRequest);
 
         //then
         assertThat(payment.getPaymentStatus()).isEqualTo(PaymentStatus.CANCEL);
-        assertThat(cancel.getPaymentRequestId()).isEqualTo(paymentRequestId);
-        assertThat(cancel.getOrderNumber()).isEqualTo(orderNumber);
-        assertThat(cancel.getPaymentFeature()).isEqualTo(PAYMENT_FEATURE.getFeature());
-        assertThat(cancel.getPaymentType()).isEqualTo(PAYMENT_TYPE.getType());
-
         verify(paymentRepository, times(1)).findByPaymentRequestId(paymentRequestId);
     }
 
@@ -185,14 +185,10 @@ public class PaymentGatewayTest {
         given(paymentCallbackManager.fail(ArgumentMatchers.any())).willReturn(cancelCallbackResponse);
 
         //when
-        PaymentGatewayFailResponse fail = paymentGateway.fail(paymentGatewayFailRequest);
+        paymentGateway.fail(paymentGatewayFailRequest);
 
         //then
         assertThat(payment.getPaymentStatus()).isEqualTo(PaymentStatus.FAILURE);
-        assertThat(fail.getPaymentRequestId()).isEqualTo(paymentRequestId);
-        assertThat(fail.getOrderNumber()).isEqualTo(orderNumber);
-        assertThat(fail.getPaymentFeature()).isEqualTo(PAYMENT_FEATURE.getFeature());
-        assertThat(fail.getPaymentType()).isEqualTo(PAYMENT_TYPE.getType());
 
         verify(paymentRepository, times(1)).findByPaymentRequestId(paymentRequestId);
     }
@@ -219,6 +215,166 @@ public class PaymentGatewayTest {
         assertThat(refund.getPaymentType()).isEqualTo(PAYMENT_TYPE);
 
         verify(paymentRepository, times(1)).findByPaymentRequestId(paymentRequestId);
+    }
+
+    @DisplayName("결제 요청 실패(외부 api 4xx 에러)")
+    @Test
+    void givenExternalApi4xxError_whenCheckout_thenFailure() {
+        //given
+        String errorMessage = "testErrorMessage";
+        HttpStatusCode httpStatusCode = HttpStatus.BAD_REQUEST;
+        int errorCode = -123123;
+
+        String paymentErrorMessage = ExceptionMessageSource.INVALID_PAYMENT_CHECKOUT_REQUEST;
+
+        PaymentGatewayCheckoutRequest paymentGatewayCheckoutRequest = PaymentGatewayCheckoutRequest.create(orderNumber, ACCOUNT, PAYMENT_TYPE, PAYMENT_FEATURE, AMOUNT, QUANTITY);
+
+        given(idempotencyService.isIdempotent(ArgumentMatchers.any(IdempotentRequest.class))).willReturn(false);
+
+        given(paymentClientManager.ready(ArgumentMatchers.any(PaymentGatewayCheckoutRequest.class), ArgumentMatchers.anyString()))
+                .willThrow(new PaymentClient4xxException(errorMessage, httpStatusCode, errorCode));
+
+        //when & then
+        assertThatThrownBy(() -> paymentGateway.checkout(paymentGatewayCheckoutRequest))
+                .isInstanceOf(PaymentCheckoutException.class)
+                .hasMessage(paymentErrorMessage);
+
+        verify(idempotencyService, times(1)).isIdempotent(ArgumentMatchers.any(IdempotentRequest.class));
+        verify(paymentClientManager, times(1)).ready(ArgumentMatchers.any(PaymentGatewayCheckoutRequest.class), ArgumentMatchers.anyString());
+    }
+
+    @DisplayName("결제 요청 실패(외부 api 5xx 에러)")
+    @Test
+    void givenExternalApi5xxError_whenCheckout_thenFailure() {
+        //given
+        String errorMessage = "testErrorMessage";
+        HttpStatusCode httpStatusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+        int errorCode = -123123;
+
+        String paymentErrorMessage = ExceptionMessageSource.PAYMENT_SERVER_ERROR;
+
+        PaymentGatewayCheckoutRequest paymentGatewayCheckoutRequest = PaymentGatewayCheckoutRequest.create(orderNumber, ACCOUNT, PAYMENT_TYPE, PAYMENT_FEATURE, AMOUNT, QUANTITY);
+
+        given(idempotencyService.isIdempotent(ArgumentMatchers.any(IdempotentRequest.class))).willReturn(false);
+
+        given(paymentClientManager.ready(ArgumentMatchers.any(PaymentGatewayCheckoutRequest.class), ArgumentMatchers.anyString()))
+                .willThrow(new PaymentClient5xxException(errorMessage, httpStatusCode, errorCode));
+
+        //when & then
+        assertThatThrownBy(() -> paymentGateway.checkout(paymentGatewayCheckoutRequest))
+                .isInstanceOf(PaymentCheckoutException.class)
+                .hasMessage(paymentErrorMessage);
+
+        verify(idempotencyService, times(1)).isIdempotent(ArgumentMatchers.any(IdempotentRequest.class));
+        verify(paymentClientManager, times(1)).ready(ArgumentMatchers.any(PaymentGatewayCheckoutRequest.class), ArgumentMatchers.anyString());
+    }
+
+    @DisplayName("결제 승인 실패(외부 api 4xx 에러)")
+    @Test
+    void givenExternalApi4xxError_whenApprove_thenFailure() {
+        //given
+        String errorMessage = "testErrorMessage";
+        HttpStatusCode httpStatusCode = HttpStatus.BAD_REQUEST;
+        int errorCode = -123123;
+
+        PaymentGatewayApproveRequest paymentGatewayApproveRequest = PaymentGatewayApproveRequest.create(paymentRequestId, orderNumber, ACCOUNT.getId(), PAYMENT_TYPE, PAYMENT_FEATURE, pgToken);
+
+        given(paymentRepository.findByPaymentRequestId(paymentRequestId)).willReturn(Optional.of(payment));
+
+        given(paymentClientManager.approve(ArgumentMatchers.any(PaymentGatewayApproveRequest.class), ArgumentMatchers.anyString()))
+                .willThrow(new PaymentClient4xxException(errorMessage, httpStatusCode, errorCode));
+
+        willDoNothing().given(paymentCallbackManager).error(ArgumentMatchers.any(ErrorCallback.class));
+
+        //when
+        paymentGateway.approve(paymentGatewayApproveRequest);
+
+        ArgumentCaptor<ErrorCallback> errorCallbackArgumentCaptor = ArgumentCaptor.forClass(ErrorCallback.class);
+
+        //then
+        assertThat(payment.getPaymentStatus()).isEqualTo(PaymentStatus.FAILURE);
+        verify(paymentCallbackManager, times(1)).error(errorCallbackArgumentCaptor.capture());
+        ErrorCallback errorCallback = errorCallbackArgumentCaptor.getValue();
+        assertThat(errorCallback.getErrorCode()).isEqualTo(errorCode);
+        assertThat(errorCallback.getErrorMessage()).isEqualTo(errorMessage);
+        assertThat(errorCallback.getStatusCode()).isEqualTo(httpStatusCode);
+    }
+
+    @DisplayName("결제 승인 실패(외부 api 5xx 에러)")
+    @Test
+    void givenExternalApi5xxError_whenApprove_thenFailure() {
+        //given
+        String errorMessage = "testErrorMessage";
+        HttpStatusCode httpStatusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+        int errorCode = -123123;
+
+        PaymentGatewayApproveRequest paymentGatewayApproveRequest = PaymentGatewayApproveRequest.create(paymentRequestId, orderNumber, ACCOUNT.getId(), PAYMENT_TYPE, PAYMENT_FEATURE, pgToken);
+        ArgumentCaptor<ErrorCallback> errorCallbackArgumentCaptor = ArgumentCaptor.forClass(ErrorCallback.class);
+
+        given(paymentRepository.findByPaymentRequestId(paymentRequestId)).willReturn(Optional.of(payment));
+
+        given(paymentClientManager.approve(ArgumentMatchers.any(PaymentGatewayApproveRequest.class), ArgumentMatchers.anyString()))
+                .willThrow(new PaymentClient5xxException(errorMessage, httpStatusCode, errorCode));
+
+        willDoNothing().given(paymentCallbackManager).error(ArgumentMatchers.any(ErrorCallback.class));
+
+        //when
+        paymentGateway.approve(paymentGatewayApproveRequest);
+
+        //then
+        assertThatThrownBy(() -> paymentClientManager.approve(paymentGatewayApproveRequest, "testTid"))
+                .isInstanceOf(PaymentClient5xxException.class);
+
+        assertThat(payment.getPaymentStatus()).isEqualTo(PaymentStatus.FAILURE);
+
+        verify(paymentCallbackManager, times(1)).error(errorCallbackArgumentCaptor.capture());
+        ErrorCallback errorCallback = errorCallbackArgumentCaptor.getValue();
+
+        assertThat(errorCallback.getErrorCode()).isEqualTo(errorCode);
+        assertThat(errorCallback.getErrorMessage()).isEqualTo(errorMessage);
+        assertThat(errorCallback.getStatusCode()).isEqualTo(httpStatusCode);
+    }
+
+    @DisplayName("보증금 반환 실패(외부 api 4xx 에러)")
+    @Test
+    void givenExternalApi4xxError_whenReturn_thenFailure() {
+        //given
+        String errorMessage = "testErrorMessage";
+        HttpStatusCode httpStatusCode = HttpStatus.BAD_REQUEST;
+        int errorCode = -123123;
+
+        given(paymentRepository.findByPaymentRequestId(paymentRequestId)).willReturn(Optional.of(payment));
+
+        given(paymentClientManager.refund(ArgumentMatchers.any(PaymentClientRefundRequest.class)))
+                .willThrow(new PaymentClient4xxException(errorMessage, httpStatusCode, errorCode));
+
+        //when
+        assertThatThrownBy(() -> paymentGateway.refund(paymentRequestId))
+                .isInstanceOf(PaymentRefundException.class);
+
+        //then
+        assertThat(payment.getPaymentStatus()).isEqualTo(PaymentStatus.REQUIRED_REFUND);
+    }
+
+    @DisplayName("보증금 반환 실패(외부 api 5xx 에러)")
+    @Test
+    void givenExternalApi5xxError_whenReturn_thenFailure() {
+        //given
+        String errorMessage = "testErrorMessage";
+        HttpStatusCode httpStatusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+        int errorCode = -123123;
+
+        given(paymentRepository.findByPaymentRequestId(paymentRequestId)).willReturn(Optional.of(payment));
+
+        given(paymentClientManager.refund(ArgumentMatchers.any(PaymentClientRefundRequest.class)))
+                .willThrow(new PaymentClient5xxException(errorMessage, httpStatusCode, errorCode));
+
+        //when
+        assertThatThrownBy(() -> paymentGateway.refund(paymentRequestId))
+                .isInstanceOf(PaymentRefundException.class);
+
+        //then
+        assertThat(payment.getPaymentStatus()).isEqualTo(PaymentStatus.REQUIRED_REFUND);
     }
 
 }
