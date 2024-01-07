@@ -84,6 +84,7 @@ public class PaymentGateway {
             ErrorCallback errorCallback = ErrorCallback.create(approveRequest.getPaymentRequestId(), approveRequest.getOrderNumber(),
                     approveRequest.getAccountId(), approveRequest.getPaymentFeature(), ex.getHttpStatusCode(), ex.getErrorCode(), ex.getMessage());
 
+            payment.setPaymentStatus(PaymentStatus.FAILURE);
             paymentCallbackManager.error(errorCallback);
         }
 
